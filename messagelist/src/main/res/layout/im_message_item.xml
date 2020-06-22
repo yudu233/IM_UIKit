@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="6dp">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/message_item_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/nim_bg_message_tip"
+        android:gravity="center"
+        android:paddingLeft="7dip"
+        android:paddingRight="7dip"
+        android:textColor="#ffffff"
+        android:textSize="10sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="@string/im_item_time_hint" />
+
+    <FrameLayout
+        android:id="@+id/rll_avatar_left"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/message_item_time">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imv_avatar_left"
+            android:layout_width="@dimen/avatar_size_in_session"
+            android:layout_height="@dimen/avatar_size_in_session"
+            android:layout_gravity="bottom|right"
+            app:srcCompat="@drawable/nim_avatar_default" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/rll_avatar_right"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/message_item_time">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imv_avatar_right"
+            android:layout_width="@dimen/avatar_size_in_session"
+            android:layout_height="@dimen/avatar_size_in_session"
+            android:layout_gravity="bottom|left"
+            app:srcCompat="@drawable/nim_avatar_default" />
+    </FrameLayout>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/message_item_nickname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="#000000"
+        android:textSize="12sp"
+        android:visibility="gone"
+        app:layout_constraintStart_toEndOf="@+id/rll_avatar_left"
+        app:layout_constraintTop_toBottomOf="@+id/message_item_time"
+        tools:text="@string/im_item_nickname_hint" />
+
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/rll_avatar_right"
+        app:layout_constraintStart_toEndOf="@+id/rll_avatar_left"
+        app:layout_constraintTop_toBottomOf="@+id/message_item_nickname">
+
+        <LinearLayout
+            android:id="@+id/message_item_body"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ProgressBar
+                android:id="@+id/message_item_progress"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center_vertical"
+                android:visibility="gone" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/message_item_alert"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/nim_ic_failed"
+                android:visibility="gone" />
+
+            <include layout="@layout/im_read_recipt_layout" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/team_ack_msg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:background="@android:color/transparent"
+                android:gravity="center_vertical"
+                android:textColor="#666666"
+                android:textSize="12sp"
+                android:visibility="gone"
+                tools:text="@string/im_group_unread_hint" />
+
+            <FrameLayout
+                android:id="@+id/message_item_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@android:color/transparent" />
+        </LinearLayout>
+
+
+    </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

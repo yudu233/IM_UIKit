@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">MessageList</string>
+    <string name="file_provider_authorities">com.rain.photopicker.provider</string>
+
+</resources>

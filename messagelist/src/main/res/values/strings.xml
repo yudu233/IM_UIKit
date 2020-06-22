@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="im_item_time_hint">2020-02-02</string>
+    <string name="im_item_nickname_hint">一条苍老的小鱼</string>
+    <string name="im_text_readed">已读</string>
+    <string name="im_group_unread_hint">5人未读</string>
+    <string name="im_message_text_test">测试文本消息</string>
+
+</resources>

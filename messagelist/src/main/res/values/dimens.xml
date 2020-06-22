@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <!-- avatar -->
+    <dimen name="avatar_notification_size">48dip</dimen>
+    <dimen name="avatar_max_size">60dip</dimen>
+    <dimen name="avatar_size_default">50dip</dimen>
+    <dimen name="avatar_size_in_session">40dip</dimen>
+    <dimen name="avatar_size_in_contact">30dip</dimen>
+    <dimen name="avatar_size_robot">40dip</dimen>
+
+</resources>

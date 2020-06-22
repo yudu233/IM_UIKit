@@ -1,0 +1,4 @@
+rootProject.name='IM_UIKit'
+include ':app'
+include ':messagelist'
+include ':library_im_sdk'
