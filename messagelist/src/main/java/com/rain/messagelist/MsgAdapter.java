@@ -1,5 +1,6 @@
 package com.rain.messagelist;
 
+import android.app.Activity;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
@@ -33,13 +34,15 @@ public class MsgAdapter extends MultipleItemRvAdapter<IMessage, BaseViewHolder> 
 
     private String messageId;
     private ImageLoader imageLoader;
+    private Activity activity;
     private SessionEventListener sessionEventListener;
     private ViewHolderEventListener viewHolderEventListener;
 
-    public MsgAdapter(@Nullable List<IMessage> data) {
+    public MsgAdapter(@Nullable List<IMessage> data, Activity activity) {
         super(data);
         finishInitialize();
         timedItems = new HashSet<>();
+        this.activity = activity;
     }
 
     @Override
@@ -60,7 +63,7 @@ public class MsgAdapter extends MultipleItemRvAdapter<IMessage, BaseViewHolder> 
                 Constructor c = cls.getDeclaredConstructors()[0]; // 第一个显式的构造函数
                 c.setAccessible(true);
                 MsgViewHolderBase viewHolder = (MsgViewHolderBase) c.newInstance(new Object[]{this});
-                Log.d(TAG, "registerItemProvider: " + viewHolder);
+                Log.e(TAG, "registerItemProvider: " + viewHolder.hashCode());
                 mProviderDelegate.registerProvider(viewHolder);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -70,6 +73,7 @@ public class MsgAdapter extends MultipleItemRvAdapter<IMessage, BaseViewHolder> 
         //默认注册方式
         //mProviderDelegate.registerProvider(new MsgViewHolderText(this));
     }
+
 
     /**
      * 根据消息id获取位置
@@ -198,6 +202,10 @@ public class MsgAdapter extends MultipleItemRvAdapter<IMessage, BaseViewHolder> 
 
     public ImageLoader getImageLoader() {
         return imageLoader;
+    }
+
+    public Activity getActivity() {
+        return activity;
     }
 
     public SessionEventListener getSessionEventListener() {

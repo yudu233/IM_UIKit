@@ -8,6 +8,7 @@ import com.rain.messagelist.message.MessageType;
 import com.rain.messagelist.model.IMessage;
 import com.rain.messagelist.model.IUser;
 
+import java.io.Serializable;
 import java.util.Map;
 
 /**
@@ -18,7 +19,7 @@ import java.util.Map;
  * @CreateDate: 2020/6/6 14:20
  * @Describe:
  */
-public class MyMessage implements IMessage {
+public class MyMessage implements IMessage, Serializable {
 
     private MessageType msgType;
     private IMMessage message;

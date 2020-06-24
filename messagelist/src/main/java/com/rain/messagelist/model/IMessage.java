@@ -1,5 +1,6 @@
 package com.rain.messagelist.model;
 
+import java.io.Serializable;
 import java.util.Map;
 
 /**
@@ -10,7 +11,7 @@ import java.util.Map;
  * @CreateDate: 2020/6/6 10:44
  * @Describe:
  */
-public interface IMessage {
+public interface IMessage extends Serializable {
 
 
     /**

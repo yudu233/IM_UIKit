@@ -18,11 +18,8 @@ import com.chad.library.adapter.base.MultipleItemRvAdapter;
 import com.chad.library.adapter.base.provider.BaseItemProvider;
 import com.rain.messagelist.MsgAdapter;
 import com.rain.messagelist.R;
-import com.rain.messagelist.listener.SessionEventListener;
-import com.rain.messagelist.listener.ViewHolderEventListener;
 import com.rain.messagelist.message.SessionType;
 import com.rain.messagelist.model.IMessage;
-import com.rain.messagelist.model.ImageLoader;
 import com.rain.messagelist.utils.TimeUtil;
 import com.rain.messagelist.widget.PerfectClickListener;
 
@@ -70,6 +67,11 @@ public abstract class MsgViewHolderBase extends BaseItemProvider<IMessage, BaseV
     protected boolean onItemLongClick() {
         return false;
     }
+
+    // 内容区域点击事件响应处理。
+    protected void onItemClick() {
+    }
+
 
     // 当是接收到的消息时，内容区域背景的drawable id
     protected int leftBackground() {
@@ -123,9 +125,9 @@ public abstract class MsgViewHolderBase extends BaseItemProvider<IMessage, BaseV
 
     // 设置控件的长宽
     protected void setLayoutParams(int width, int height, View views) {
-            ViewGroup.LayoutParams maskParams = views.getLayoutParams();
-            maskParams.width = width;
-            maskParams.height = height;
+        ViewGroup.LayoutParams maskParams = views.getLayoutParams();
+        maskParams.width = width;
+        maskParams.height = height;
         views.setLayoutParams(maskParams);
     }
 
@@ -134,11 +136,13 @@ public abstract class MsgViewHolderBase extends BaseItemProvider<IMessage, BaseV
         return R.layout.im_message_item;
     }
 
+    private  long id;
     @Override
     public void convert(@NonNull BaseViewHolder holder, IMessage data, int position) {
         this.view = holder.itemView;
         this.message = data;
-
+        id =holder.getItemId();
+        Log.e(TAG, "convert: " + data.getUuid());
         inflate();
         refresh();
     }
@@ -187,8 +191,6 @@ public abstract class MsgViewHolderBase extends BaseItemProvider<IMessage, BaseV
             avatarRightLayout.setVisibility(View.GONE);
             return;
         }
-        Log.d(TAG, "setHeadImageView: " + isReceivedMessage());
-        Log.d(TAG, "setHeadImageView: " + isShowHeadImage() + isMiddleItem());
         FrameLayout showView = isReceivedMessage() ? avatarLeftLayout : avatarRightLayout;
         FrameLayout hideView = isReceivedMessage() ? avatarRightLayout : avatarLeftLayout;
         AppCompatImageView avatarView = isReceivedMessage() ? avatarLeft : avatarRight;
@@ -255,7 +257,8 @@ public abstract class MsgViewHolderBase extends BaseItemProvider<IMessage, BaseV
             @Override
             protected void onNoDoubleClick(View v) {
                 //分发到具体的ViewHolder
-                onClick(v);
+                onItemClick();
+
             }
         });
 
@@ -264,6 +267,8 @@ public abstract class MsgViewHolderBase extends BaseItemProvider<IMessage, BaseV
             PerfectClickListener avatarClickListener = new PerfectClickListener() {
                 @Override
                 protected void onNoDoubleClick(View v) {
+                    Log.e(TAG, "onNoDoubleClick: " + MsgViewHolderBase.this.hashCode());
+                    Log.e(TAG, "onNoDoubleClick: " + message.getUuid()+"----"+id);
                     getMsgAdapter().getSessionEventListener().onAvatarClicked(mContext, message);
                 }
             };

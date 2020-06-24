@@ -1,6 +1,7 @@
 package com.rain.chat;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Environment;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -54,7 +56,9 @@ public class MainActivity extends AppCompatActivity {
         String account = "testAccount";
         // 以单聊类型为例
         SessionTypeEnum sessionType = SessionTypeEnum.P2P;
-        String text = "this is an example";
+        String text1 = "this is an example";
+        String text2 = "this is an example!!!";
+
 
 //        MyMessage textMessage11 = IMessageBuilder.createTextMessage(
 //                "aaa", SessionType.P2P, "this is an example");
@@ -62,8 +66,8 @@ public class MainActivity extends AppCompatActivity {
 //                "aaa", SessionType.P2P, null, "");
         Log.d(TAG, "onCreate: " + Environment.getExternalStorageDirectory());
 
-        IMMessage textMessage = MessageBuilder.createTextMessage(account, sessionType, text);
-        IMMessage textMessage1 = MessageBuilder.createTextMessage(account, sessionType, text);
+        IMMessage textMessage = MessageBuilder.createTextMessage(account, sessionType, text1);
+        IMMessage textMessage1 = MessageBuilder.createTextMessage(account, sessionType, text2);
 
 
         textMessage.setFromAccount("1");
@@ -74,13 +78,16 @@ public class MainActivity extends AppCompatActivity {
         iMessages.add(new MyMessage(MessageType.text, textMessage, new DefaultUser(textMessage)));
         iMessages.add(new MyMessage(MessageType.text, textMessage1, new DefaultUser(textMessage)));
 
-        MsgAdapter msgAdapter = new MsgAdapter(iMessages);
+        MsgAdapter msgAdapter = new MsgAdapter(iMessages, this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(msgAdapter);
 
         findViewById(R.id.btn_receive).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                IMMessage textMessage = MessageBuilder.createTextMessage(account, sessionType,
+                        text1+ msgAdapter.getData().size());
+                textMessage.setDirect(MsgDirectionEnum.In);
                 msgAdapter.addMessage(new MyMessage(MessageType.text, textMessage,
                         new DefaultUser(textMessage)), false);
             }
@@ -89,7 +96,11 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.btn_send).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                msgAdapter.addMessage(new MyMessage(MessageType.text, textMessage1,
+                IMMessage textMessage = MessageBuilder.createTextMessage(account, sessionType,
+                        text1+ msgAdapter.getData().size() );
+                textMessage1.setDirect(MsgDirectionEnum.Out);
+
+                msgAdapter.addMessage(new MyMessage(MessageType.text, textMessage,
                         new DefaultUser(textMessage)), false);
             }
         });
@@ -182,6 +193,18 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFailedBtnClick(IMessage resendMessage) {
 
+            }
+
+            @Override
+            public void onPictureViewHolderClick(AppCompatImageView imageView, IMessage message) {
+                ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.
+                        makeSceneTransitionAnimation(MainActivity.this,
+                                imageView, "imageMessage");
+                Intent intent = new Intent(MainActivity.this, PreviewImageActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("message", message);
+                intent.putExtras(bundle);
+                startActivity(intent, optionsCompat.toBundle());
             }
         });
 
