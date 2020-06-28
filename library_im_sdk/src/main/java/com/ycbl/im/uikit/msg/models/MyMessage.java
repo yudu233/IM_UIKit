@@ -60,8 +60,8 @@ public class MyMessage implements IMessage, Serializable {
     }
 
     @Override
-    public int getMsgType() {
-        return msgType.getValue();
+    public MessageType getMsgType() {
+        return msgType;
     }
 
 

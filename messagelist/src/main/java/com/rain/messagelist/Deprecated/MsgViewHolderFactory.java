@@ -55,7 +55,7 @@ public class MsgViewHolderFactory {
      * @return
      */
     public static Class<? extends MsgViewHolderBase> getViewHolderByType(IMessage message) {
-        if (message.getMsgType() == MessageMultipleItem.MESSAGE_TIP) {
+        if (message.getMsgType().getValue() == MessageMultipleItem.MESSAGE_TIP) {
             return tipMsgViewHolder == null ? MsgViewHolderUnknown.class : tipMsgViewHolder;
         }
         Log.d(TAG, "getViewHolderByType() returned: " + viewHolders.get(message.getMsgType()));

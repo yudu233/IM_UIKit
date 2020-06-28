@@ -1,12 +1,14 @@
 package com.rain.messagelist.message;
 
+import java.io.Serializable;
+
 /**
  * @Author : Rain
  * @CreateDate : 2020/6/16 18:10
  * @Version : 1.0
  * @Descroption :
  */
-public enum MessageType {
+public enum MessageType implements Serializable {
 
     /**
      * 未知消息类型

@@ -23,7 +23,7 @@ public class MessageMultipleItem implements MultiItemEntity {
     private IMessage message;
 
     public MessageMultipleItem(IMessage message) {
-        this.itemType = message.getMsgType();
+        this.itemType = message.getMsgType().getValue();
         this.message = message;
     }
 

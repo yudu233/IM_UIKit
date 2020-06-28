@@ -51,7 +51,7 @@ public class MsgViewHolderPicture extends MsgViewHolderBase {
     public void convert(@NonNull BaseViewHolder holder, IMessage data, int position) {
         super.convert(holder, data, position);
 
-        density = mContext.getResources().getDisplayMetrics().density;
+        density = context.getResources().getDisplayMetrics().density;
         MIN_WIDTH = 60 * density;
         MAX_WIDTH = 200 * density;
         MIN_HEIGHT = 60 * density;

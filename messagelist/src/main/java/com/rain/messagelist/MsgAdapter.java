@@ -1,25 +1,25 @@
 package com.rain.messagelist;
 
 import android.app.Activity;
-import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.chad.library.adapter.base.MultipleItemRvAdapter;
+import com.chad.library.adapter.base.provider.BaseItemProvider;
+import com.chad.library.adapter.base.util.ProviderDelegate;
 import com.rain.messagelist.listener.SessionEventListener;
 import com.rain.messagelist.listener.ViewHolderEventListener;
-import com.rain.messagelist.model.IMessage;
 import com.rain.messagelist.message.MessageType;
 import com.rain.messagelist.message.MsgViewHolderFactory;
+import com.rain.messagelist.model.IMessage;
 import com.rain.messagelist.model.ImageLoader;
 import com.rain.messagelist.viewholder.MsgViewHolderBase;
 
 import java.lang.reflect.Constructor;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -47,33 +47,70 @@ public class MsgAdapter extends MultipleItemRvAdapter<IMessage, BaseViewHolder> 
 
     @Override
     protected int getViewType(IMessage message) {
-        return message.getMsgType();
+        return message.getMsgType().getValue();
     }
 
     @Override
     public void registerItemProvider() {
 
-        //动态注册viewHolder
-        Iterator<Map.Entry<MessageType, Class<? extends MsgViewHolderBase>>> iterator =
-                MsgViewHolderFactory.getAllViewHolders().entrySet().iterator();
-        while (iterator.hasNext()) {
+        /**
+         * 通过 {@link MsgViewHolderFactory#register(MessageType, Class)} 动态注册ViewHolder
+         * 使用反射取出对应的Holder通过框架 {@link ProviderDelegate#registerProvider(BaseItemProvider)}
+         * 将所有类型的Holder注册
+         */
+        List<Class<? extends MsgViewHolderBase>> holders = MsgViewHolderFactory.getAll();
+        for (Class<? extends BaseItemProvider> holder : holders) {
+            Constructor c = holder.getDeclaredConstructors()[0]; // 第一个显式的构造函数
+            c.setAccessible(true);
+            MsgViewHolderBase viewHolder = null;
             try {
-                Map.Entry<MessageType, Class<? extends MsgViewHolderBase>> next = iterator.next();
-                Class<? extends MsgViewHolderBase> cls = next.getValue();
-                Constructor c = cls.getDeclaredConstructors()[0]; // 第一个显式的构造函数
-                c.setAccessible(true);
-                MsgViewHolderBase viewHolder = (MsgViewHolderBase) c.newInstance(new Object[]{this});
-                Log.e(TAG, "registerItemProvider: " + viewHolder.hashCode());
-                mProviderDelegate.registerProvider(viewHolder);
+                viewHolder = (MsgViewHolderBase) c.newInstance(new Object[]{this});
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            mProviderDelegate.registerProvider(viewHolder);
         }
+
+
+//        //动态注册viewHolder
+//        Iterator<Map.Entry<MessageType, Class<? extends MsgViewHolderBase>>> iterator =
+//                MsgViewHolderFactory.getAllViewHolders().entrySet().iterator();
+//        while (iterator.hasNext()) {
+//            try {
+//                Map.Entry<MessageType, Class<? extends MsgViewHolderBase>> next = iterator.next();
+//                Class<? extends MsgViewHolderBase> cls = next.getValue();
+//                Constructor c = cls.getDeclaredConstructors()[0]; // 第一个显式的构造函数
+//                c.setAccessible(true);
+//                MsgViewHolderBase viewHolder = (MsgViewHolderBase) c.newInstance(new Object[]{this});
+//                mProviderDelegate.registerProvider(viewHolder);
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
 
         //默认注册方式
         //mProviderDelegate.registerProvider(new MsgViewHolderText(this));
     }
 
+    @Override
+    protected void convert(@NonNull BaseViewHolder helper, IMessage item) {
+
+        /**
+         * helper对应的是某一行View的缓存，与Item不是一一对应的关系
+         * 如下设计：item与helper是一一对应的关系，因此每次convert都需要拿当前回调的baseHolder进行convert，
+         * RecyclerViewHolder可以从baseHolder中取出该行View所有的子View进行数据绑定（
+         * 相当于需要经历inflate->refresh的过程）。
+         */
+        Class<? extends MsgViewHolderBase> cls = MsgViewHolderFactory.getViewHolderByType(item);
+        Constructor c = cls.getDeclaredConstructors()[0];
+        c.setAccessible(true);
+        try {
+            MsgViewHolderBase viewHolder = (MsgViewHolderBase) c.newInstance(new Object[]{this});
+            viewHolder.convert(helper, item, helper.getAdapterPosition());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * 根据消息id获取位置
@@ -188,7 +225,7 @@ public class MsgAdapter extends MultipleItemRvAdapter<IMessage, BaseViewHolder> 
         return messageId;
     }
 
-    public void setImageLoader(ImageLoader imageLoader){
+    public void setImageLoader(ImageLoader imageLoader) {
         this.imageLoader = imageLoader;
     }
 

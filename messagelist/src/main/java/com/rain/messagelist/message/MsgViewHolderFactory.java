@@ -8,7 +8,9 @@ import com.rain.messagelist.viewholder.MsgViewHolderPicture;
 import com.rain.messagelist.viewholder.MsgViewHolderText;
 import com.rain.messagelist.viewholder.MsgViewHolderUnknown;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * @Author: Rain
@@ -59,7 +61,7 @@ public class MsgViewHolderFactory {
      * @return
      */
     public static Class<? extends MsgViewHolderBase> getViewHolderByType(IMessage message) {
-        if (message.getMsgType() == MessageType.tip.getValue()) {
+        if (message.getMsgType() == MessageType.tip) {
             return tipMsgViewHolder == null ? MsgViewHolderUnknown.class : tipMsgViewHolder;
         }
         Log.d(TAG, "getViewHolderByType() returned: " + viewHolders.get(message.getMsgType()));
@@ -73,5 +75,12 @@ public class MsgViewHolderFactory {
      */
     public static HashMap<MessageType, Class<? extends MsgViewHolderBase>> getAllViewHolders() {
         return viewHolders;
+    }
+
+
+    public static List<Class<? extends MsgViewHolderBase>> getAll() {
+        List<Class<? extends MsgViewHolderBase>> list = new ArrayList<>();
+        list.addAll(viewHolders.values());
+        return list;
     }
 }

@@ -1,5 +1,6 @@
 package com.rain.messagelist.viewholder;
 
+import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
@@ -43,6 +44,7 @@ public abstract class MsgViewHolderBase extends BaseItemProvider<IMessage, BaseV
     private FrameLayout avatarLeftLayout, avatarRightLayout, contentContainer;
     private AppCompatTextView timeTextView, nameTextView, readReceiptTextView, ackMsgTextView;
 
+    protected Context context;
     public MultipleItemRvAdapter adapter;
 
     public MsgViewHolderBase(MultipleItemRvAdapter adapter) {
@@ -136,13 +138,12 @@ public abstract class MsgViewHolderBase extends BaseItemProvider<IMessage, BaseV
         return R.layout.im_message_item;
     }
 
-    private  long id;
     @Override
     public void convert(@NonNull BaseViewHolder holder, IMessage data, int position) {
-        this.view = holder.itemView;
-        this.message = data;
-        id =holder.getItemId();
-        Log.e(TAG, "convert: " + data.getUuid());
+        Log.e(TAG, "convert: " + holder.getItemViewType());
+        view = holder.itemView;
+        context = holder.itemView.getContext();
+        message = data;
         inflate();
         refresh();
     }
@@ -258,7 +259,6 @@ public abstract class MsgViewHolderBase extends BaseItemProvider<IMessage, BaseV
             protected void onNoDoubleClick(View v) {
                 //分发到具体的ViewHolder
                 onItemClick();
-
             }
         });
 
@@ -267,8 +267,7 @@ public abstract class MsgViewHolderBase extends BaseItemProvider<IMessage, BaseV
             PerfectClickListener avatarClickListener = new PerfectClickListener() {
                 @Override
                 protected void onNoDoubleClick(View v) {
-                    Log.e(TAG, "onNoDoubleClick: " + MsgViewHolderBase.this.hashCode());
-                    Log.e(TAG, "onNoDoubleClick: " + message.getUuid()+"----"+id);
+                    Log.e(TAG, "onNoDoubleClick: " + message.getContent() );
                     getMsgAdapter().getSessionEventListener().onAvatarClicked(mContext, message);
                 }
             };

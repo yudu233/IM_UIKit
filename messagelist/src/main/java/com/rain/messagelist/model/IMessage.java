@@ -1,5 +1,7 @@
 package com.rain.messagelist.model;
 
+import com.rain.messagelist.message.MessageType;
+
 import java.io.Serializable;
 import java.util.Map;
 
@@ -56,7 +58,7 @@ public interface IMessage extends Serializable {
      *
      * @return 消息类型
      */
-    int getMsgType();
+    MessageType getMsgType();
 
     /**
      * 获取消息所属会话类型
@@ -102,12 +104,14 @@ public interface IMessage extends Serializable {
 
     /**
      * 获取图片宽度
+     *
      * @return
      */
     int getWidth();
 
     /**
      * 获取图片高度
+     *
      * @return
      */
     int getHeight();
