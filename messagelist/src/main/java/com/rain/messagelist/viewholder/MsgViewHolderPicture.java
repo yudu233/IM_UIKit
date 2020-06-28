@@ -1,12 +1,9 @@
 package com.rain.messagelist.viewholder;
 
-import android.content.Intent;
 import android.util.DisplayMetrics;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageView;
-import androidx.core.app.ActivityOptionsCompat;
 
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.chad.library.adapter.base.MultipleItemRvAdapter;
@@ -52,9 +49,9 @@ public class MsgViewHolderPicture extends MsgViewHolderBase {
         super.convert(holder, data, position);
 
         density = context.getResources().getDisplayMetrics().density;
-        MIN_WIDTH = 60 * density;
+        MIN_WIDTH = 100 * density;
         MAX_WIDTH = 200 * density;
-        MIN_HEIGHT = 60 * density;
+        MIN_HEIGHT = 100 * density;
         MAX_HEIGHT = 200 * density;
 
         mImageView = findViewById(R.id.message_item_thumb_thumbnail);
@@ -117,8 +114,6 @@ public class MsgViewHolderPicture extends MsgViewHolderBase {
 
     @Override
     protected void onItemClick() {
-        Log.e(TAG, "onClick: ");
-        Log.e(TAG, "onItemClick: " + message.getUuid());
         getMsgAdapter().getViewHolderEventListener().onPictureViewHolderClick(mImageView, message);
     }
 }

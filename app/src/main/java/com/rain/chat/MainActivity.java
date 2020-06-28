@@ -42,6 +42,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import cc.shinichi.library.ImagePreview;
+
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
 
@@ -86,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 IMMessage textMessage = MessageBuilder.createTextMessage(account, sessionType,
-                        text1+ msgAdapter.getData().size());
+                        text1 + msgAdapter.getData().size());
                 textMessage.setDirect(MsgDirectionEnum.In);
                 msgAdapter.addMessage(new MyMessage(MessageType.text, textMessage,
                         new DefaultUser(textMessage)), false);
@@ -97,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 IMMessage textMessage = MessageBuilder.createTextMessage(account, sessionType,
-                        text1+ msgAdapter.getData().size() );
+                        text1 + msgAdapter.getData().size());
                 textMessage1.setDirect(MsgDirectionEnum.Out);
 
                 msgAdapter.addMessage(new MyMessage(MessageType.text, textMessage,
@@ -197,14 +199,32 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onPictureViewHolderClick(AppCompatImageView imageView, IMessage message) {
-                ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.
-                        makeSceneTransitionAnimation(MainActivity.this,
-                                imageView, "imageMessage");
-                Intent intent = new Intent(MainActivity.this, PreviewImageActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("message", message);
-                intent.putExtras(bundle);
-                startActivity(intent, optionsCompat.toBundle());
+//                ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.
+//                        makeSceneTransitionAnimation(MainActivity.this,
+//                                imageView, "imageMessage");
+//                Intent intent = new Intent(MainActivity.this, PreviewImageActivity.class);
+//                Bundle bundle = new Bundle();
+//                bundle.putSerializable("message", message);
+//                intent.putExtras(bundle);
+//                startActivity(intent, optionsCompat.toBundle());
+//
+                List<IMessage> data = msgAdapter.getData();
+
+                List<String> messages = new ArrayList<>();
+                for (IMessage msg : data) {
+                    if (msg.getMsgType() == MessageType.image) {
+                        messages.add(msg.getMediaPath());
+                    }
+                }
+
+                ImagePreview.getInstance().setContext(MainActivity.this)
+                        .setIndex(0)
+                        .setImageList(messages)
+                        .setEnableClickClose(true)
+                        .setEnableDragClose(true)
+                        .setShowDownButton(false)
+                        .start();
+
             }
         });
 
