@@ -4,7 +4,11 @@ import android.app.Application;
 import android.content.Context;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 
+import com.netease.nimlib.sdk.NIMClient;
+import com.netease.nimlib.sdk.auth.LoginInfo;
+import com.rain.chat.config.Preferences;
 import com.rain.crow.PhotoPick;
 import com.rain.crow.PhotoPickOptions;
 
@@ -17,11 +21,30 @@ import com.rain.crow.PhotoPickOptions;
 public class MyApplication extends Application {
 
 
+    private static MyApplication INSTANCE;
+
     @Override
     public void onCreate() {
         super.onCreate();
         PhotoPick.init(getApplicationContext(), getPhotoPickOptions(this));
+        INSTANCE = this;
+        //云信初始化
+        // SDK初始化（启动后台服务，若已经存在用户登录信息， SDK 将完成自动登录）
+        NIMClient.init(this, loginInfo(), null);
 
+    }
+
+    // 如果已经存在用户登录信息，返回LoginInfo，否则返回null即可
+    private LoginInfo loginInfo() {
+        // 从本地读取上次登录成功时保存的用户登录信息
+        String account = Preferences.getUserAccount();
+        String token = Preferences.getUserToken();
+
+        if (!TextUtils.isEmpty(account) && !TextUtils.isEmpty(token)) {
+            return new LoginInfo(account, token);
+        } else {
+            return null;
+        }
     }
 
     public static PhotoPickOptions getPhotoPickOptions(Context context) {
@@ -31,5 +54,9 @@ public class MyApplication extends Application {
         options.photoPickAuthority = context.getString(R.string.file_provider_authorities);
         options.photoPickThemeColor = R.color.colorAccent;
         return options;
+    }
+
+    public static MyApplication getContext() {
+        return INSTANCE;
     }
 }
