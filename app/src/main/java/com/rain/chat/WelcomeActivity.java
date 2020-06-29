@@ -68,6 +68,8 @@ public class WelcomeActivity extends AppCompatActivity {
                         Toast.makeText(WelcomeActivity.this, "登陆成功", Toast.LENGTH_SHORT).show();
                         Preferences.saveUserAccount(param.getAccount());
                         Preferences.saveUserToken(param.getToken());
+                        startActivity(new Intent(WelcomeActivity.this, HomeActivity.class));
+                        finish();
                     }
 
                     @Override

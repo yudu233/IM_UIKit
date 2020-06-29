@@ -215,4 +215,8 @@ public interface IMessage extends Serializable {
      */
     int getFromClientType();
 
+    /**
+     * 获取消息附件对象。仅当{@link #getMsgType()}返回为非text时有效
+     */
+    IMsgAttachment getAttachment();
 }

@@ -2,4 +2,6 @@
     <string name="app_name">MessageList</string>
     <string name="file_provider_authorities">com.rain.photopicker.provider</string>
 
+    
+    <string name="tools_text_chat_title">聊天对象</string>
 </resources>

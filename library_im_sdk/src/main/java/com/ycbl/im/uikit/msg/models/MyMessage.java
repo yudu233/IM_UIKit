@@ -6,6 +6,7 @@ import com.netease.nimlib.sdk.msg.constant.MsgDirectionEnum;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
 import com.rain.messagelist.message.MessageType;
 import com.rain.messagelist.model.IMessage;
+import com.rain.messagelist.model.IMsgAttachment;
 import com.rain.messagelist.model.IUser;
 
 import java.io.Serializable;
@@ -95,7 +96,7 @@ public class MyMessage implements IMessage, Serializable {
         if (message.getAttachment() instanceof ImageAttachment) {
             ImageAttachment attachment = (ImageAttachment) message.getAttachment();
             return attachment.getPath() == null ? attachment.getUrl() : attachment.getPath();
-        }else if (message.getAttachment() instanceof VideoAttachment){
+        } else if (message.getAttachment() instanceof VideoAttachment) {
             VideoAttachment attachment = (VideoAttachment) message.getAttachment();
             return attachment.getPath() == null ? attachment.getUrl() : attachment.getPath();
         }
@@ -213,5 +214,8 @@ public class MyMessage implements IMessage, Serializable {
         return message.getFromClientType();
     }
 
-
+    @Override
+    public IMsgAttachment getAttachment() {
+        return new MyMsgAttachment(message.getAttachment());
+    }
 }

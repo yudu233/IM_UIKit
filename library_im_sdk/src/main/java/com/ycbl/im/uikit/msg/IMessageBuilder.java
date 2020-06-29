@@ -2,11 +2,13 @@ package com.ycbl.im.uikit.msg;
 
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.util.Log;
 
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.msg.MessageBuilder;
 import com.netease.nimlib.sdk.msg.MsgService;
 import com.netease.nimlib.sdk.msg.attachment.MsgAttachment;
+import com.netease.nimlib.sdk.msg.constant.MsgTypeEnum;
 import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
 import com.netease.nimlib.sdk.msg.model.CustomMessageConfig;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
@@ -180,8 +182,19 @@ public class IMessageBuilder {
         return iMessage;
     }
 
-    public static void sendMessage(MyMessage myMessage){
-        NIMClient.getService(MsgService.class).sendMessage(myMessage.getMessage(), false);
+    /**
+     * 创建一条空消息，仅设置了聊天对象以及时间点，用于记录查询
+     *
+     * @param sessionId   聊天对象ID
+     * @param sessionType 会话类型
+     * @param time        查询的时间起点信息
+     * @return 空消息
+     */
+    public static MyMessage createEmptyMessage(String sessionId, SessionType sessionType, long time) {
+        SessionTypeEnum sessionTypeEnum = covertSessionType(sessionType);
+        IMMessage emptyMessage = MessageBuilder.createEmptyMessage(sessionId, sessionTypeEnum, time);
+        MyMessage iMessage = new MyMessage(MessageType.text, emptyMessage, new DefaultUser(emptyMessage));
+        return iMessage;
     }
 
     /**

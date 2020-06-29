@@ -2,7 +2,6 @@ package com.rain.chat;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -74,7 +73,7 @@ public class ContactListFragment extends Fragment {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
 
-                Intent intent = new Intent(getActivity(), MessageActivity.class);
+                Intent intent = new Intent(getActivity(), P2PMessageActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("account", data.get(position));
                 intent.putExtras(bundle);

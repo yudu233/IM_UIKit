@@ -30,7 +30,7 @@ import java.util.Set;
  * @CreateDate: 2020/6/6 16:31
  * @Describe:
  */
-public class MsgAdapter extends MultipleItemRvAdapter<IMessage, BaseViewHolder> {
+public class MsgAdapter<MESSAGE extends  IMessage> extends MultipleItemRvAdapter<MESSAGE, BaseViewHolder> {
 
     private String messageId;
     private ImageLoader imageLoader;
@@ -39,7 +39,7 @@ public class MsgAdapter extends MultipleItemRvAdapter<IMessage, BaseViewHolder> 
     private ViewHolderEventListener viewHolderEventListener;
 
 
-    public MsgAdapter(@Nullable List<IMessage> data, Activity activity) {
+    public MsgAdapter(@Nullable List<MESSAGE> data, Activity activity) {
         super(data);
         finishInitialize();
         timedItems = new HashSet<>();
@@ -128,13 +128,19 @@ public class MsgAdapter extends MultipleItemRvAdapter<IMessage, BaseViewHolder> 
         return -1;
     }
 
+    public void addMessages(List<MESSAGE> messages, boolean scrollToBottom){
+        if (messages.size() == 0)return;
+        getData().addAll(messages);
+        notifyDataSetChanged();
+    }
+
     /**
      * 添加消息
      *
      * @param message        消息体
      * @param scrollToBottom 是否滚动到底部
      */
-    public void addMessage(IMessage message, boolean scrollToBottom) {
+    public void addMessage(MESSAGE message, boolean scrollToBottom) {
         if (message == null) return;
         getData().add(message);
         notifyItemRangeInserted(getData().size() - 1 + getLoadMoreViewCount(), 1);
@@ -146,7 +152,7 @@ public class MsgAdapter extends MultipleItemRvAdapter<IMessage, BaseViewHolder> 
      *
      * @param message message to be deleted
      */
-    public void deleteMessage(IMessage message) {
+    public void deleteMessage(MESSAGE message) {
         if (message != null) {
             deleteMsgById(message.getUuid());
         }
@@ -171,7 +177,7 @@ public class MsgAdapter extends MultipleItemRvAdapter<IMessage, BaseViewHolder> 
      *
      * @param messages messages list to be deleted
      */
-    public void deleteMessages(List<IMessage> messages) {
+    public void deleteMessages(List<MESSAGE> messages) {
         for (IMessage message : messages) {
             deleteMsgById(message.getUuid());
         }
@@ -194,7 +200,7 @@ public class MsgAdapter extends MultipleItemRvAdapter<IMessage, BaseViewHolder> 
      * @param position 位置角标 position
      * @param message  消息体 message
      */
-    public void updateMessage(int position, IMessage message) {
+    public void updateMessage(int position, MESSAGE message) {
         if (position < 0) return;
         setData(position, message);
         notifyItemChanged(position);
@@ -214,7 +220,7 @@ public class MsgAdapter extends MultipleItemRvAdapter<IMessage, BaseViewHolder> 
      *
      * @return messages get all messages data
      */
-    public List<IMessage> getMessageList() {
+    public List<MESSAGE> getMessageList() {
         return getData();
     }
 

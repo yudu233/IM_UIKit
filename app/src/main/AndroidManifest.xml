@@ -50,7 +50,7 @@
         </activity>
 
         <activity android:name=".HomeActivity"/>
-        <activity android:name=".MessageActivity"/>
+        <activity android:name=".P2PMessageActivity"/>
 
         <activity
             android:name=".PreviewImageActivity"

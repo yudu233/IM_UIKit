@@ -18,6 +18,8 @@ import com.netease.nimlib.sdk.msg.MsgService;
 import com.netease.nimlib.sdk.msg.MsgServiceObserve;
 import com.netease.nimlib.sdk.msg.model.RecentContact;
 import com.rain.chat.adapter.ConversationAdapter;
+import com.rain.messagelist.message.SessionType;
+import com.ycbl.im.uikit.msg.IMessageBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,6 +54,7 @@ public class ConversationFragment extends Fragment {
         initView();
         initData();
         initListener();
+        IMessageBuilder.createEmptyMessage("222", SessionType.P2P,0);
     }
 
     private void initListener() {
@@ -60,7 +63,6 @@ public class ConversationFragment extends Fragment {
                 .observeRecentContact(new Observer<List<RecentContact>>() {
                     @Override
                     public void onEvent(List<RecentContact> recentContacts) {
-                        Log.e(TAG, "onEvent: " + recentContacts.size());
                         int index;
                         for (RecentContact recentContact : recentContacts) {
 
@@ -70,12 +72,11 @@ public class ConversationFragment extends Fragment {
                                     index = i;
                                 }
                             }
-                            if (index > 0) {
-                                data.add(recentContact);
-                            } else {
+                            if (index >= 0) {
                                 data.set(index, recentContact);
+                            } else {
+                                data.add(recentContact);
                             }
-
                         }
                         adapter.notifyDataSetChanged();
                     }
@@ -95,7 +96,6 @@ public class ConversationFragment extends Fragment {
                 .setCallback(new RequestCallbackWrapper<List<RecentContact>>() {
                     @Override
                     public void onResult(int code, List<RecentContact> recents, Throwable e) {
-                        Log.e(TAG, "recents: " + recents.size());
                         data.addAll(recents);
                         adapter.setNewData(data);
                     }
