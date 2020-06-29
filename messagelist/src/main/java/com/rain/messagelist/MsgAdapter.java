@@ -38,6 +38,7 @@ public class MsgAdapter extends MultipleItemRvAdapter<IMessage, BaseViewHolder> 
     private SessionEventListener sessionEventListener;
     private ViewHolderEventListener viewHolderEventListener;
 
+
     public MsgAdapter(@Nullable List<IMessage> data, Activity activity) {
         super(data);
         finishInitialize();

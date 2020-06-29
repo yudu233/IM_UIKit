@@ -3,13 +3,13 @@ package com.rain.messagelist.viewholder;
 import android.util.DisplayMetrics;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.AppCompatImageView;
 
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.chad.library.adapter.base.MultipleItemRvAdapter;
 import com.rain.messagelist.R;
 import com.rain.messagelist.message.MessageType;
 import com.rain.messagelist.model.IMessage;
+import com.rain.messagelist.widget.MsgThumbImageView;
 
 /**
  * @Author: Rain
@@ -27,7 +27,7 @@ public class MsgViewHolderPicture extends MsgViewHolderBase {
     private float MAX_WIDTH;
     private float MIN_HEIGHT;
     private float MAX_HEIGHT;
-    private AppCompatImageView mImageView;
+    private MsgThumbImageView mImageView;
 
 
     public MsgViewHolderPicture(MultipleItemRvAdapter adapter) {
@@ -97,9 +97,8 @@ public class MsgViewHolderPicture extends MsgViewHolderBase {
                 height = imageHeight;
             }
         }
-
         setLayoutParams((int) width, (int) height, mImageView);
-        getMsgAdapter().getImageLoader().loadMessageImage(mImageView, data.getMediaPath());
+        getMsgAdapter().getImageLoader().loadMessageImage(mImageView, (int) width, (int) height, data.getMediaPath());
     }
 
     public int getImageMaxWidth() {

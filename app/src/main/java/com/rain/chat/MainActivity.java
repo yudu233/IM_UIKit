@@ -1,11 +1,8 @@
 package com.rain.chat;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.os.Environment;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -15,7 +12,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
-import androidx.core.app.ActivityOptionsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,6 +20,7 @@ import com.netease.nimlib.sdk.msg.constant.MsgDirectionEnum;
 import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
 import com.rain.chat.glide.GlideImageLoader;
+import com.rain.chat.glide.GlideUtils;
 import com.rain.crow.bean.MediaData;
 import com.rain.crow.controller.PhotoPickConfig;
 import com.rain.crow.impl.PhotoSelectCallback;
@@ -62,24 +59,7 @@ public class MainActivity extends AppCompatActivity {
         String text2 = "this is an example!!!";
 
 
-//        MyMessage textMessage11 = IMessageBuilder.createTextMessage(
-//                "aaa", SessionType.P2P, "this is an example");
-//        MyMessage textMessage22 = IMessageBuilder.createImageMessage(
-//                "aaa", SessionType.P2P, null, "");
-        Log.d(TAG, "onCreate: " + Environment.getExternalStorageDirectory());
-
-        IMMessage textMessage = MessageBuilder.createTextMessage(account, sessionType, text1);
-        IMMessage textMessage1 = MessageBuilder.createTextMessage(account, sessionType, text2);
-
-
-        textMessage.setFromAccount("1");
-        textMessage.setDirect(MsgDirectionEnum.In);
-        textMessage1.setDirect(MsgDirectionEnum.Out);
-
         List<IMessage> iMessages = new ArrayList<>();
-        iMessages.add(new MyMessage(MessageType.text, textMessage, new DefaultUser(textMessage)));
-        iMessages.add(new MyMessage(MessageType.text, textMessage1, new DefaultUser(textMessage)));
-
         MsgAdapter msgAdapter = new MsgAdapter(iMessages, this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(msgAdapter);
@@ -100,8 +80,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 IMMessage textMessage = MessageBuilder.createTextMessage(account, sessionType,
                         text1 + msgAdapter.getData().size());
-                textMessage1.setDirect(MsgDirectionEnum.Out);
-
+                textMessage.setDirect(MsgDirectionEnum.Out);
                 msgAdapter.addMessage(new MyMessage(MessageType.text, textMessage,
                         new DefaultUser(textMessage)), false);
             }
@@ -157,8 +136,8 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void loadMessageImage(AppCompatImageView imageView, String path) {
-                imageView.setImageBitmap(BitmapFactory.decodeFile(path));
+            public void loadMessageImage(AppCompatImageView imageView, int width, int height, String path) {
+                GlideUtils.loadImage(MainActivity.this, path, width, height, imageView);
             }
 
             @Override
