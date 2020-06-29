@@ -7,6 +7,7 @@ import com.rain.messagelist.viewholder.MsgViewHolderBase;
 import com.rain.messagelist.viewholder.MsgViewHolderPicture;
 import com.rain.messagelist.viewholder.MsgViewHolderText;
 import com.rain.messagelist.viewholder.MsgViewHolderUnknown;
+import com.rain.messagelist.viewholder.MsgViewHolderVideo;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,7 +33,7 @@ public class MsgViewHolderFactory {
         // 初始化默认加载
         register(MessageType.text, MsgViewHolderText.class);
         register(MessageType.image, MsgViewHolderPicture.class);
-
+        register(MessageType.video, MsgViewHolderVideo.class);
     }
 
     /**

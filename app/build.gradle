@@ -40,7 +40,7 @@ dependencies {
     implementation project(path: ':library_im_sdk')
 
     // 图片选择器
-    implementation 'com.github.yudu233:PhotoPicker:3.0.0'
+    implementation 'com.github.yudu233:PhotoPicker:2.0.4'
     // glide
     implementation 'com.github.bumptech.glide:glide:4.10.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.10.0'
@@ -51,4 +51,5 @@ dependencies {
     implementation 'com.github.SherlockGougou:BigImageViewPager:androidx-6.0.1'
 
     implementation 'com.blankj:utilcodex:1.29.0'
+    implementation 'com.google.android.material:material:1.1.0'
 }

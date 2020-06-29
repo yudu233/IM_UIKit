@@ -95,6 +95,9 @@ public class MyMessage implements IMessage, Serializable {
         if (message.getAttachment() instanceof ImageAttachment) {
             ImageAttachment attachment = (ImageAttachment) message.getAttachment();
             return attachment.getPath() == null ? attachment.getUrl() : attachment.getPath();
+        }else if (message.getAttachment() instanceof VideoAttachment){
+            VideoAttachment attachment = (VideoAttachment) message.getAttachment();
+            return attachment.getPath() == null ? attachment.getUrl() : attachment.getPath();
         }
         return null;
     }

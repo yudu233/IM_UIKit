@@ -1,6 +1,11 @@
 package com.ycbl.im.uikit.msg;
 
+import android.media.MediaPlayer;
+import android.net.Uri;
+
+import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.msg.MessageBuilder;
+import com.netease.nimlib.sdk.msg.MsgService;
 import com.netease.nimlib.sdk.msg.attachment.MsgAttachment;
 import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
 import com.netease.nimlib.sdk.msg.model.CustomMessageConfig;
@@ -173,6 +178,10 @@ public class IMessageBuilder {
                 sessionId, sessionTypeEnum, content, attachment, config);
         MyMessage iMessage = new MyMessage(MessageType.custom, customMessage, new DefaultUser(customMessage));
         return iMessage;
+    }
+
+    public static void sendMessage(MyMessage myMessage){
+        NIMClient.getService(MsgService.class).sendMessage(myMessage.getMessage(), false);
     }
 
     /**

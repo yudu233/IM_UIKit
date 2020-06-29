@@ -9,27 +9,24 @@ import com.rain.messagelist.message.MessageType;
 import com.rain.messagelist.model.IMessage;
 
 /**
- * @Author: Rain
- * @Org: www.yudu233.com
- * @Email: yudu233@gmail.com
- * @ClassName: PictureItemProvider
- * @CreateDate: 2020/6/6 16:46
- * @Describe: 图片消息
+ * @Author : Rain
+ * @CreateDate : 2020/6/29 16:33
+ * @Version : 1.0
+ * @Descroption : 视频消息ViewHolder
  */
-public class MsgViewHolderPicture extends MsgViewHolderThumbBase {
-
-    public MsgViewHolderPicture(MultipleItemRvAdapter adapter) {
+public class MsgViewHolderVideo extends MsgViewHolderThumbBase {
+    public MsgViewHolderVideo(MultipleItemRvAdapter adapter) {
         super(adapter);
     }
 
     @Override
     protected int getContentResId() {
-        return R.layout.im_message_item_picture;
+        return R.layout.im_message_item_video;
     }
 
     @Override
     public int viewType() {
-        return MessageType.image.getValue();
+        return MessageType.video.getValue();
     }
 
     @Override
@@ -39,6 +36,6 @@ public class MsgViewHolderPicture extends MsgViewHolderThumbBase {
 
     @Override
     protected void onItemClick() {
-        getMsgAdapter().getViewHolderEventListener().onPictureViewHolderClick(mImageView, message);
+        getMsgAdapter().getViewHolderEventListener().onVideoViewHolderClick(mImageView, message);
     }
 }

@@ -140,7 +140,6 @@ public abstract class MsgViewHolderBase extends BaseItemProvider<IMessage, BaseV
 
     @Override
     public void convert(@NonNull BaseViewHolder holder, IMessage data, int position) {
-        Log.e(TAG, "convert: " + holder.getItemViewType());
         view = holder.itemView;
         context = holder.itemView.getContext();
         message = data;

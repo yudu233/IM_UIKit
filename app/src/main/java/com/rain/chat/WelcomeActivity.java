@@ -35,11 +35,9 @@ public class WelcomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_welcome);
-        Log.e(TAG, "onCreate: " + getPackageName());
         NIMClient.getService(AuthServiceObserver.class).observeOnlineStatus(
                 new Observer<StatusCode>() {
                     public void onEvent(StatusCode status) {
-                        Log.e(TAG, "onEvent: " + status.getValue() + status.getDesc() );
                         //获取状态的描述
                         String desc = status.getDesc();
                         if (status.wontAutoLogin()) {
@@ -48,7 +46,7 @@ public class WelcomeActivity extends AppCompatActivity {
                     }
                 }, true);
         if (canAutoLogin()) {
-            startActivity(new Intent(this, MainActivity.class));
+            startActivity(new Intent(this, HomeActivity.class));
         } else {
             findViewById(R.id.btn_login01).setVisibility(View.VISIBLE);
             findViewById(R.id.btn_login02).setVisibility(View.VISIBLE);

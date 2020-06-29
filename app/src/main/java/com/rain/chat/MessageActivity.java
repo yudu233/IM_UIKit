@@ -2,7 +2,10 @@ package com.rain.chat;
 
 import android.content.Context;
 import android.graphics.BitmapFactory;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -15,23 +18,20 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.netease.nimlib.sdk.msg.MessageBuilder;
 import com.netease.nimlib.sdk.msg.constant.MsgDirectionEnum;
-import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
-import com.netease.nimlib.sdk.msg.model.IMMessage;
 import com.rain.chat.glide.GlideImageLoader;
 import com.rain.chat.glide.GlideUtils;
-import com.rain.crow.bean.MediaData;
-import com.rain.crow.controller.PhotoPickConfig;
-import com.rain.crow.impl.PhotoSelectCallback;
-import com.rain.crow.utils.MimeType;
+import com.rain.library.controller.PhotoPickConfig;
+import com.rain.library.impl.PhotoSelectCallback;
+import com.rain.library.utils.MimeType;
 import com.rain.messagelist.MsgAdapter;
 import com.rain.messagelist.listener.SessionEventListener;
 import com.rain.messagelist.listener.ViewHolderEventListener;
 import com.rain.messagelist.message.MessageType;
+import com.rain.messagelist.message.SessionType;
 import com.rain.messagelist.model.IMessage;
 import com.rain.messagelist.model.ImageLoader;
-import com.ycbl.im.uikit.msg.models.DefaultUser;
+import com.ycbl.im.uikit.msg.IMessageBuilder;
 import com.ycbl.im.uikit.msg.models.MyMessage;
 
 import java.io.File;
@@ -41,7 +41,7 @@ import java.util.List;
 
 import cc.shinichi.library.ImagePreview;
 
-public class MainActivity extends AppCompatActivity {
+public class MessageActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
 
     @Override
@@ -52,71 +52,64 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView mRecyclerView = findViewById(R.id.recyclerView);
 
         // 该帐号为示例，请先注册
-        String account = "testAccount";
+        String account = getIntent().getStringExtra("account");
+        Log.e(TAG, "account: " + account );
         // 以单聊类型为例
-        SessionTypeEnum sessionType = SessionTypeEnum.P2P;
-        String text1 = "this is an example";
-        String text2 = "this is an example!!!";
-
+        SessionType sessionType = SessionType.P2P;
+        String text = "this is an example";
 
         List<IMessage> iMessages = new ArrayList<>();
         MsgAdapter msgAdapter = new MsgAdapter(iMessages, this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(msgAdapter);
 
-        findViewById(R.id.btn_receive).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                IMMessage textMessage = MessageBuilder.createTextMessage(account, sessionType,
-                        text1 + msgAdapter.getData().size());
-                textMessage.setDirect(MsgDirectionEnum.In);
-                msgAdapter.addMessage(new MyMessage(MessageType.text, textMessage,
-                        new DefaultUser(textMessage)), false);
-            }
+
+        findViewById(R.id.btn_receive).setOnClickListener(v -> {
+            MyMessage textMessage = IMessageBuilder.createTextMessage(account, sessionType,
+                    text + msgAdapter.getData().size());
+            textMessage.getMessage().setDirect(MsgDirectionEnum.In);
+            msgAdapter.addMessage(textMessage, false);
+            IMessageBuilder.sendMessage(textMessage);
         });
 
-        findViewById(R.id.btn_send).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                IMMessage textMessage = MessageBuilder.createTextMessage(account, sessionType,
-                        text1 + msgAdapter.getData().size());
-                textMessage.setDirect(MsgDirectionEnum.Out);
-                msgAdapter.addMessage(new MyMessage(MessageType.text, textMessage,
-                        new DefaultUser(textMessage)), false);
-            }
+        findViewById(R.id.btn_send).setOnClickListener(v -> {
+            MyMessage textMessage = IMessageBuilder.createTextMessage(account, sessionType,
+                    text + msgAdapter.getData().size());
+            textMessage.getMessage().setDirect(MsgDirectionEnum.Out);
+            msgAdapter.addMessage(textMessage, false);
+            IMessageBuilder.sendMessage(textMessage);
+
         });
 
-        findViewById(R.id.btn_sendImage).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new PhotoPickConfig
-                        .Builder(MainActivity.this)
-                        .imageLoader(new GlideImageLoader())                //图片加载方式，支持任意第三方图片加载库
-                        .spanCount(PhotoPickConfig.GRID_SPAN_COUNT)         //相册列表每列个数，默认为3
-                        .pickMode(PhotoPickConfig.MODE_PICK_SINGLE)           //设置照片选择模式为单选，默认为单选
-                        .maxPickSize(PhotoPickConfig.DEFAULT_CHOOSE_SIZE)   //多选时可以选择的图片数量，默认为1张
-                        .setMimeType(MimeType.TYPE_ALL)     //显示文件类型，默认全部（全部、图片、视频）
-                        .showCamera(true)           //是否展示相机icon，默认展示
-                        .clipPhoto(false)            //是否开启裁剪照片功能，默认关闭
-                        .clipCircle(false)          //是否裁剪方式为圆形，默认为矩形
-                        .showOriginal(true)         //是否显示原图按钮，默认显示
-                        .startCompression(true)     //是否开启压缩，默认true
-                        .setCallback(new PhotoSelectCallback() {
-                            @Override
-                            public void selectResult(ArrayList<MediaData> photos) {
+        findViewById(R.id.btn_sendImage).setOnClickListener(v -> new PhotoPickConfig
+                .Builder(MessageActivity.this)
+                .imageLoader(new GlideImageLoader())
+                .setMimeType(MimeType.TYPE_IMAGE)
+                .setCallback((PhotoSelectCallback) photos -> {
+                    File file = new File(photos.get(0).getOriginalPath());
+                    MyMessage imageMessage = IMessageBuilder.createImageMessage(
+                            account, sessionType, file, file.getName());
+                    imageMessage.getMessage().setDirect(MsgDirectionEnum.Out);
+                    msgAdapter.addMessage(imageMessage, false);
+                    IMessageBuilder.sendMessage(imageMessage);
 
-                                String originalPath = photos.get(0).getOriginalPath();
-                                IMMessage imageMessage = MessageBuilder.createImageMessage(
-                                        account, sessionType, new File(originalPath));
-                                imageMessage.setDirect(MsgDirectionEnum.Out);
-                                msgAdapter.addMessage(new MyMessage(MessageType.image, imageMessage,
-                                        new DefaultUser(imageMessage)), false);
+                }).build());
 
-                            }
-                        })     //回调
-                        .build();
-            }
-        });
+        findViewById(R.id.btn_sendVideo).setOnClickListener(v -> new PhotoPickConfig
+                .Builder(MessageActivity.this)
+                .imageLoader(new GlideImageLoader())                //图片加载方式，支持任意第三方图片加载库
+                .setMimeType(MimeType.TYPE_VIDEO)     //显示文件类型，默认全部（全部、图片、视频）
+                .setCallback((PhotoSelectCallback) photos -> {
+                    File file = new File(photos.get(0).getOriginalPath());
+                    MediaPlayer mediaPlayer = getVideoMediaPlayer(file);
+                    MyMessage videoMessage = IMessageBuilder.createVideoMessage(
+                            account, sessionType, file, mediaPlayer.getDuration(),
+                            mediaPlayer.getVideoWidth(), mediaPlayer.getVideoHeight(), file.getName());
+                    videoMessage.getMessage().setDirect(MsgDirectionEnum.Out);
+                    msgAdapter.addMessage(videoMessage, false);
+                    IMessageBuilder.sendMessage(videoMessage);
+
+                }).build());
 
         //模拟铁粉
         List<String> fans = Arrays.asList("1", "2", "3", "4", "5");
@@ -124,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void loadAvatarImage(FrameLayout frameLayout, boolean isReceiveMessage, String account) {
                 if (isReceiveMessage && fans.contains(account)) {
-                    ImageView imageView = new ImageView(MainActivity.this);
+                    ImageView imageView = new ImageView(MessageActivity.this);
                     LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                             new ViewGroup.LayoutParams(50, 50));
                     imageView.setLayoutParams(lp);  //设置图片的大小
@@ -137,25 +130,19 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void loadMessageImage(AppCompatImageView imageView, int width, int height, String path) {
-                GlideUtils.loadImage(MainActivity.this, path, width, height, imageView);
-            }
-
-            @Override
-            public void loadVideoImage(AppCompatImageView imageView, String path) {
-
+                GlideUtils.loadImage(MessageActivity.this, path, width, height, imageView);
             }
         });
 
         msgAdapter.setSessionEventListener(new SessionEventListener() {
             @Override
             public void onAvatarClicked(Context context, IMessage message) {
-                Toast.makeText(MainActivity.this, "头像点击", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MessageActivity.this, "头像点击", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onAvatarLongClicked(Context context, IMessage message) {
-                Toast.makeText(MainActivity.this, "头像长按", Toast.LENGTH_SHORT).show();
-
+                Toast.makeText(MessageActivity.this, "头像长按", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -167,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
         msgAdapter.setViewHolderEventListener(new ViewHolderEventListener() {
             @Override
             public boolean onViewHolderLongClick(View clickView, View viewHolderView, IMessage item) {
-                Toast.makeText(MainActivity.this, "消息长按", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MessageActivity.this, "消息长按", Toast.LENGTH_SHORT).show();
                 return true;
             }
 
@@ -196,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
 
-                ImagePreview.getInstance().setContext(MainActivity.this)
+                ImagePreview.getInstance().setContext(MessageActivity.this)
                         .setIndex(0)
                         .setImageList(messages)
                         .setEnableClickClose(true)
@@ -205,8 +192,29 @@ public class MainActivity extends AppCompatActivity {
                         .start();
 
             }
+
+            @Override
+            public void onVideoViewHolderClick(AppCompatImageView imageView, IMessage message) {
+                Log.e(TAG, "onVideoViewHolderClick: ");
+            }
         });
 
 
+    }
+
+
+    /**
+     * 获取视频mediaPlayer
+     *
+     * @param file 视频文件
+     * @return mediaPlayer
+     */
+    private MediaPlayer getVideoMediaPlayer(File file) {
+        try {
+            return MediaPlayer.create(this, Uri.fromFile(file));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

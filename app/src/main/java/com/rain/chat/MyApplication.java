@@ -3,14 +3,13 @@ package com.rain.chat;
 import android.app.Application;
 import android.content.Context;
 import android.os.Environment;
-import android.provider.MediaStore;
 import android.text.TextUtils;
 
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.auth.LoginInfo;
 import com.rain.chat.config.Preferences;
-import com.rain.crow.PhotoPick;
-import com.rain.crow.PhotoPickOptions;
+import com.rain.library.PhotoPick;
+import com.rain.library.PhotoPickOptions;
 
 /**
  * @Author : Rain

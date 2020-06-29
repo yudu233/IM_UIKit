@@ -21,4 +21,8 @@ public interface ViewHolderEventListener {
 
     // 图片消息点击事件
     void onPictureViewHolderClick(AppCompatImageView imageView, IMessage message);
+
+    //视频消息点击事件
+    void onVideoViewHolderClick(AppCompatImageView imageView, IMessage message);
+
 }
