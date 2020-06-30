@@ -1,6 +1,7 @@
 package com.rain.messagelist;
 
 import android.app.Activity;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -107,6 +108,7 @@ public class MsgAdapter<MESSAGE extends  IMessage> extends MultipleItemRvAdapter
         c.setAccessible(true);
         try {
             MsgViewHolderBase viewHolder = (MsgViewHolderBase) c.newInstance(new Object[]{this});
+            Log.e(TAG, "viewHolder: " + viewHolder );
             viewHolder.convert(helper, item, helper.getAdapterPosition());
         } catch (Exception e) {
             e.printStackTrace();

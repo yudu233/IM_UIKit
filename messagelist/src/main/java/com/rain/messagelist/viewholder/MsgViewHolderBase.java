@@ -145,6 +145,7 @@ public abstract class MsgViewHolderBase extends BaseItemProvider<IMessage, BaseV
         message = data;
         inflate();
         refresh();
+        Log.e(TAG, "convert: " );
     }
 
     protected final void inflate() {

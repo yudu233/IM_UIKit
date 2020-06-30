@@ -1,38 +1,48 @@
 package com.rain.chat.session.loader;
 
 
+import android.util.Log;
+
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.netease.nimlib.sdk.NIMClient;
+import com.netease.nimlib.sdk.NIMSDK;
 import com.netease.nimlib.sdk.RequestCallbackWrapper;
 import com.netease.nimlib.sdk.ResponseCode;
-import com.netease.nimlib.sdk.msg.MessageBuilder;
 import com.netease.nimlib.sdk.msg.MsgService;
+import com.netease.nimlib.sdk.msg.constant.MsgTypeEnum;
+import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
 import com.netease.nimlib.sdk.msg.model.QueryDirectionEnum;
 import com.rain.chat.session.module.Container;
 import com.rain.messagelist.MsgAdapter;
 import com.rain.messagelist.message.MessageType;
-import com.rain.messagelist.model.IMessage;
+import com.rain.messagelist.message.SessionType;
 import com.ycbl.im.uikit.msg.IMessageBuilder;
 import com.ycbl.im.uikit.msg.models.DefaultUser;
 import com.ycbl.im.uikit.msg.models.MyMessage;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.List;
 
 /**
- * @Author: Rain
- * @Org: www.yudu233.com
- * @Email: yudu233@gmail.com
- * @ClassName: MessageLoader
- * @CreateDate: 2020/6/29 22:48
- * @Describe: 历史消息加载器
+ * @Author : Rain
+ * @CreateDate : 2020/6/29 22:48
+ * @Version : 1.0
+ * @Descroption : 历史消息加载器
  */
-public class MessageLoader {
+public class MessageLoader implements BaseQuickAdapter.UpFetchListener {
+
+    private static final String TAG = "MessageLoader";
+
     private MyMessage anchor;
     private boolean remote;
     private Container container;
     private MsgAdapter adapter;
+    private RecyclerView recyclerView;
     //如果在发需要拍照 的消息时，拍照回来时页面可能会销毁重建，重建时会在MessageLoader 的构造方法中调一次 loadFromLocal
     //而在发送消息后，list 需要滚动到底部，又会通过RequestFetchMoreListener 调用一次 loadFromLocal
     //所以消息会重复
@@ -49,18 +59,19 @@ public class MessageLoader {
     private int loadMsgCount = 20;
 
 
-    public MessageLoader(Container container, MsgAdapter adapter, MyMessage message, boolean remote) {
+    public MessageLoader(Container container, RecyclerView recyclerView, MsgAdapter adapter, MyMessage message, boolean remote) {
         this.container = container;
         this.adapter = adapter;
+        this.recyclerView = recyclerView;
         this.anchor = message;
         this.remote = remote;
         if (remote) {
             //从远端拉取历史消息
-            //loadFromRemote();
+            loadFromRemote();
         } else {
             //从本地加载历史消息
             if (anchor == null) {
-                // loadFromLocal(QueryDirectionEnum.QUERY_OLD);
+                loadFromLocal();
                 mIsInitFetchingLocal = true;
             } else {
                 // 加载指定anchor的上下文
@@ -69,8 +80,56 @@ public class MessageLoader {
         }
     }
 
+    private void loadFromLocal() {
+        this.direction = QueryDirectionEnum.QUERY_OLD;
+    }
+
     /**
-     * 加载指定anchor的上下文
+     * 从服务端拉取历史消息
+     */
+    private void loadFromRemote() {
+        Log.e(TAG, "loadFromRemote: 服务端拉取消息");
+        this.direction = QueryDirectionEnum.QUERY_OLD;
+        remote = true;
+        NIMClient.getService(MsgService.class)
+                .pullMessageHistory(anchor().getMessage(), loadMsgCount, false)
+                .setCallback(callback);
+    }
+
+    private RequestCallbackWrapper<List<IMMessage>> callback = new RequestCallbackWrapper<List<IMMessage>>() {
+        @Override
+        public void onResult(int code, List<IMMessage> messages, Throwable exception) {
+            Log.e(TAG, "message size: " + messages.size());
+            mIsInitFetchingLocal = false;
+            if (code != ResponseCode.RES_SUCCESS || exception != null) {
+                if (direction == QueryDirectionEnum.QUERY_OLD) {
+                    Log.e(TAG, "消息加载失败");
+                } else if (direction == QueryDirectionEnum.QUERY_NEW) {
+                    adapter.loadMoreFail();
+                }
+                return;
+            }
+
+            if (messages != null) {
+                List<MyMessage> myMessages = new ArrayList<>();
+                for (IMMessage message : messages) {
+                    Log.e(TAG, "onResult: " + message.getMsgType());
+
+                    MyMessage myMessage = new MyMessage(MessageType
+                            .valueOf(String.valueOf(message.getMsgType()))
+                            , message, new DefaultUser(message));
+                    myMessages.add(myMessage);
+                }
+
+                onMessageLoaded(myMessages);
+            }
+        }
+    };
+
+    /**
+     * 根据锚点和方向从本地消息数据库中查询消息历史
+     * 查询比锚点时间更晚的消息 使用{@link QueryDirectionEnum#QUERY_NEW}
+     * 结果按照时间升序排列
      */
     private void loadAnchorContext() {
         // query new, auto load old
@@ -86,7 +145,11 @@ public class MessageLoader {
 
                         List<MyMessage> myMessages = new ArrayList<>();
                         for (IMMessage message : messages) {
-                            MyMessage myMessage = new MyMessage(MessageType.valueOf(String.valueOf(message.getMsgType().getValue()))
+
+                            Log.e(TAG, "onResult: " + message.getMsgType());
+
+                            MyMessage myMessage = new MyMessage(MessageType
+                                    .valueOf(String.valueOf(message.getMsgType()))
                                     , message, new DefaultUser(message));
                             myMessages.add(myMessage);
                         }
@@ -95,6 +158,7 @@ public class MessageLoader {
                     }
                 });
     }
+
 
     private void onAnchorContextMessageLoaded(final List<MyMessage> messages) {
         if (messages == null) {
@@ -146,4 +210,106 @@ public class MessageLoader {
         }
     }
 
+    private void onMessageLoaded(final List<MyMessage> messages) {
+
+        if (messages == null) {
+            return;
+        }
+
+
+        boolean noMoreMessage = messages.size() < loadMsgCount;
+
+        if (remote) {
+            Collections.reverse(messages);
+        }
+
+        // 在第一次加载的过程中又收到了新消息，做一下去重
+        if (firstLoad && adapter.getData().size() > 0) {
+            for (MyMessage message : messages) {
+                int removeIndex = 0;
+                for (int i = 0; i < adapter.getData().size(); i++) {
+                    MyMessage myMessage = (MyMessage) adapter.getData().get(i);
+                    if (myMessage.isTheSame(message)) {
+                        adapter.remove(removeIndex);
+                        break;
+                    }
+                    removeIndex++;
+                }
+            }
+        }
+
+        // 加入anchor
+        if (firstLoad && anchor != null) {
+            messages.add(anchor);
+        }
+
+        // 在更新前，先确定一些标记
+        List<MyMessage> total = new ArrayList<>(adapter.getData());
+        boolean isBottomLoad = direction == QueryDirectionEnum.QUERY_NEW;
+        if (isBottomLoad) {
+            total.addAll(messages);
+        } else {
+            total.addAll(0, messages);
+        }
+        // 更新要显示时间的消息
+        adapter.updateShowTimeItem(total, true, firstLoad);
+        // TODO: 2020/6/30  更新已读回执标签
+//        updateReceipt(total);
+
+        // 加载状态修改,刷新界面
+        if (isBottomLoad) {
+            // 底部加载
+            if (noMoreMessage) {
+                adapter.loadMoreEnd();
+            } else {
+                adapter.loadMoreComplete();
+            }
+        } else {
+            // 顶部加载
+            if (noMoreMessage) {
+                adapter.setUpFetchEnable(false);
+            } else {
+                adapter.setUpFetching(false);
+            }
+        }
+        adapter.addMessages(messages, false);
+
+        //如果是UserProfileAttachment消息就删除
+//        for (IMMessage message : messages) {
+//            int removeIndex = 0;
+//            if (message.getAttachment() instanceof UserProfileAttachment) {
+//                if (((UserProfileAttachment) message.getAttachment()).type != UserProfileAttachment.MessageType.AGREE_ADD_FRIEND) {
+//                    adapter.remove(removeIndex);
+//                    continue;
+//                }
+//            }
+//            removeIndex++;
+//        }
+
+        // 如果是第一次加载，updateShowTimeItem返回的就是lastShowTimeItem
+        if (firstLoad) {
+            recyclerView.scrollToPosition(adapter.getData().size() - 1);
+//            sendReceipt(); // 发送已读回执
+
+        }
+
+        // TODO: 2020/6/30   通过历史记录加载的群聊消息，需要刷新一下已读未读最新数据
+//        if (container.sessionType == SessionType.Team) {
+//            NIMSDK.getTeamService().refreshTeamMessageReceipt(messages);
+//        }
+
+
+        firstLoad = false;
+    }
+
+
+    @Override
+    public void onUpFetch() {
+        // 顶部加载历史数据
+        if (remote) {
+            loadFromRemote();
+        } else {
+            loadFromLocal();
+        }
+    }
 }

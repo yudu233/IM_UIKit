@@ -81,5 +81,4 @@ public enum MessageType implements Serializable {
     public final String getSendMessageTip() {
         return sendMessageTip;
     }
-
 }

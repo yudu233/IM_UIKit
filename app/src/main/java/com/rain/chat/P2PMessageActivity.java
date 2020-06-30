@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.FragmentTransaction;
@@ -35,6 +36,7 @@ import com.rain.messagelist.message.SessionType;
 import com.rain.messagelist.model.IMessage;
 import com.rain.messagelist.model.ImageLoader;
 import com.ycbl.im.uikit.msg.IMessageBuilder;
+import com.ycbl.im.uikit.msg.controller.IMessageController;
 import com.ycbl.im.uikit.msg.models.MyMessage;
 
 import java.io.File;
@@ -51,7 +53,7 @@ public class P2PMessageActivity extends BaseMessageActivity {
     @Override
     protected MessageFragment fragment() {
         Bundle arguments = getIntent().getExtras();
-        arguments.putSerializable(Extras.EXTRA_SESSION_TYPE, SessionTypeEnum.P2P);
+        arguments.putSerializable(Extras.EXTRA_SESSION_TYPE, SessionType.P2P);
         MessageFragment fragment = MessageFragment.newInstance();
         fragment.setArguments(arguments);
         return fragment;
@@ -72,11 +74,11 @@ public class P2PMessageActivity extends BaseMessageActivity {
         // TODO: 2020/6/29 标题
         mTitle.setText(sessionId);
     }
-//
+
 //    @Override
 //    protected void onCreate(Bundle savedInstanceState) {
 //        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_person_message);
+//        setContentView(R.layout.activity_test);
 //
 //
 //        RecyclerView mRecyclerView = findViewById(R.id.recyclerView);
@@ -99,7 +101,7 @@ public class P2PMessageActivity extends BaseMessageActivity {
 //                    text + msgAdapter.getData().size());
 //            textMessage.getMessage().setDirect(MsgDirectionEnum.In);
 //            msgAdapter.addMessage(textMessage, false);
-//            IMessageBuilder.sendMessage(textMessage);
+//            IMessageController.sendMessage(textMessage);
 //        });
 //
 //        findViewById(R.id.btn_send).setOnClickListener(v -> {
@@ -107,7 +109,7 @@ public class P2PMessageActivity extends BaseMessageActivity {
 //                    text + msgAdapter.getData().size());
 //            textMessage.getMessage().setDirect(MsgDirectionEnum.Out);
 //            msgAdapter.addMessage(textMessage, false);
-//            IMessageBuilder.sendMessage(textMessage);
+//            IMessageController.sendMessage(textMessage);
 //
 //        });
 //
@@ -121,7 +123,7 @@ public class P2PMessageActivity extends BaseMessageActivity {
 //                            account, sessionType, file, file.getName());
 //                    imageMessage.getMessage().setDirect(MsgDirectionEnum.Out);
 //                    msgAdapter.addMessage(imageMessage, false);
-//                    IMessageBuilder.sendMessage(imageMessage);
+//                    IMessageController.sendMessage(imageMessage);
 //
 //                }).build());
 //
@@ -137,7 +139,7 @@ public class P2PMessageActivity extends BaseMessageActivity {
 //                            mediaPlayer.getVideoWidth(), mediaPlayer.getVideoHeight(), file.getName());
 //                    videoMessage.getMessage().setDirect(MsgDirectionEnum.Out);
 //                    msgAdapter.addMessage(videoMessage, false);
-//                    IMessageBuilder.sendMessage(videoMessage);
+//                    IMessageController.sendMessage(videoMessage);
 //
 //                }).build());
 //

@@ -33,8 +33,8 @@ public abstract class BaseMessageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(getContentViewId());
-        initToolBar();
         parseIntent();
+        initToolBar();
         addFragment();
     }
 
