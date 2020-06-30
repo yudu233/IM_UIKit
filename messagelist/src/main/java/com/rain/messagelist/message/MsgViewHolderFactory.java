@@ -65,7 +65,6 @@ public class MsgViewHolderFactory {
         if (message.getMsgType() == MessageType.tip) {
             return tipMsgViewHolder == null ? MsgViewHolderUnknown.class : tipMsgViewHolder;
         }
-        Log.d(TAG, "getViewHolderByType() returned: " + viewHolders.get(message.getMsgType()));
         return viewHolders.get(message.getMsgType());
     }
 

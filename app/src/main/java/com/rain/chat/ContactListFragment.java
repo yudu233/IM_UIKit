@@ -11,10 +11,10 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.friend.FriendService;
 import com.rain.chat.adapter.ContactAdapter;
+import com.rain.chat.constant.Extras;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +56,7 @@ public class ContactListFragment extends Fragment {
         initData();
     }
 
-    private List<String> data = new ArrayList<>();
+    private List<String> data;
 
     private void initView() {
         adapter = new ContactAdapter(data);
@@ -64,21 +64,17 @@ public class ContactListFragment extends Fragment {
     }
 
     private void initData() {
+        data = new ArrayList<>();
         List<String> friends = NIMClient.getService(FriendService.class).getFriendAccounts();
         data.addAll(friends);
         adapter.setNewData(data);
 
-
-        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-
-                Intent intent = new Intent(getActivity(), P2PMessageActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putString("account", data.get(position));
-                intent.putExtras(bundle);
-                startActivity(intent);
-            }
+        adapter.setOnItemClickListener((adapter, view, position) -> {
+            Intent intent = new Intent(getActivity(), P2PMessageActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putString(Extras.EXTRA_ACCOUNT, data.get(position));
+            intent.putExtras(bundle);
+            startActivity(intent);
         });
     }
 }

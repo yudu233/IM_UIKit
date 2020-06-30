@@ -1,7 +1,8 @@
 package com.rain.chat;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -12,6 +13,11 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+import com.netease.nimlib.sdk.NIMClient;
+import com.netease.nimlib.sdk.Observer;
+import com.netease.nimlib.sdk.StatusCode;
+import com.netease.nimlib.sdk.auth.AuthServiceObserver;
+import com.rain.chat.config.Preferences;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +30,7 @@ import java.util.List;
  */
 public class HomeActivity extends AppCompatActivity {
 
+    private static final String TAG = "HomeActivity";
     private String[] titles = {"会话", "通讯录"};
 
     @Override
@@ -54,5 +61,18 @@ public class HomeActivity extends AppCompatActivity {
 
         new TabLayoutMediator(tabLayout, viewPager, (tab, position) ->
                 tab.setText(titles[position])).attach();
+
+
+        NIMClient.getService(AuthServiceObserver.class).observeOnlineStatus(
+                (Observer<StatusCode>) status -> {
+                    if (status.wontAutoLogin()) {
+                        // 被踢出、账号被禁用、密码错误等情况，自动登录失败，需要返回到登录界面进行重新登录操作
+                        Toast.makeText(HomeActivity.this, "账号被挤掉线", Toast.LENGTH_SHORT).show();
+                        Preferences.saveUserAccount("");
+                        Preferences.saveUserToken("");
+                        startActivity(new Intent(HomeActivity.this,WelcomeActivity.class));
+                        finish();
+                    }
+                }, true);
     }
 }

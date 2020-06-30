@@ -7,6 +7,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.netease.nimlib.sdk.NIMClient;
+import com.netease.nimlib.sdk.msg.MsgService;
+import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
 import com.rain.chat.constant.Extras;
 
 /**
@@ -33,8 +36,8 @@ public abstract class BaseMessageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(getContentViewId());
-        initToolBar();
         parseIntent();
+        initToolBar();
         addFragment();
     }
 
@@ -71,5 +74,6 @@ public abstract class BaseMessageActivity extends AppCompatActivity {
 
     private void parseIntent() {
         sessionId = getIntent().getStringExtra(Extras.EXTRA_ACCOUNT);
+//        NIMClient.getService(MsgService.class).clearChattingHistory(sessionId, SessionTypeEnum.P2P, true);
     }
 }

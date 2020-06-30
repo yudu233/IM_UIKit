@@ -12,5 +12,5 @@ public interface Extras {
 
     String EXTRA_ACCOUNT = "account";
     String EXTRA_SESSION_TYPE = "type";
-
+    String EXTRA_ANCHOR = "anchor";
 }

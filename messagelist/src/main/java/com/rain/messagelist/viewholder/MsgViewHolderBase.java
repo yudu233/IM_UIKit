@@ -198,7 +198,9 @@ public abstract class MsgViewHolderBase extends BaseItemProvider<IMessage, BaseV
         showView.setVisibility(View.VISIBLE);
         //TODO: 2020/6/18 加载头像
         //TODO: 2020/6/18 头像添加其他图标
-        getMsgAdapter().getImageLoader().loadAvatarImage(showView, isReceivedMessage(), message.getFromAccount());
+        if (getMsgAdapter().getImageLoader() != null){
+            getMsgAdapter().getImageLoader().loadAvatarImage(showView, isReceivedMessage(), message.getFromAccount());
+        }
     }
 
     /**

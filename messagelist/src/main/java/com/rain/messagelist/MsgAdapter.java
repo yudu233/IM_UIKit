@@ -1,6 +1,7 @@
 package com.rain.messagelist;
 
 import android.app.Activity;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,7 +31,7 @@ import java.util.Set;
  * @CreateDate: 2020/6/6 16:31
  * @Describe:
  */
-public class MsgAdapter<MESSAGE extends  IMessage> extends MultipleItemRvAdapter<MESSAGE, BaseViewHolder> {
+public class MsgAdapter<MESSAGE extends IMessage> extends MultipleItemRvAdapter<MESSAGE, BaseViewHolder> {
 
     private String messageId;
     private ImageLoader imageLoader;
@@ -128,23 +129,23 @@ public class MsgAdapter<MESSAGE extends  IMessage> extends MultipleItemRvAdapter
         return -1;
     }
 
-    public void addMessages(List<MESSAGE> messages, boolean scrollToBottom){
-        if (messages.size() == 0)return;
-        getData().addAll(messages);
-        notifyDataSetChanged();
+    public void addMessages(List<MESSAGE> messages) {
+        if (messages.size() == 0) return;
+        getData().addAll(0, messages);
+        notifyItemRangeInserted(0, messages.size());
     }
 
     /**
      * 添加消息
      *
-     * @param message        消息体
-     * @param scrollToBottom 是否滚动到底部
+     * @param message 消息体
      */
-    public void addMessage(MESSAGE message, boolean scrollToBottom) {
+    public void addMessage(MESSAGE message) {
         if (message == null) return;
         getData().add(message);
         notifyItemRangeInserted(getData().size() - 1 + getLoadMoreViewCount(), 1);
         // TODO: 2020/6/6 滚动到底部
+
     }
 
     /**
