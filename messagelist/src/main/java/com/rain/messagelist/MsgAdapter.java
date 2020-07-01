@@ -108,6 +108,7 @@ public class MsgAdapter<MESSAGE extends IMessage> extends MultipleItemRvAdapter<
         c.setAccessible(true);
         try {
             MsgViewHolderBase viewHolder = (MsgViewHolderBase) c.newInstance(new Object[]{this});
+            Log.e(TAG, "viewHolder: " + viewHolder );
             viewHolder.convert(helper, item, helper.getAdapterPosition());
         } catch (Exception e) {
             e.printStackTrace();
