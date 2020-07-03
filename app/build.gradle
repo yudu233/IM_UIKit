@@ -52,4 +52,5 @@ dependencies {
 
     implementation 'com.blankj:utilcodex:1.29.0'
     implementation 'com.google.android.material:material:1.1.0'
+    implementation project(path: ':inputpanel')
 }

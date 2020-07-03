@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_input_view"
+    android:paddingTop="@dimen/padding_input_view"
+    android:paddingBottom="@dimen/padding_input_view">
+
+    <!-- 语音/文字切换-->
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/btn_voice_or_text"
+        android:layout_width="@dimen/view_default_width"
+        android:layout_height="@dimen/view_default_height"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="@dimen/normal_margin"
+        android:layout_marginEnd="@dimen/normal_margin"
+        android:src="@drawable/btn_voice_or_text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!--语音输入-->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_voice"
+        android:layout_width="@dimen/view_width_zero"
+        android:layout_height="@dimen/view_default_height"
+        android:layout_marginStart="@dimen/normal_margin"
+        android:layout_marginEnd="@dimen/normal_margin"
+        android:background="@drawable/btn_voice"
+        android:gravity="center"
+        android:text="@string/btn_text_speak"
+        android:textColor="@color/color_voice_btn_text"
+        android:visibility="gone"
+        app:layout_constraintEnd_toStartOf="@id/btn_face_or_text"
+        app:layout_constraintStart_toEndOf="@+id/btn_voice_or_text"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!--输入框-->
+    <com.rain.inputpanel.widget.EmoticonsEditText
+        android:id="@+id/et_chat"
+        android:layout_width="@dimen/view_width_zero"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="@dimen/normal_margin"
+        android:layout_marginEnd="@dimen/normal_margin"
+        android:background="@drawable/btn_edit_bg"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:gravity="center_vertical"
+        android:hint="@string/hint_text_input"
+        android:lineSpacingExtra="@dimen/edit_line_spacing"
+        android:maxHeight="@dimen/edit_max_height"
+        android:maxLength="5000"
+        android:maxLines="4"
+        android:minHeight="@dimen/edit_min_height"
+        android:paddingStart="@dimen/edit_padding"
+        android:paddingEnd="@dimen/edit_padding"
+        android:textSize="@dimen/edit_text_size"
+        app:layout_constraintEnd_toStartOf="@id/btn_face_or_text"
+        app:layout_constraintStart_toEndOf="@+id/btn_voice_or_text"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <!--表情/文字切换-->
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/btn_face_or_text"
+        android:layout_width="@dimen/view_default_width"
+        android:layout_height="@dimen/view_default_height"
+        android:layout_marginEnd="@dimen/normal_margin"
+        android:src="@drawable/icon_face_normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/sendLayout"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <FrameLayout
+        android:id="@+id/sendLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="@dimen/normal_margin"
+        android:focusableInTouchMode="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <!--apps 功能-->
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/buttonMoreFunctionInText"
+            android:layout_width="@dimen/view_default_width"
+            android:layout_height="@dimen/view_default_height"
+            android:src="@drawable/btn_multi_bg" />
+
+        <!--发送-->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/buttonSendMessage"
+            android:layout_width="@dimen/send_btn_width"
+            android:layout_height="@dimen/send_btn_height"
+            android:background="@drawable/btn_send_bg_disable"
+            android:gravity="center"
+            android:paddingLeft="@dimen/normal_margin"
+            android:paddingRight="@dimen/normal_margin"
+            android:text="@string/btn_text_send"
+            android:textColor="@color/btn_send_text_color"
+            android:textSize="@dimen/send_btn_text_size"
+            android:visibility="gone" />
+    </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
