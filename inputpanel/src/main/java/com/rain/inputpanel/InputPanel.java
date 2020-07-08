@@ -1,17 +1,26 @@
 package com.rain.inputpanel;
 
+import android.app.Activity;
 import android.content.Context;
+import android.graphics.Rect;
 import android.os.Handler;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.Window;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatImageView;
 
+import com.rain.inputpanel.emoji.EmojiView;
 import com.rain.inputpanel.utils.EmoticonsKeyboardUtils;
+import com.rain.inputpanel.widget.AutoHeightLayout;
 import com.rain.inputpanel.widget.EmoticonsEditText;
 import com.rain.inputpanel.widget.FuncLayout;
 
@@ -21,7 +30,7 @@ import com.rain.inputpanel.widget.FuncLayout;
  * @Version : 1.0
  * @Descroption :
  */
-public class InputPanel extends LinearLayout implements ViewTreeObserver.OnPreDrawListener {
+public class InputPanel extends LinearLayout implements ViewTreeObserver.OnPreDrawListener,FuncLayout.OnFuncChangeListener  {
 
     private static final String TAG = "InputPanel";
     private Context mContext;
@@ -37,21 +46,59 @@ public class InputPanel extends LinearLayout implements ViewTreeObserver.OnPreDr
     private FuncLayout funcLayout;              //更多功能布局
 
     private boolean isShowFaceView = false;
+    private boolean isShowFuncLayout = false;
 
-    public InputPanel(Context context) {
-        super(context);
-        init(context);
-    }
+    public static final int FUNC_TYPE_EMOTION = -1;
+    public static final int FUNC_TYPE_APPPS = -2;
+
+    private Window mWindow;
+    private int mWidth;
+    private int mHeight;
+    private int mSoftKeyboardHeight;
+    private Rect mRect = new Rect();
+
+
+    protected LayoutInflater mInflater;
 
     public InputPanel(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init(context);
+        mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        initView();
+        initFuncView();
     }
 
-    public InputPanel(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        init(context);
+    private void initView() {
+        mInflater.inflate( R.layout.view_chatinput, this);
+        buttonVoiceOrText = findViewById(R.id.btn_voice_or_text);
+        buttonVoice = findViewById(R.id.btn_voice);
+        inputTextView = findViewById(R.id.et_chat);
+        buttonFaceOrText = findViewById(R.id.btn_face_or_text);
+        sendLayoutView = findViewById(R.id.sendLayout);
+        buttonMoreFunctionInText = findViewById(R.id.buttonMoreFunctionInText);
+        buttonSendMessage = findViewById(R.id.buttonSendMessage);
+        buttonVoiceOrText.setOnClickListener(mOnClickListener);
+        buttonFaceOrText.setOnClickListener(mOnClickListener);
+
+        funcLayout = findViewById(R.id.funcLayout);
+
     }
+
+    private void initFuncView() {
+        View view = mInflater.inflate(R.layout.layout_chatinput_emoji, null);
+        funcLayout.addFuncView(FUNC_TYPE_EMOTION,view);
+        funcLayout.addOnKeyBoardListener(new FuncLayout.OnFuncKeyBoardListener() {
+            @Override
+            public void OnFuncPop(int height) {
+
+            }
+
+            @Override
+            public void OnFuncClose() {
+
+            }
+        });
+    }
+
 
 
     private void init(Context context) {
@@ -69,7 +116,13 @@ public class InputPanel extends LinearLayout implements ViewTreeObserver.OnPreDr
         buttonVoiceOrText.setOnClickListener(mOnClickListener);
         buttonFaceOrText.setOnClickListener(mOnClickListener);
 
+        mWindow = ((Activity) context).getWindow();
+        DisplayMetrics dm = getResources().getDisplayMetrics();
+        mWidth = dm.widthPixels;
+        mHeight = dm.heightPixels;
         getViewTreeObserver().addOnPreDrawListener(this);
+        Log.e(TAG, "init: " + mWidth + "---" + mHeight);
+
 
     }
 
@@ -86,18 +139,26 @@ public class InputPanel extends LinearLayout implements ViewTreeObserver.OnPreDr
                     showTextView();
                 }
             } else if (id == R.id.btn_face_or_text) {
-                if (isShowFaceView) {
-                    //展示输入框控件
-                    isShowFaceView = false;
-                    showTextView();
-                } else {
-                    //展示表情控件
-                    isShowFaceView = true;
-                    showFaceView();
-                }
+                toggleFuncView(FUNC_TYPE_EMOTION);
+
+//                if (isShowFaceView) {
+//                    //展示输入框控件
+//                    isShowFaceView = false;
+//                    showTextView();
+//                } else {
+//                    //展示表情控件
+//                    isShowFaceView = true;
+//                    showFaceView();
+//                }
             }
         }
     };
+
+
+    protected void toggleFuncView(int key) {
+        showTextView();
+      //  funcLayout.toggleFuncView(key, isSoftKeyboardPop(), inputTextView);
+    }
 
     /**
      * 展示表情控件
@@ -143,11 +204,9 @@ public class InputPanel extends LinearLayout implements ViewTreeObserver.OnPreDr
      * 5.功能区域开启则隐藏
      */
     private void showTextView() {
-        EmoticonsKeyboardUtils.openSoftKeyboard(inputTextView);
         buttonVoiceOrText.setImageResource(R.drawable.btn_voice_or_text);
         buttonVoice.setVisibility(GONE);
         inputTextView.setVisibility(VISIBLE);
-        funcLayout.setVisibility(GONE);
     }
 
     /**
@@ -168,17 +227,56 @@ public class InputPanel extends LinearLayout implements ViewTreeObserver.OnPreDr
         return funcLayout.getVisibility() == VISIBLE;
     }
 
+    private void showFuncLayout(boolean show) {
+        if (show) {
+            EmoticonsKeyboardUtils.closeSoftKeyboard(inputTextView);
+            funcLayout.setVisibility(VISIBLE);
+        } else {
+            funcLayout.setVisibility(GONE);
+        }
+    }
+
     /**
      * 软键盘是否显示
      *
      * @return
      */
     public boolean isKeyboardVisible() {
-        return false;
+        return (getDistanceFromInputToBottom() > 300 && funcLayout.getVisibility() == GONE)
+                || (getDistanceFromInputToBottom() > (funcLayout.getHeight() + 300)
+                && funcLayout.getVisibility() == VISIBLE);
     }
 
+
+    /**
+     * 通过ViewTreeObserver .addOnPreDrawListener来获得宽高
+     *
+     * @return
+     */
     @Override
     public boolean onPreDraw() {
+        if (isShowFuncLayout) {
+            if (isKeyboardVisible()) {
+                ViewGroup.LayoutParams params = funcLayout.getLayoutParams();
+                int distance = getDistanceFromInputToBottom();
+                Log.d(TAG, "Distance from bottom: " + distance);
+                if (distance < mHeight / 2 && distance > 300 && distance != params.height) {
+                    params.height = distance;
+                    mSoftKeyboardHeight = distance;
+                    funcLayout.setLayoutParams(params);
+                }
+                return false;
+            } else {
+                showFuncLayout(true);
+                isShowFuncLayout = false;
+                return false;
+            }
+        } else {
+            if (funcLayout.getVisibility() == VISIBLE && isKeyboardVisible()) {
+                showFuncLayout(false);
+                return false;
+            }
+        }
         return true;
     }
 
@@ -188,5 +286,24 @@ public class InputPanel extends LinearLayout implements ViewTreeObserver.OnPreDr
         getViewTreeObserver().removeOnPreDrawListener(this);
     }
 
+    @Override
+    public void onWindowFocusChanged(boolean hasWindowFocus) {
+        super.onWindowFocusChanged(hasWindowFocus);
+        if (hasWindowFocus && mHeight <= 0) {
+            this.getRootView().getGlobalVisibleRect(mRect);
+            mHeight = mRect.bottom;
+            Log.d(TAG, "Window focus changed, height: " + mHeight);
+        }
+    }
 
+
+    public int getDistanceFromInputToBottom() {
+        inputTextView.getGlobalVisibleRect(mRect);
+        return mHeight - mRect.bottom;
+    }
+
+    @Override
+    public void onFuncChange(int key) {
+
+    }
 }

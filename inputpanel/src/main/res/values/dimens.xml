@@ -36,6 +36,10 @@
     <dimen name="send_btn_width">50dp</dimen>
     <dimen name="send_btn_height">30dp</dimen>
     <dimen name="send_btn_text_size">12sp</dimen>
+
+    <dimen name="message_bottom_function_viewpager_height">260dp</dimen>
+    <dimen name="input_panel_image_margin_bottom">5dip</dimen>
+    <dimen name="input_panel_image_margin_top">40dip</dimen>
     <!-- chat input end -->
 
 </resources>

@@ -9,7 +9,8 @@ public class DefEmoticons {
     }
 
     static {
-        sEmojiArray = new EmojiBean[]{new EmojiBean(mipmap.emoji_0x1f604, EmojiParse.fromCodePoint(128516)),
+        sEmojiArray = new EmojiBean[]{
+                new EmojiBean(mipmap.emoji_0x1f604, EmojiParse.fromCodePoint(128516)),
                 new EmojiBean(mipmap.emoji_0x1f603, EmojiParse.fromCodePoint(128515)),
                 new EmojiBean(mipmap.emoji_0x1f60a, EmojiParse.fromCodePoint(128522)),
                 new EmojiBean(mipmap.emoji_0x1f609, EmojiParse.fromCodePoint(128521)),
@@ -88,6 +89,7 @@ public class DefEmoticons {
                 new EmojiBean(mipmap.emoji_0x1f382, EmojiParse.fromCodePoint(127874)),
                 new EmojiBean(mipmap.emoji_0x1f3e0, EmojiParse.fromCodePoint(127968)),
                 new EmojiBean(mipmap.emoji_0x1f697, EmojiParse.fromCodePoint(128663)),
-                new EmojiBean(mipmap.emoji_0x1f559, EmojiParse.fromCodePoint(128345))};
+                new EmojiBean(mipmap.emoji_0x1f559, EmojiParse.fromCodePoint(128345))
+        };
     }
 }

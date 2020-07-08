@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Rect;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -100,7 +101,8 @@ public abstract class AutoHeightLayout extends SoftKeyboardSizeWatchLayout imple
 
     @Override
     public void OnSoftPop(final int height) {
-        if (mSoftKeyboardHeight != height) {
+        //当软键盘设置为悬浮键盘时，不更新高度
+        if (mSoftKeyboardHeight != height && height > 100) {
             mSoftKeyboardHeight = height;
             EmoticonsKeyboardUtils.setDefKeyboardHeight(mContext, mSoftKeyboardHeight);
             onSoftKeyboardHeightChanged(mSoftKeyboardHeight);

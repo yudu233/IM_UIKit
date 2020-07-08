@@ -1,6 +1,6 @@
 package com.rain.chat.session.list;
 
-import android.util.Log;
+import android.annotation.SuppressLint;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -11,6 +11,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.rain.chat.R;
 import com.rain.chat.session.loader.MessageLoader;
 import com.rain.chat.session.module.Container;
+import com.rain.inputpanel.utils.EmoticonsKeyboardUtils;
 import com.rain.messagelist.MsgAdapter;
 import com.ycbl.im.uikit.msg.models.MyMessage;
 
@@ -59,8 +60,8 @@ public class MessageListPanelEx implements MessageLoader.LoadMessagesListener {
         registerObservers(true);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private void initRecyclerView(MyMessage anchor) {
-        Log.e(TAG, "initRecyclerView");
         List<MyMessage> data = new ArrayList<>();
         refreshLayout = rootView.findViewById(R.id.swipeRefreshLayout);
         mRecyclerView = rootView.findViewById(R.id.recyclerView);
@@ -73,7 +74,12 @@ public class MessageListPanelEx implements MessageLoader.LoadMessagesListener {
         mRecyclerView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                // TODO: 2020/6/30  关闭软键盘等操作
+                mRecyclerView.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        EmoticonsKeyboardUtils.closeSoftKeyboard(container.activity);
+                    }
+                }, 500);
                 return false;
             }
         });

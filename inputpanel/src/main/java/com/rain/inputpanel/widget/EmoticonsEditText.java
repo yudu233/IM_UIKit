@@ -6,11 +6,15 @@ import android.view.KeyEvent;
 
 import androidx.appcompat.widget.AppCompatEditText;
 
-import com.rain.inputpanel.interfaces.EmoticonFilter;
+import com.rain.inputpanel.emoji.EmoticonFilter;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * use XhsEmotionsKeyboard(https://github.com/w446108264/XhsEmoticonsKeyboard)
+ * author: sj
+ */
 public class EmoticonsEditText extends AppCompatEditText {
 
     private List<EmoticonFilter> mFilterList;
@@ -89,11 +93,18 @@ public class EmoticonsEditText extends AppCompatEditText {
     }
 
     @Override
-    public boolean dispatchKeyEventPreIme(KeyEvent event) {
-        if(onBackKeyClickListener != null){
-            onBackKeyClickListener.onBackKeyClick();
+    public boolean onKeyPreIme(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP) {
+            if (onBackKeyClickListener != null) {
+                onBackKeyClickListener.onBackKeyClick();
+            }
         }
-        return super.dispatchKeyEventPreIme(event);
+        return super.onKeyPreIme(keyCode, event);
+    }
+
+    @Override
+    public boolean performClick() {
+        return super.performClick();
     }
 
     public interface OnBackKeyClickListener {

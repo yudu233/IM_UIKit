@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="white">#ffffff</color>
+    <color name="transparent">#00000000</color>
 
     <!-->chat input<-->
     <color name="aurora_bg_input_default">#f3f3f3</color>
@@ -22,5 +23,6 @@
     <color name="color_voice_btn_text">#727272</color>
     <color name="btn_send_text_color">@color/white</color>
 
+    <color name="input_panel_text_color">#757572</color>
 
 </resources>
