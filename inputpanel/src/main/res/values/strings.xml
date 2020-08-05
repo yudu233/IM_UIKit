@@ -4,9 +4,4 @@
     <string name="btn_text_speak">按住录音</string>
     <string name="btn_text_speak_over">松开结束</string>
     <string name="hint_text_input">请输入消息</string>
-
-    <string name="input_panel_photo">图 片</string>
-    <string name="input_panel_video">视 频</string>
-    <string name="input_panel_location">位 置</string>
-    <string name="input_panel_take">拍 摄</string>
 </resources>

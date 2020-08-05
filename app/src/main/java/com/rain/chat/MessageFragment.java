@@ -1,5 +1,7 @@
 package com.rain.chat;
 
+import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -7,12 +9,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.fragment.app.Fragment;
 
 import com.rain.chat.constant.Extras;
+import com.rain.chat.glide.GlideUtils;
 import com.rain.chat.session.list.MessageListPanelEx;
 import com.rain.chat.session.module.Container;
 import com.rain.chat.session.module.ModuleProxy;
@@ -24,8 +32,20 @@ import com.rain.inputpanel.emoji.EmojiBean;
 import com.rain.inputpanel.interfaces.EmoticonClickListener;
 import com.rain.inputpanel.utils.SimpleCommonUtils;
 import com.rain.inputpanel.widget.FuncLayout;
+import com.rain.messagelist.MsgAdapter;
+import com.rain.messagelist.listener.SessionEventListener;
+import com.rain.messagelist.listener.ViewHolderEventListener;
+import com.rain.messagelist.message.MessageType;
 import com.rain.messagelist.message.SessionType;
+import com.rain.messagelist.model.IMessage;
+import com.rain.messagelist.model.ImageLoader;
 import com.ycbl.im.uikit.msg.models.MyMessage;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import cc.shinichi.library.ImagePreview;
 
 /**
  * @Author: Rain
@@ -85,7 +105,6 @@ public class MessageFragment extends Fragment implements ModuleProxy, FuncLayout
         sessionId = arguments.getString(Extras.EXTRA_ACCOUNT);
         sessionType = (SessionType) arguments.getSerializable(Extras.EXTRA_SESSION_TYPE);
         MyMessage anchor = (MyMessage) arguments.getSerializable(Extras.EXTRA_ANCHOR);
-        Log.e(TAG, "parseIntent: " + getActivity());
         container = new Container(getActivity(), sessionId, sessionType, this);
 
 
@@ -94,6 +113,101 @@ public class MessageFragment extends Fragment implements ModuleProxy, FuncLayout
         } else {
 //            messageListPanel.reload(container, anchor);
         }
+
+        adapterDefaultConfig();
+    }
+
+    private void adapterDefaultConfig() {
+        MsgAdapter msgAdapter = messageListPanel.getMsgAdapter();
+
+        //模拟铁粉
+        List<String> fans = Arrays.asList("1", "2", "3", "4", "5","2018cytx3","2018cytx2");
+        msgAdapter.setImageLoader(new ImageLoader() {
+            @Override
+            public void loadAvatarImage(FrameLayout frameLayout, boolean isReceiveMessage, String account) {
+                Log.e(TAG,account);
+                if (isReceiveMessage && fans.contains(account)) {
+                    ImageView imageView = new ImageView(getActivity());
+                    LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                            new ViewGroup.LayoutParams(50, 50));
+                    imageView.setLayoutParams(lp);  //设置图片的大小
+                    imageView.setImageBitmap(BitmapFactory.
+                            decodeResource(getResources(), R.mipmap.icon_fans_avatar));
+                    frameLayout.addView(imageView);
+                    // TODO: 2020/6/20 加载用户头像
+                }
+            }
+
+            @Override
+            public void loadMessageImage(AppCompatImageView imageView, int width, int height, String path) {
+                GlideUtils.loadImage(getContext(), path, width, height, imageView);
+            }
+        });
+
+        msgAdapter.setSessionEventListener(new SessionEventListener() {
+            @Override
+            public void onAvatarClicked(Context context, IMessage message) {
+                Toast.makeText(getContext(), "头像点击", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAvatarLongClicked(Context context, IMessage message) {
+                Toast.makeText(getContext(), "头像长按", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAckMsgClicked(Context context, IMessage message) {
+
+            }
+        });
+
+        msgAdapter.setViewHolderEventListener(new ViewHolderEventListener() {
+            @Override
+            public boolean onViewHolderLongClick(View clickView, View viewHolderView, IMessage item) {
+                Toast.makeText(getContext(), "消息长按", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+
+            @Override
+            public void onFailedBtnClick(IMessage resendMessage) {
+
+            }
+
+            @Override
+            public void onPictureViewHolderClick(AppCompatImageView imageView, IMessage message) {
+//                ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.
+//                        makeSceneTransitionAnimation(MainActivity.this,
+//                                imageView, "imageMessage");
+//                Intent intent = new Intent(MainActivity.this, PreviewImageActivity.class);
+//                Bundle bundle = new Bundle();
+//                bundle.putSerializable("message", message);
+//                intent.putExtras(bundle);
+//                startActivity(intent, optionsCompat.toBundle());
+//
+                List<IMessage> data = msgAdapter.getData();
+
+                List<String> messages = new ArrayList<>();
+                for (IMessage msg : data) {
+                    if (msg.getMsgType() == MessageType.image) {
+                        messages.add(msg.getMediaPath());
+                    }
+                }
+
+                ImagePreview.getInstance().setContext(getContext())
+                        .setIndex(0)
+                        .setImageList(messages)
+                        .setEnableClickClose(true)
+                        .setEnableDragClose(true)
+                        .setShowDownButton(false)
+                        .start();
+
+            }
+
+            @Override
+            public void onVideoViewHolderClick(AppCompatImageView imageView, IMessage message) {
+                Log.e(TAG, "onVideoViewHolderClick: ");
+            }
+        });
     }
 
 

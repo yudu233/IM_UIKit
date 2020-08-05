@@ -27,8 +27,6 @@ public class ActionController {
     }
 
     public ActionController() {
-        actions.add(new LocationAction());
-        actions.add(new LocationAction());
     }
 
     public List<BaseAction> getActions() {
@@ -37,5 +35,9 @@ public class ActionController {
 
     public void addAction(BaseAction action) {
         actions.add(action);
+    }
+
+    public void addActions(List<BaseAction> data){
+        actions.addAll(data);
     }
 }

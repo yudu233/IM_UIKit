@@ -1,50 +1,16 @@
 package com.rain.chat;
 
-import android.content.Context;
-import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.netease.nimlib.sdk.msg.constant.MsgDirectionEnum;
-import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
 import com.rain.chat.constant.Extras;
-import com.rain.chat.glide.GlideImageLoader;
-import com.rain.chat.glide.GlideUtils;
-import com.rain.library.controller.PhotoPickConfig;
-import com.rain.library.impl.PhotoSelectCallback;
-import com.rain.library.utils.MimeType;
-import com.rain.messagelist.MsgAdapter;
-import com.rain.messagelist.listener.SessionEventListener;
-import com.rain.messagelist.listener.ViewHolderEventListener;
-import com.rain.messagelist.message.MessageType;
 import com.rain.messagelist.message.SessionType;
-import com.rain.messagelist.model.IMessage;
-import com.rain.messagelist.model.ImageLoader;
-import com.ycbl.im.uikit.msg.IMessageBuilder;
-import com.ycbl.im.uikit.msg.controller.IMessageController;
-import com.ycbl.im.uikit.msg.models.MyMessage;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import cc.shinichi.library.ImagePreview;
 
 public class P2PMessageActivity extends BaseMessageActivity {
     private static final String TAG = "P2PMessageActivity";

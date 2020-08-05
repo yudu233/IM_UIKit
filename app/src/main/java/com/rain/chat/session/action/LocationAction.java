@@ -1,8 +1,9 @@
-package com.rain.inputpanel.action;
+package com.rain.chat.session.action;
 
 import android.util.Log;
 
-import com.rain.inputpanel.R;
+import com.rain.chat.R;
+import com.rain.inputpanel.action.BaseAction;
 
 /**
  * @Author : Rain
@@ -19,5 +20,6 @@ public class LocationAction extends BaseAction {
     @Override
     public void onClick() {
         Log.e(TAG, "onClick: " + "位置");
+
     }
 }

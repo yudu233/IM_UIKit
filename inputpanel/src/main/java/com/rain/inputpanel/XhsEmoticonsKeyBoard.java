@@ -38,7 +38,9 @@ public class XhsEmoticonsKeyBoard extends AutoHeightLayout implements View.OnCli
         EmoticonsEditText.OnBackKeyClickListener,
         FuncLayout.OnFuncChangeListener {
 
+    //表情
     public static final int FUNC_TYPE_EMOTION = -1;
+    //更多功能
     public static final int FUNC_TYPE_APPPS = -2;
 
     protected LayoutInflater mInflater;
@@ -67,14 +69,24 @@ public class XhsEmoticonsKeyBoard extends AutoHeightLayout implements View.OnCli
         initFuncView();
     }
 
+    /**
+     * 加载表情键盘布局
+     */
     protected void inflateKeyboardBar() {
         mInflater.inflate(R.layout.view_chatinput, this);
     }
 
+    /**
+     * 加载功能菜单布局
+     * @return
+     */
     protected View inflateFunc() {
         return mInflater.inflate(R.layout.layout_chatinput_emoji, null);
     }
 
+    /**
+     * 初始化View
+     */
     protected void initView() {
         buttonVoiceOrText = findViewById(R.id.btn_voice_or_text);
         buttonVoice = findViewById(R.id.btn_voice);
@@ -90,6 +102,9 @@ public class XhsEmoticonsKeyBoard extends AutoHeightLayout implements View.OnCli
         funcLayout = findViewById(R.id.funcLayout);
     }
 
+    /**
+     * 初始化功能菜单View
+     */
     protected void initFuncView() {
         initEmoticonFuncView();
         initEditView();
@@ -133,7 +148,6 @@ public class XhsEmoticonsKeyBoard extends AutoHeightLayout implements View.OnCli
                 if (!TextUtils.isEmpty(s)) {
                     buttonSendMessage.setVisibility(VISIBLE);
                     buttonMoreFunctionInText.setVisibility(GONE);
-                    //  mBtnSend.setBackgroundResource(R.drawable.btn_send_bg);
                 } else {
                     buttonMoreFunctionInText.setVisibility(VISIBLE);
                     buttonSendMessage.setVisibility(GONE);
@@ -161,7 +175,6 @@ public class XhsEmoticonsKeyBoard extends AutoHeightLayout implements View.OnCli
     public void reset() {
         EmoticonsKeyboardUtils.closeSoftKeyboard(this);
         funcLayout.hideAllFuncView();
-        // mBtnFace.setImageResource(R.drawable.icon_face_nomal);
     }
 
     protected void showVoice() {
@@ -190,11 +203,6 @@ public class XhsEmoticonsKeyBoard extends AutoHeightLayout implements View.OnCli
 
     @Override
     public void onFuncChange(int key) {
-        if (FUNC_TYPE_EMOTION == key) {
-            // mBtnFace.setImageResource(R.drawable.icon_face_pop);
-        } else {
-            //  mBtnFace.setImageResource(R.drawable.icon_face_nomal);
-        }
         checkVoice();
     }
 
@@ -258,6 +266,8 @@ public class XhsEmoticonsKeyBoard extends AutoHeightLayout implements View.OnCli
                 EmoticonsKeyboardUtils.openSoftKeyboard(inputTextView);
             }
         } else if (i == R.id.btn_face_or_text) {
+            buttonFaceOrText.setImageResource(isSoftKeyboardPop() ? R.drawable.btn_voice_or_text_keyboard :
+                    R.drawable.icon_face_normal);
             toggleFuncView(FUNC_TYPE_EMOTION);
         } else if (i == R.id.buttonMoreFunctionInText) {
             toggleFuncView(FUNC_TYPE_APPPS);

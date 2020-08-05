@@ -42,6 +42,10 @@ public class MessageListPanelEx implements MessageLoader.LoadMessagesListener {
     private MsgAdapter msgAdapter;
     private SwipeRefreshLayout refreshLayout;
 
+    public MsgAdapter getMsgAdapter() {
+        return msgAdapter;
+    }
+
     public MessageListPanelEx(Container container, View rootView, boolean recordOnly, boolean remote) {
         this(container, rootView, null, recordOnly, remote);
     }
