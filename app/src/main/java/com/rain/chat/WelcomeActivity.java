@@ -17,6 +17,7 @@ import com.netease.nimlib.sdk.StatusCode;
 import com.netease.nimlib.sdk.auth.AuthService;
 import com.netease.nimlib.sdk.auth.AuthServiceObserver;
 import com.netease.nimlib.sdk.auth.LoginInfo;
+import com.rain.chat.base.IM;
 import com.rain.chat.config.Preferences;
 
 /**
@@ -101,7 +102,8 @@ public class WelcomeActivity extends AppCompatActivity {
         String token = Preferences.getUserToken();
 
         Log.i(TAG, "get local sdk token =" + token);
+
+
         return !TextUtils.isEmpty(account) && !TextUtils.isEmpty(token);
     }
-
 }

@@ -1,6 +1,6 @@
 package com.rain.chat.session.module;
 
-import android.app.Activity;
+import androidx.fragment.app.FragmentActivity;
 
 import com.rain.messagelist.message.SessionType;
 
@@ -13,12 +13,12 @@ import com.rain.messagelist.message.SessionType;
  * @Describe:
  */
 public class Container {
-    public final Activity activity;
+    public final FragmentActivity activity;
     public final String account;
     public final SessionType sessionType;
     public final ModuleProxy proxy;
 
-    public Container(Activity activity, String account, SessionType sessionType, ModuleProxy proxy) {
+    public Container(FragmentActivity activity, String account, SessionType sessionType, ModuleProxy proxy) {
         this.activity = activity;
         this.account = account;
         this.sessionType = sessionType;

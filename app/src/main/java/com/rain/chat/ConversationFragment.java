@@ -18,6 +18,7 @@ import com.netease.nimlib.sdk.msg.MsgService;
 import com.netease.nimlib.sdk.msg.MsgServiceObserve;
 import com.netease.nimlib.sdk.msg.model.RecentContact;
 import com.rain.chat.adapter.ConversationAdapter;
+import com.rain.chat.base.IM;
 import com.rain.messagelist.message.SessionType;
 import com.ycbl.im.uikit.msg.IMessageBuilder;
 
@@ -54,7 +55,7 @@ public class ConversationFragment extends Fragment {
         initView();
         initData();
         initListener();
-        IMessageBuilder.createEmptyMessage("222", SessionType.P2P,0);
+        IM.getIMessageBuilder().createEmptyMessage("222", SessionType.P2P,0);
     }
 
     private void initListener() {

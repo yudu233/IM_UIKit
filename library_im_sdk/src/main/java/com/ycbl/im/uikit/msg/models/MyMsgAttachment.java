@@ -9,7 +9,7 @@ import com.rain.messagelist.model.IMsgAttachment;
  * @Email: yudu233@gmail.com
  * @ClassName: IMsgAttachment
  * @CreateDate: 2020/6/30 0:05
- * @Describe:
+ * @Describe: 自定义消息扩展
  */
 public class MyMsgAttachment implements IMsgAttachment {
     private MsgAttachment attachment;
@@ -21,5 +21,9 @@ public class MyMsgAttachment implements IMsgAttachment {
     @Override
     public String toJson(boolean send) {
         return attachment.toJson(send);
+    }
+
+    public MsgAttachment getAttachment() {
+        return attachment;
     }
 }

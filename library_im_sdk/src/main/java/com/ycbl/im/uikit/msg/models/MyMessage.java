@@ -18,7 +18,7 @@ import java.util.Map;
  * @Email: yudu233@gmail.com
  * @ClassName: MyMessage
  * @CreateDate: 2020/6/6 14:20
- * @Describe:
+ * @Describe: 消息体
  */
 public class MyMessage implements IMessage, Serializable {
 

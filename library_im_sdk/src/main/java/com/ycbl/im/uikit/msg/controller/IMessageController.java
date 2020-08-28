@@ -49,7 +49,4 @@ public class IMessageController {
                 .sendMessage(message.getMessage(), resend)
                 .setCallback(callback);
     }
-
-
-
 }

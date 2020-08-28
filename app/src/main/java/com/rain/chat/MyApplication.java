@@ -8,16 +8,8 @@ import android.text.TextUtils;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.auth.LoginInfo;
 import com.rain.chat.config.Preferences;
-import com.rain.chat.session.action.ImageAction;
-import com.rain.chat.session.action.LocationAction;
-import com.rain.chat.session.action.VideoAction;
-import com.rain.inputpanel.action.ActionController;
-import com.rain.inputpanel.action.BaseAction;
-import com.rain.library.PhotoPick;
-import com.rain.library.PhotoPickOptions;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.rain.crow.PhotoPick;
+import com.rain.crow.PhotoPickOptions;
 
 /**
  * @Author : Rain
@@ -39,12 +31,6 @@ public class MyApplication extends Application {
         // SDK初始化（启动后台服务，若已经存在用户登录信息， SDK 将完成自动登录）
         NIMClient.init(this, loginInfo(), null);
 
-
-        List<BaseAction> actions = new ArrayList<>();
-        actions.add(new ImageAction());
-        actions.add(new VideoAction());
-        actions.add(new LocationAction());
-        ActionController.getInstance().addActions(actions);
     }
 
     // 如果已经存在用户登录信息，返回LoginInfo，否则返回null即可
@@ -64,7 +50,6 @@ public class MyApplication extends Application {
         PhotoPickOptions options = new PhotoPickOptions();
         options.filePath = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
         options.imagePath = options.filePath + "im/";
-        options.photoPickAuthority = context.getString(R.string.file_provider_authorities);
         options.photoPickThemeColor = R.color.colorAccent;
         return options;
     }

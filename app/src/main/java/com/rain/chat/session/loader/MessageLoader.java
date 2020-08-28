@@ -14,6 +14,7 @@ import com.netease.nimlib.sdk.msg.MsgService;
 import com.netease.nimlib.sdk.msg.constant.MsgTypeEnum;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
 import com.netease.nimlib.sdk.msg.model.QueryDirectionEnum;
+import com.rain.chat.base.IM;
 import com.rain.chat.session.module.Container;
 import com.rain.messagelist.MsgAdapter;
 import com.rain.messagelist.message.MessageType;
@@ -243,7 +244,8 @@ public class MessageLoader implements BaseQuickAdapter.UpFetchListener {
      */
     private MyMessage anchor() {
         if (adapter.getData().size() == 0) {
-            return anchor == null ? IMessageBuilder.createEmptyMessage(container.account, container.sessionType, 0) : anchor;
+
+            return anchor == null ? IM.getIMessageBuilder().createEmptyMessage(container.account, container.sessionType, 0) : anchor;
         } else {
             int index = (direction == QueryDirectionEnum.QUERY_NEW ? adapter.getData().size() - 1 : 0);
             MyMessage message = (MyMessage) adapter.getData().get(index);
@@ -361,10 +363,13 @@ public class MessageLoader implements BaseQuickAdapter.UpFetchListener {
     }
 
     public interface LoadMessagesListener {
+        //消息加载中
         void messageLoading();
 
+        //消息加载完成
         void loadMessageComplete();
 
+        //消息加载失败
         void loadMessageError();
     }
 }

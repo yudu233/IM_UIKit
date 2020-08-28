@@ -9,7 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * UIKit 与 app 聊天室成员变化监听接口
+ * @Author : Rain
+ * @Version : 1.0
+ * @CreateDate :  2020/8/10 16:02
+ * @Description :UIKit 与 app 聊天室成员变化监听接口
  */
 
 public class ChatRoomMemberChangedObservable {

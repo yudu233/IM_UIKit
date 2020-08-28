@@ -3,7 +3,10 @@ package com.ycbl.im.uikit.api.model.contact;
 import android.content.Context;
 
 /**
- * 通讯录联系人列表一些点击事件的响应处理函数
+ * @Author : Rain
+ * @Version : 1.0
+ * @CreateDate :  2020/8/10 16:07
+ * @Description : 通讯录联系人列表一些点击事件的响应处理函数
  */
 public interface ContactEventListener {
     /**

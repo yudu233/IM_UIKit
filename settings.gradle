@@ -1,3 +1,7 @@
+include ':crow'
+include ':crow'
+include ':crow'
+include ':library_netease_sdk'
 rootProject.name='IM_UIKit'
 include ':app'
 include ':messagelist'

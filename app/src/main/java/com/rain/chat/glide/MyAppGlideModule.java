@@ -56,6 +56,12 @@ public class MyAppGlideModule extends AppGlideModule {
                 File.pathSeparator + diskCacheFolderName());
     }
 
+    @Override
+    public boolean isManifestParsingEnabled() {
+        return false;
+    }
+
+
     /**
      * 内存缓存
      * set the memory cache size, unit is the [Byte].

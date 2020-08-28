@@ -3,7 +3,10 @@ package com.ycbl.im.uikit.api.model.contact;
 import java.util.List;
 
 /**
- * 通讯录（联系人）数据源提供者
+ * @Author : Rain
+ * @Version : 1.0
+ * @CreateDate :  2020/8/10 16:07
+ * @Description : 通讯录（联系人）数据源提供者
  */
 public interface ContactProvider {
     /**

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <array name="pick_image_arrays">
+        <item>拍摄</item>
+        <item>从手机相册选择</item>
+    </array>
+
+    <array name="pick_video_arrays">
+        <item>拍摄视频</item>
+        <item>从相册中选择视频</item>
+    </array>
+
+</resources>

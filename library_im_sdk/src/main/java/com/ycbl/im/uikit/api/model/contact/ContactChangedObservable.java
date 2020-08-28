@@ -7,7 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 好友关系变动观察者管理
+ * @Author : Rain
+ * @Version : 1.0
+ * @CreateDate :  2020/8/10 16:03
+ * @Description : 好友关系变动观察者管理
  */
 
 public class ContactChangedObservable {
@@ -30,6 +33,11 @@ public class ContactChangedObservable {
         }
     }
 
+    /**
+     * 增加或者更新好友
+     *
+     * @param accounts 账号列表
+     */
     public synchronized void notifyAddedOrUpdated(final List<String> accounts) {
         uiHandler.post(() -> {
             for (ContactChangedObserver observer : observers) {
@@ -38,6 +46,11 @@ public class ContactChangedObservable {
         });
     }
 
+    /**
+     * 删除好友
+     *
+     * @param accounts 账号列表
+     */
     public synchronized void notifyDelete(final List<String> accounts) {
         uiHandler.post(() -> {
             for (ContactChangedObserver observer : observers) {
@@ -46,6 +59,11 @@ public class ContactChangedObservable {
         });
     }
 
+    /**
+     * 增加到黑名单
+     *
+     * @param accounts 账号列表
+     */
     public synchronized void notifyAddToBlackList(final List<String> accounts) {
         uiHandler.post(() -> {
             for (ContactChangedObserver observer : observers) {
@@ -54,6 +72,11 @@ public class ContactChangedObservable {
         });
     }
 
+    /**
+     * 从黑名单移除
+     *
+     * @param accounts 账号列表
+     */
     public synchronized void notifyRemoveFromBlackList(final List<String> accounts) {
         uiHandler.post(() -> {
             for (ContactChangedObserver observer : observers) {

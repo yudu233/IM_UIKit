@@ -99,6 +99,7 @@ public class MessageListPanelEx implements MessageLoader.LoadMessagesListener {
         mRecyclerView.scrollToPosition(msgAdapter.getData().size() - 1);
     }
 
+
     @Override
     public void messageLoading() {
         refreshLayout.setRefreshing(true);
@@ -116,5 +117,24 @@ public class MessageListPanelEx implements MessageLoader.LoadMessagesListener {
         if (refreshLayout.isRefreshing()) {
             refreshLayout.setRefreshing(false);
         }
+    }
+
+    // 发送消息后，更新本地消息列表
+    public void onMsgSend(MyMessage message) {
+        //主动添加新消息
+        List<MyMessage> addedListItems = new ArrayList<>(1);
+        addedListItems.add(message);
+        msgAdapter.updateShowTimeItem(addedListItems, false, true);
+
+        msgAdapter.addMessage(message);
+        // FIXME: 2020/8/28 领取红包发tips消息后不滚动到底部
+        doScrollToBottom();
+    }
+
+    /**
+     * 列表滚动到底部
+     */
+    public void doScrollToBottom() {
+        mRecyclerView.scrollToPosition(msgAdapter.getData().size() - 1);
     }
 }

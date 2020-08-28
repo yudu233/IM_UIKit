@@ -7,9 +7,11 @@ import com.ycbl.im.uikit.api.model.SimpleCallback;
 import java.util.List;
 
 /**
- * 聊天室成员提供者
+ * @Author : Rain
+ * @Version : 1.0
+ * @CreateDate :  2020/8/10 16:03
+ * @Description : 聊天室成员提供者
  */
-
 public interface ChatRoomProvider {
 
     /**

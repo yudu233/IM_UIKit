@@ -40,4 +40,8 @@ public class ActionController {
     public void addActions(List<BaseAction> data){
         actions.addAll(data);
     }
+
+    public void clearActions(){
+        actions.clear();
+    }
 }

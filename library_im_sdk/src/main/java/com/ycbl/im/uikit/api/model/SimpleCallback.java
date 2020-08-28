@@ -1,7 +1,10 @@
 package com.ycbl.im.uikit.api.model;
 
 /**
- * 简单的回调接口
+ * @Author : Rain
+ * @Version : 1.0
+ * @CreateDate :  2020/8/10 16:08
+ * @Description : 简单的回调接口
  */
 public interface SimpleCallback<T> {
 

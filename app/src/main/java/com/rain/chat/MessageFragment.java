@@ -19,13 +19,20 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.fragment.app.Fragment;
 
+import com.netease.nimlib.sdk.RequestCallback;
+import com.rain.chat.base.IM;
 import com.rain.chat.constant.Extras;
 import com.rain.chat.glide.GlideUtils;
+import com.rain.chat.session.action.ImageAction;
+import com.rain.chat.session.action.LocationAction;
+import com.rain.chat.session.action.VideoAction;
 import com.rain.chat.session.list.MessageListPanelEx;
 import com.rain.chat.session.module.Container;
+import com.rain.chat.session.module.CustomerBaseAction;
 import com.rain.chat.session.module.ModuleProxy;
-import com.rain.chat.weight.SimpleAppsGridView;
 import com.rain.inputpanel.XhsEmoticonsKeyBoard;
+import com.rain.inputpanel.action.ActionController;
+import com.rain.inputpanel.action.BaseAction;
 import com.rain.inputpanel.data.EmoticonEntity;
 import com.rain.inputpanel.emoji.Constants;
 import com.rain.inputpanel.emoji.EmojiBean;
@@ -39,6 +46,7 @@ import com.rain.messagelist.message.MessageType;
 import com.rain.messagelist.message.SessionType;
 import com.rain.messagelist.model.IMessage;
 import com.rain.messagelist.model.ImageLoader;
+import com.ycbl.im.uikit.msg.controller.IMessageController;
 import com.ycbl.im.uikit.msg.models.MyMessage;
 
 import java.util.ArrayList;
@@ -70,10 +78,29 @@ public class MessageFragment extends Fragment implements ModuleProxy, FuncLayout
     protected MessageListPanelEx messageListPanel;
     private View rootView;
     private XhsEmoticonsKeyBoard inputView;
+    private MyMessage anchor;
 
 
     public static MessageFragment newInstance() {
         return new MessageFragment();
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Bundle arguments = getArguments();
+        sessionId = arguments.getString(Extras.EXTRA_ACCOUNT);
+        sessionType = (SessionType) arguments.getSerializable(Extras.EXTRA_SESSION_TYPE);
+        anchor = (MyMessage) arguments.getSerializable(Extras.EXTRA_ANCHOR);
+        container = new Container(getActivity(), sessionId, sessionType, this);
+
+        //初始化功能消息菜单栏
+        List<BaseAction> actionList = getActionList();
+        ActionController.getInstance().addActions(actionList);
+        for (int i = 0; i < actionList.size(); i++) {
+            CustomerBaseAction action = (CustomerBaseAction) actionList.get(i);
+            action.setContainer(container);
+        }
     }
 
     @Nullable
@@ -101,31 +128,31 @@ public class MessageFragment extends Fragment implements ModuleProxy, FuncLayout
     }
 
     private void parseIntent() {
-        Bundle arguments = getArguments();
-        sessionId = arguments.getString(Extras.EXTRA_ACCOUNT);
-        sessionType = (SessionType) arguments.getSerializable(Extras.EXTRA_SESSION_TYPE);
-        MyMessage anchor = (MyMessage) arguments.getSerializable(Extras.EXTRA_ANCHOR);
-        container = new Container(getActivity(), sessionId, sessionType, this);
-
-
         if (messageListPanel == null) {
             messageListPanel = new MessageListPanelEx(container, rootView, anchor, false, true);
         } else {
 //            messageListPanel.reload(container, anchor);
         }
-
         adapterDefaultConfig();
+    }
+
+    private List<BaseAction> getActionList() {
+        List<BaseAction> actions = new ArrayList<>();
+        actions.add(new ImageAction());
+        actions.add(new VideoAction());
+        actions.add(new LocationAction());
+        return actions;
     }
 
     private void adapterDefaultConfig() {
         MsgAdapter msgAdapter = messageListPanel.getMsgAdapter();
 
         //模拟铁粉
-        List<String> fans = Arrays.asList("1", "2", "3", "4", "5","2018cytx3","2018cytx2");
+        List<String> fans = Arrays.asList("1", "2", "3", "4", "5", "2018cytx3", "2018cytx2");
         msgAdapter.setImageLoader(new ImageLoader() {
             @Override
             public void loadAvatarImage(FrameLayout frameLayout, boolean isReceiveMessage, String account) {
-                Log.e(TAG,account);
+                Log.e(TAG, account);
                 if (isReceiveMessage && fans.contains(account)) {
                     ImageView imageView = new ImageView(getActivity());
                     LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
@@ -215,8 +242,46 @@ public class MessageFragment extends Fragment implements ModuleProxy, FuncLayout
         SimpleCommonUtils.initEmoticonsEditText(inputView.getEtChat());
         inputView.setAdapter(SimpleCommonUtils.getCommonAdapter(getActivity(), emoticonClickListener));
         inputView.addOnFuncKeyBoardListener(this);
-//        inputView.addFuncView(new SimpleAppsGridView(getActivity()));
 
+        inputView.getEtChat().setOnSizeChangedListener((w, h, oldw, oldh) ->
+                messageListPanel.doScrollToBottom());
+
+        //发送文本消息
+        inputView.getBtnSend().setOnClickListener(v -> {
+            MyMessage message = IM.getIMessageBuilder().createTextMessage(
+                    sessionId, sessionType, inputView.getEtChat().getText().toString());
+            sendMessage(message);
+            inputView.getEtChat().setText("");
+        });
+
+    }
+
+    /**
+     * 发送消息
+     *
+     * @param message
+     */
+    private void sendMessage(MyMessage message) {
+        IMessageController.sendMessage(message, false, new RequestCallback<Void>() {
+            @Override
+            public void onSuccess(Void param) {
+                //消息发送成功
+            }
+
+            @Override
+            public void onFailed(int code) {
+                //消息发送失败
+
+            }
+
+            @Override
+            public void onException(Throwable exception) {
+                //异常
+            }
+        });
+
+        //发送消息后，更新本地消息列表
+        messageListPanel.onMsgSend(message);
     }
 
 
@@ -255,7 +320,7 @@ public class MessageFragment extends Fragment implements ModuleProxy, FuncLayout
 
     @Override
     public void OnFuncPop(int height) {
-
+        messageListPanel.doScrollToBottom();
     }
 
     @Override
@@ -281,12 +346,12 @@ public class MessageFragment extends Fragment implements ModuleProxy, FuncLayout
     @Override
     public void onDestroy() {
         super.onDestroy();
+        ActionController.getInstance().clearActions();
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
     }
-
 
 }

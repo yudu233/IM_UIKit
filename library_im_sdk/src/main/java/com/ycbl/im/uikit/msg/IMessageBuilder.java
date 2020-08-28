@@ -1,21 +1,10 @@
 package com.ycbl.im.uikit.msg;
 
-import android.media.MediaPlayer;
-import android.net.Uri;
-import android.util.Log;
-
-import com.netease.nimlib.sdk.NIMClient;
-import com.netease.nimlib.sdk.msg.MessageBuilder;
-import com.netease.nimlib.sdk.msg.MsgService;
-import com.netease.nimlib.sdk.msg.attachment.MsgAttachment;
-import com.netease.nimlib.sdk.msg.constant.MsgTypeEnum;
-import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
 import com.netease.nimlib.sdk.msg.model.CustomMessageConfig;
-import com.netease.nimlib.sdk.msg.model.IMMessage;
-import com.rain.messagelist.message.MessageType;
 import com.rain.messagelist.message.SessionType;
-import com.ycbl.im.uikit.msg.models.DefaultUser;
 import com.ycbl.im.uikit.msg.models.MyMessage;
+import com.ycbl.im.uikit.msg.models.MyMsgAttachment;
+import com.ycbl.im.uikit.msg.test.MessageStrategy;
 
 import java.io.File;
 
@@ -28,19 +17,23 @@ import java.io.File;
  */
 public class IMessageBuilder {
 
+
+    private MessageStrategy messageStrategy;
+
+    public IMessageBuilder(MessageStrategy messageStrategy) {
+        this.messageStrategy = messageStrategy;
+    }
+
     /**
      * 创建一条普通文本消息
      *
      * @param sessionId   聊天对象ID
      * @param sessionType 会话类型
      * @param text        文本消息内容
-     * @return IMMessage 生成的消息对象
+     * @return 文本消息
      */
-    public static MyMessage createTextMessage(String sessionId, SessionType sessionType, String text) {
-        SessionTypeEnum sessionTypeEnum = covertSessionType(sessionType);
-        IMMessage textMessage = MessageBuilder.createTextMessage(sessionId, sessionTypeEnum, text);
-        MyMessage iMessage = new MyMessage(MessageType.text, textMessage, new DefaultUser(textMessage));
-        return iMessage;
+    public MyMessage createTextMessage(String sessionId, SessionType sessionType, String text) {
+        return messageStrategy.createTextMessage(sessionId, sessionType, text);
     }
 
     /**
@@ -50,14 +43,11 @@ public class IMessageBuilder {
      * @param sessionType 会话类型
      * @param file        图片文件
      * @param displayName 图片文件的显示名，可不同于文件名
-     * @return IMMessage 生成的消息对象
+     * @return 图片消息
      */
-    public static MyMessage createImageMessage(String sessionId, SessionType sessionType,
-                                               File file, String displayName) {
-        SessionTypeEnum sessionTypeEnum = covertSessionType(sessionType);
-        IMMessage imageMessage = MessageBuilder.createImageMessage(sessionId, sessionTypeEnum, file, displayName);
-        MyMessage iMessage = new MyMessage(MessageType.image, imageMessage, new DefaultUser(imageMessage));
-        return iMessage;
+    public MyMessage createImageMessage(String sessionId, SessionType sessionType,
+                                        File file, String displayName) {
+        return messageStrategy.createImageMessage(sessionId, sessionType, file, displayName);
     }
 
     /**
@@ -67,14 +57,11 @@ public class IMessageBuilder {
      * @param sessionType 会话类型
      * @param file        音频文件对象
      * @param duration    音频文件持续时间，单位是ms
-     * @return IMMessage 生成的消息对象
+     * @return 音频消息
      */
-    public static MyMessage createAudioMessage(String sessionId, SessionType sessionType,
-                                               File file, long duration) {
-        SessionTypeEnum sessionTypeEnum = covertSessionType(sessionType);
-        IMMessage audioMessage = MessageBuilder.createAudioMessage(sessionId, sessionTypeEnum, file, duration);
-        MyMessage iMessage = new MyMessage(MessageType.audio, audioMessage, new DefaultUser(audioMessage));
-        return iMessage;
+    public MyMessage createAudioMessage(String sessionId, SessionType sessionType,
+                                        File file, long duration) {
+        return messageStrategy.createAudioMessage(sessionId, sessionType, file, duration);
     }
 
     /**
@@ -85,14 +72,11 @@ public class IMessageBuilder {
      * @param lat         纬度
      * @param lng         经度
      * @param addr        地理位置描述信息
-     * @return IMMessage 生成的消息对象
+     * @return 位置消息
      */
-    public static MyMessage createLocationMessage(String sessionId, SessionType sessionType,
-                                                  double lat, double lng, String addr) {
-        SessionTypeEnum sessionTypeEnum = covertSessionType(sessionType);
-        IMMessage locationMessage = MessageBuilder.createLocationMessage(sessionId, sessionTypeEnum, lat, lng, addr);
-        MyMessage iMessage = new MyMessage(MessageType.location, locationMessage, new DefaultUser(locationMessage));
-        return iMessage;
+    public MyMessage createLocationMessage(String sessionId, SessionType sessionType,
+                                           double lat, double lng, String addr) {
+        return messageStrategy.createLocationMessage(sessionId, sessionType, lat, lng, addr);
     }
 
     /**
@@ -107,13 +91,9 @@ public class IMessageBuilder {
      * @param displayName 视频文件显示名，可以为空
      * @return 视频消息
      */
-    public static MyMessage createVideoMessage(String sessionId, SessionType sessionType,
-                                               File file, long duration, int width, int height, String displayName) {
-        SessionTypeEnum sessionTypeEnum = covertSessionType(sessionType);
-        IMMessage videoMessage = MessageBuilder.createVideoMessage(
-                sessionId, sessionTypeEnum, file, duration, width, height, displayName);
-        MyMessage iMessage = new MyMessage(MessageType.video, videoMessage, new DefaultUser(videoMessage));
-        return iMessage;
+    public MyMessage createVideoMessage(String sessionId, SessionType sessionType,
+                                        File file, long duration, int width, int height, String displayName) {
+        return messageStrategy.createVideoMessage(sessionId, sessionType, file, duration, width, height, displayName);
     }
 
     /**
@@ -123,15 +103,11 @@ public class IMessageBuilder {
      * @param sessionType 会话类型
      * @param file        文件
      * @param displayName 文件的显示名，可不同于文件名
-     * @return IMMessage 生成的消息对象
+     * @return 文件消息
      */
-    public static MyMessage createFileMessage(String sessionId, SessionType sessionType,
-                                              File file, String displayName) {
-        SessionTypeEnum sessionTypeEnum = covertSessionType(sessionType);
-        IMMessage fileMessage = MessageBuilder.createFileMessage(
-                sessionId, sessionTypeEnum, file, displayName);
-        MyMessage iMessage = new MyMessage(MessageType.file, fileMessage, new DefaultUser(fileMessage));
-        return iMessage;
+    public MyMessage createFileMessage(String sessionId, SessionType sessionType,
+                                       File file, String displayName) {
+        return messageStrategy.createFileMessage(sessionId, sessionType, file, displayName);
     }
 
     /**
@@ -139,14 +115,10 @@ public class IMessageBuilder {
      *
      * @param sessionId   聊天对象ID
      * @param sessionType 会话类型
-     * @return IMMessage 生成的消息对象
+     * @return 提醒消息
      */
-    public static MyMessage createTipMessage(String sessionId, SessionType sessionType) {
-        SessionTypeEnum sessionTypeEnum = covertSessionType(sessionType);
-        IMMessage fileMessage = MessageBuilder.createTipMessage(
-                sessionId, sessionTypeEnum);
-        MyMessage iMessage = new MyMessage(MessageType.tip, fileMessage, new DefaultUser(fileMessage));
-        return iMessage;
+    public MyMessage createTipMessage(String sessionId, SessionType sessionType) {
+        return messageStrategy.createTipMessage(sessionId, sessionType);
     }
 
     /**
@@ -158,8 +130,8 @@ public class IMessageBuilder {
      * @param attachment  消息附件对象
      * @return 自定义消息
      */
-    public static MyMessage createCustomMessage(String sessionId, SessionType sessionType,
-                                                String content, MsgAttachment attachment) {
+    public MyMessage createCustomMessage(String sessionId, SessionType sessionType,
+                                         String content, MyMsgAttachment attachment) {
         return createCustomMessage(sessionId, sessionType, content, attachment, null);
     }
 
@@ -173,13 +145,9 @@ public class IMessageBuilder {
      * @param config      自定义消息配置
      * @return 自定义消息
      */
-    public static MyMessage createCustomMessage(String sessionId, SessionType sessionType,
-                                                String content, MsgAttachment attachment, CustomMessageConfig config) {
-        SessionTypeEnum sessionTypeEnum = covertSessionType(sessionType);
-        IMMessage customMessage = MessageBuilder.createCustomMessage(
-                sessionId, sessionTypeEnum, content, attachment, config);
-        MyMessage iMessage = new MyMessage(MessageType.custom, customMessage, new DefaultUser(customMessage));
-        return iMessage;
+    public MyMessage createCustomMessage(String sessionId, SessionType sessionType,
+                                         String content, MyMsgAttachment attachment, CustomMessageConfig config) {
+        return messageStrategy.createCustomMessage(sessionId, sessionType, content, attachment, config);
     }
 
     /**
@@ -190,33 +158,7 @@ public class IMessageBuilder {
      * @param time        查询的时间起点信息
      * @return 空消息
      */
-    public static MyMessage createEmptyMessage(String sessionId, SessionType sessionType, long time) {
-        SessionTypeEnum sessionTypeEnum = covertSessionType(sessionType);
-        IMMessage emptyMessage = MessageBuilder.createEmptyMessage(sessionId, sessionTypeEnum, time);
-        MyMessage iMessage = new MyMessage(MessageType.text, emptyMessage, new DefaultUser(emptyMessage));
-        return iMessage;
-    }
-
-    /**
-     * covert SessionType to SessionTypeEnum
-     *
-     * @param sessionType
-     * @return SessionTypeEnum
-     */
-    protected static SessionTypeEnum covertSessionType(SessionType sessionType) {
-        switch (sessionType) {
-            case P2P:
-                return SessionTypeEnum.P2P;
-            case Team:
-                return SessionTypeEnum.Team;
-            case System:
-                return SessionTypeEnum.System;
-            case ChatRoom:
-                return SessionTypeEnum.ChatRoom;
-            case SUPER_TEAM:
-                return SessionTypeEnum.SUPER_TEAM;
-            default:
-                return SessionTypeEnum.None;
-        }
+    public MyMessage createEmptyMessage(String sessionId, SessionType sessionType, long time) {
+        return messageStrategy.createEmptyMessage(sessionId, sessionType, time);
     }
 }

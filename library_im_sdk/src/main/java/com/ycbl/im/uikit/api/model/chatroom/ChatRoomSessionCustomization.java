@@ -5,8 +5,7 @@ import java.io.Serializable;
 /**
  * @Author : Rain
  * @Version : 1.0
- * @Org : https://www.yudu233.com
- * @CreateDate :  2020/5/15 10:39
+ * @CreateDate :  2020/8/10 16:03
  * @Description : 聊天室聊天界面定制化参数。 可定制：<br>
  * 1. 加号展开后的按钮和动作 <br>
  */

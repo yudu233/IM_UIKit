@@ -3,7 +3,10 @@ package com.ycbl.im.uikit.api.model.chatroom;
 import com.netease.nimlib.sdk.chatroom.model.ChatRoomMember;
 
 /**
- * UIKit 与 app 聊天室成员数据变更监听接口
+ * @Author : Rain
+ * @Version : 1.0
+ * @CreateDate :  2020/8/10 16:03
+ * @Description : UIKit 与 app 聊天室成员数据变更监听接口
  */
 
 public interface RoomMemberChangedObserver {
