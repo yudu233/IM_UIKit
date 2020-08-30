@@ -327,7 +327,7 @@ public class XhsEmoticonsKeyBoard extends AutoHeightLayout implements View.OnCli
         }
         switch (event.getKeyCode()) {
             case KeyEvent.KEYCODE_BACK:
-                if (EmoticonsKeyboardUtils.isFullScreen((Activity) getContext()) && funcLayout.isShown()) {
+                if ( funcLayout.isShown()) {
                     reset();
                     return true;
                 }

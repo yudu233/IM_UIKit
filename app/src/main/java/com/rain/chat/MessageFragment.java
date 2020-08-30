@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -145,6 +146,10 @@ public class MessageFragment extends Fragment implements ModuleProxy, FuncLayout
     }
 
     private void adapterDefaultConfig() {
+        messageListPanel.getRecyclerView().setOnTouchListener((v, event) -> {
+            inputView.reset();
+            return false;
+        });
         MsgAdapter msgAdapter = messageListPanel.getMsgAdapter();
 
         //模拟铁粉
@@ -325,8 +330,8 @@ public class MessageFragment extends Fragment implements ModuleProxy, FuncLayout
 
     @Override
     public void OnFuncClose() {
-
     }
+
 
     @Override
     public void onResume() {
@@ -354,4 +359,7 @@ public class MessageFragment extends Fragment implements ModuleProxy, FuncLayout
         super.onDestroyView();
     }
 
+    public boolean isFullScreenFuncView(KeyEvent event) {
+        return inputView.dispatchKeyEventInFullScreen(event);
+    }
 }

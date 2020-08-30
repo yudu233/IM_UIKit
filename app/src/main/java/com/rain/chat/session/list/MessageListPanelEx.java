@@ -46,6 +46,10 @@ public class MessageListPanelEx implements MessageLoader.LoadMessagesListener {
         return msgAdapter;
     }
 
+    public RecyclerView getRecyclerView() {
+        return mRecyclerView;
+    }
+
     public MessageListPanelEx(Container container, View rootView, boolean recordOnly, boolean remote) {
         this(container, rootView, null, recordOnly, remote);
     }
@@ -75,6 +79,7 @@ public class MessageListPanelEx implements MessageLoader.LoadMessagesListener {
         mRecyclerView.setAdapter(msgAdapter);
         MessageLoader messageLoader = new MessageLoader(container, mRecyclerView, msgAdapter, anchor, remote, this);
         msgAdapter.setUpFetchListener(messageLoader);
+
         mRecyclerView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {

@@ -6,6 +6,8 @@ import android.util.AttributeSet;
 import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
@@ -111,6 +113,13 @@ public class FuncLayout extends LinearLayout {
                 }
             }
         } else {
+            //功能菜单栏弹起/隐藏动画
+//            TranslateAnimation hideAnim = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.0f,
+//                    Animation.RELATIVE_TO_SELF, 0.0f,
+//                    Animation.RELATIVE_TO_SELF, 0.0f,
+//                    Animation.RELATIVE_TO_SELF, 1.0f);
+//            hideAnim.setDuration(500);
+//            startAnimation(hideAnim);
             setVisibility(GONE);
             params.height = 0;
             if (mListenerList != null) {

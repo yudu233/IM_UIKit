@@ -4,6 +4,7 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 
 import androidx.appcompat.widget.AppCompatTextView;
 
@@ -15,12 +16,13 @@ import java.io.File;
 public class P2PMessageActivity extends BaseMessageActivity {
     private static final String TAG = "P2PMessageActivity";
     private AppCompatTextView mTitle;
+    private MessageFragment fragment;
 
     @Override
     protected MessageFragment fragment() {
         Bundle arguments = getIntent().getExtras();
         arguments.putSerializable(Extras.EXTRA_SESSION_TYPE, SessionType.P2P);
-        MessageFragment fragment = MessageFragment.newInstance();
+        fragment = MessageFragment.newInstance();
         fragment.setArguments(arguments);
         return fragment;
     }
@@ -213,6 +215,11 @@ public class P2PMessageActivity extends BaseMessageActivity {
     @Override
     protected void onStop() {
         super.onStop();
+    }
+
+    @Override
+    boolean isFullScreenFuncView(KeyEvent event) {
+        return fragment.isFullScreenFuncView(event);
     }
 
     @Override

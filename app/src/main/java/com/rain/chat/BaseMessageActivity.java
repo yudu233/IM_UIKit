@@ -2,14 +2,12 @@ package com.rain.chat;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.netease.nimlib.sdk.NIMClient;
-import com.netease.nimlib.sdk.msg.MsgService;
-import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
 import com.rain.chat.constant.Extras;
 
 /**
@@ -34,7 +32,6 @@ public abstract class BaseMessageActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(getContentViewId());
         parseIntent();
         initToolBar();
@@ -76,4 +73,18 @@ public abstract class BaseMessageActivity extends AppCompatActivity {
         sessionId = getIntent().getStringExtra(Extras.EXTRA_ACCOUNT);
 //        NIMClient.getService(MsgService.class).clearChattingHistory(sessionId, SessionTypeEnum.P2P, true);
     }
+
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        return isFullScreenFuncView(event) ? isFullScreenFuncView(event) : super.dispatchKeyEvent(event);
+
+    }
+
+    /**
+     * 传递dispatchKeyEvent事件到Fragment，拦截处理返回键事件
+     *
+     * @param event
+     * @return
+     */
+    abstract boolean isFullScreenFuncView(KeyEvent event);
 }
