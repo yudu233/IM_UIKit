@@ -16,5 +16,5 @@ public interface ImageLoader {
     void loadAvatarImage(FrameLayout frameLayout, boolean isReceiveMessage, String account);
 
     //加载图片/视频消息封面(可具体ViewHolder实现)
-    void loadMessageImage(AppCompatImageView imageView, int width,int height,String path);
+    void loadMessageImage(AppCompatImageView imageView, int width,int height,String path,String extension);
 }

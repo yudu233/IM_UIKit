@@ -16,6 +16,9 @@ import com.rain.messagelist.MsgAdapter;
 import com.ycbl.im.uikit.msg.models.MyMessage;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -41,6 +44,7 @@ public class MessageListPanelEx implements MessageLoader.LoadMessagesListener {
     private RecyclerView mRecyclerView;
     private MsgAdapter msgAdapter;
     private SwipeRefreshLayout refreshLayout;
+    private List<MyMessage> messages;
 
     public MsgAdapter getMsgAdapter() {
         return msgAdapter;
@@ -64,17 +68,15 @@ public class MessageListPanelEx implements MessageLoader.LoadMessagesListener {
 
     private void init(MyMessage anchor) {
         initRecyclerView(anchor);
-
-        registerObservers(true);
     }
 
     @SuppressLint("ClickableViewAccessibility")
     private void initRecyclerView(MyMessage anchor) {
-        List<MyMessage> data = new ArrayList<>();
+        messages = new ArrayList<>();
         refreshLayout = rootView.findViewById(R.id.swipeRefreshLayout);
         mRecyclerView = rootView.findViewById(R.id.recyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(container.activity));
-        msgAdapter = new MsgAdapter(data, container.activity);
+        msgAdapter = new MsgAdapter(messages, container.activity);
         msgAdapter.setUpFetchEnable(true);
         mRecyclerView.setAdapter(msgAdapter);
         MessageLoader messageLoader = new MessageLoader(container, mRecyclerView, msgAdapter, anchor, remote, this);
@@ -95,10 +97,6 @@ public class MessageListPanelEx implements MessageLoader.LoadMessagesListener {
         refreshLayout.setEnabled(false);
     }
 
-    private void registerObservers(boolean register) {
-
-    }
-
     public void update(MyMessage message) {
         msgAdapter.addMessage(message);
         mRecyclerView.scrollToPosition(msgAdapter.getData().size() - 1);
@@ -111,10 +109,11 @@ public class MessageListPanelEx implements MessageLoader.LoadMessagesListener {
     }
 
     @Override
-    public void loadMessageComplete() {
+    public void loadMessageComplete(List<MyMessage> messages) {
         if (refreshLayout.isRefreshing()) {
             refreshLayout.setRefreshing(false);
         }
+//        this.messages.addAll(messages);
     }
 
     @Override
@@ -142,4 +141,80 @@ public class MessageListPanelEx implements MessageLoader.LoadMessagesListener {
     public void doScrollToBottom() {
         mRecyclerView.scrollToPosition(msgAdapter.getData().size() - 1);
     }
+
+    /**
+     * 新消息接收后操作
+     *
+     * @param message
+     */
+    public void onIncomingMessage(MyMessage message) {
+        boolean needScrollToBottom = isLastMessageVisible();
+        //是否需要刷新
+        boolean needRefresh = false;
+        //是否有相同消息 -> 过滤
+        boolean hasSameMsg = false;
+        if (isMyMessage(message)) {
+            List<MyMessage> messageList = msgAdapter.getMessageList();
+            for (int i = 0; i < messageList.size(); i++) {
+                if (messageList.get(i).getUuid().equals(message.getUuid())) {
+                    hasSameMsg = true;
+                    break;
+                }
+            }
+            if (!hasSameMsg) {
+                msgAdapter.addMessage(message);
+            }
+            needRefresh = true;
+        }
+        if (needRefresh) {
+            sortMessages(messages);
+            msgAdapter.notifyDataSetChanged();
+        }
+        msgAdapter.updateShowTimeItem(Arrays.asList(message), false, true);
+
+        //是否滚动到底部
+        MyMessage lastMsg = messages.get(messages.size() - 1);
+        if (isMyMessage(lastMsg) && needScrollToBottom) {
+            doScrollToBottom();
+        }
+
+    }
+
+    /**
+     * 判断最后一条消息是否在UI上展示
+     *
+     * @return
+     */
+    private boolean isLastMessageVisible() {
+        LinearLayoutManager layoutManager = (LinearLayoutManager) mRecyclerView.getLayoutManager();
+        int lastVisiblePosition = layoutManager.findLastCompletelyVisibleItemPosition();
+        return lastVisiblePosition >= msgAdapter.getItemCount() - 1;
+    }
+
+    /**
+     * 判断是否是我的消息
+     *
+     * @param message
+     * @return
+     */
+    private boolean isMyMessage(MyMessage message) {
+        return message.getSessionType() == container.sessionType.getValue()
+                && message.getSessionId() != null
+                && message.getSessionId().equals(container.account);
+    }
+
+    /**
+     * **************************** 排序 ***********************************
+     */
+    private void sortMessages(List<MyMessage> list) {
+        if (list.size() == 0) {
+            return;
+        }
+        Collections.sort(list, comp);
+    }
+
+    private static Comparator<MyMessage> comp = (o1, o2) -> {
+        long time = o1.getTime() - o2.getTime();
+        return time == 0 ? 0 : (time < 0 ? -1 : 1);
+    };
 }

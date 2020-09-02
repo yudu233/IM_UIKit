@@ -18,7 +18,7 @@ ext {
             "photoView"            : "com.github.chrisbanes:PhotoView:2.3.0",
             "luban"                : "top.zibin:Luban:1.1.8",
             "ucrop"                : "com.github.yalantis:ucrop:2.2.4",
-            "subsampling_imageView": "com.davemorrissey.labs:subsampling-scale-image-view:3.10.0",
+            "subsampling_imageView": "com.davemorrissey.labs:subsampling-scale-image-view-androidx:3.10.0",
             "slidinguppanel"       : "com.sothree.slidinguppanel:library:3.4.0"
     ]
 }

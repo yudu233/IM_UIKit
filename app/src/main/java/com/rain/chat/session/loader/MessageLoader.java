@@ -9,7 +9,6 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.RequestCallbackWrapper;
 import com.netease.nimlib.sdk.ResponseCode;
-import com.netease.nimlib.sdk.msg.MessageBuilder;
 import com.netease.nimlib.sdk.msg.MsgService;
 import com.netease.nimlib.sdk.msg.constant.MsgTypeEnum;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
@@ -18,13 +17,11 @@ import com.rain.chat.base.IM;
 import com.rain.chat.session.module.Container;
 import com.rain.messagelist.MsgAdapter;
 import com.rain.messagelist.message.MessageType;
-import com.ycbl.im.uikit.msg.IMessageBuilder;
 import com.ycbl.im.uikit.msg.models.DefaultUser;
 import com.ycbl.im.uikit.msg.models.MyMessage;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -233,7 +230,7 @@ public class MessageLoader implements BaseQuickAdapter.UpFetchListener {
         }
 
         firstLoad = false;
-        loadMessagesListener.loadMessageComplete();
+        loadMessagesListener.loadMessageComplete(messages);
     }
 
 
@@ -321,7 +318,7 @@ public class MessageLoader implements BaseQuickAdapter.UpFetchListener {
             }
         }
         adapter.addMessages(messages);
-        loadMessagesListener.loadMessageComplete();
+        loadMessagesListener.loadMessageComplete(messages);
         //如果是UserProfileAttachment消息就删除
 //        for (IMMessage message : messages) {
 //            int removeIndex = 0;
@@ -367,7 +364,7 @@ public class MessageLoader implements BaseQuickAdapter.UpFetchListener {
         void messageLoading();
 
         //消息加载完成
-        void loadMessageComplete();
+        void loadMessageComplete(List<MyMessage> messages);
 
         //消息加载失败
         void loadMessageError();

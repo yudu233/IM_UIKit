@@ -81,7 +81,8 @@ public  abstract class MsgViewHolderThumbBase extends MsgViewHolderBase {
             }
         }
         setLayoutParams((int) width, (int) height, mImageView);
-        getMsgAdapter().getImageLoader().loadMessageImage(mImageView, (int) width, (int) height, data.getMediaPath());
+        getMsgAdapter().getImageLoader().loadMessageImage(mImageView,
+                (int) width, (int) height, data.getMediaPath(),data.getExtension());
     }
 
     public int getImageMaxWidth() {

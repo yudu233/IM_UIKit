@@ -90,7 +90,7 @@ public class PhotoPickerHelper {
      *
      * @param context
      */
-    public static void startCompress(Activity context,PhotoPickBean pickBean) {
+    public static void startCompress(Activity context, PhotoPickBean pickBean) {
         MediaData photo = new MediaData();
         photo.setCamera(true);
         photo.setCameraImagePath(PhotoPickerHelper.getCameraImagePath());
@@ -98,13 +98,10 @@ public class PhotoPickerHelper {
         photo.setMimeType(MimeType.TYPE_IMAGE);
         PhotoPick.startCompression(context,
                 new ArrayList<>(Arrays.asList(photo)), (CommonResult<File>) (data, success) -> {
-                    if (success) {
-                        photo.setCompressed(true);
-                        photo.setCompressionPath(data.getAbsolutePath());
-                    } else {
-                        photo.setCompressed(false);
-                    }
-                    sendImages(context, pickBean,new ArrayList<>(Arrays.asList(photo)));
+                    photo.setCompressed(success ? true : false);
+                    photo.setCompressionPath(success ? data.getAbsolutePath() :
+                            PhotoPickerHelper.getCameraImagePath());
+                    sendImages(context, pickBean, new ArrayList<>(Arrays.asList(photo)));
                 });
     }
 
@@ -136,7 +133,7 @@ public class PhotoPickerHelper {
     /**
      * 发送图片
      */
-    public static void sendImages(Activity context,PhotoPickBean pickBean, ArrayList<MediaData> data) {
+    public static void sendImages(Activity context, PhotoPickBean pickBean, ArrayList<MediaData> data) {
         if (!pickBean.isStartCompression()) {
             PhotoPickerHelper.checkImages(data);
         }
@@ -156,13 +153,13 @@ public class PhotoPickerHelper {
      * @param context
      * @param cameraImagePath
      */
-    public static void sendCameraImage(Activity context,PhotoPickBean pickBean, String cameraImagePath) {
+    public static void sendCameraImage(Activity context, PhotoPickBean pickBean, String cameraImagePath) {
         MediaData mediaData = new MediaData();
         mediaData.setCamera(true);
         mediaData.setMimeType(MimeType.TYPE_IMAGE);
         mediaData.setImageType(MimeType.createImageType(cameraImagePath));
         mediaData.setCameraImagePath(cameraImagePath);
-        sendImages(context, pickBean,new ArrayList<>(Arrays.asList(mediaData)));
+        sendImages(context, pickBean, new ArrayList<>(Arrays.asList(mediaData)));
     }
 
     /**
@@ -170,13 +167,13 @@ public class PhotoPickerHelper {
      *
      * @param context
      */
-    public static void sendClipImage(Activity context,PhotoPickBean pickBean) {
+    public static void sendClipImage(Activity context, PhotoPickBean pickBean) {
         MediaData mediaData = new MediaData();
         mediaData.setClip(true);
         mediaData.setMimeType(MimeType.TYPE_IMAGE);
         mediaData.setImageType(MimeType.createImageType(getClipImagePath()));
         mediaData.setClipImagePath(getClipImagePath());
-        sendImages(context,pickBean, new ArrayList<>(Arrays.asList(mediaData)));
+        sendImages(context, pickBean, new ArrayList<>(Arrays.asList(mediaData)));
     }
 
 

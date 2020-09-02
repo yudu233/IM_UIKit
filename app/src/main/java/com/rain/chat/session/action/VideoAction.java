@@ -14,13 +14,13 @@ import com.rain.crow.bean.MediaData;
 import com.rain.crow.controller.PhotoPickConfig;
 import com.rain.crow.impl.PhotoSelectCallback;
 import com.rain.crow.utils.MimeType;
-import com.ycbl.im.uikit.msg.controller.IMessageController;
 import com.ycbl.im.uikit.msg.models.MyMessage;
 
 import java.io.File;
 import java.util.ArrayList;
 
 import io.reactivex.Flowable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 
@@ -78,6 +78,7 @@ public class VideoAction extends CustomerBaseAction {
         Flowable.fromIterable(photos)
                 .map(mediaData -> new File(mediaData.getCompressionPath()))
                 .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(data -> {
                             MediaPlayer mediaPlayer = getVideoMediaPlayer(data);
                             int duration = mediaPlayer == null ? 0 : mediaPlayer.getDuration();
@@ -86,7 +87,7 @@ public class VideoAction extends CustomerBaseAction {
                             MyMessage message = IM.getIMessageBuilder().createVideoMessage(
                                     getAccount(), getSessionType(), data, duration, width, height,
                                     data.getName());
-                            IMessageController.sendMessage(message);
+                            getContainer().proxy.sendMessage(message);
                         }
                 );
     }

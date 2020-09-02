@@ -89,6 +89,13 @@ public interface IMessage extends Serializable {
     String getContent();
 
     /**
+     * 获取文件后缀名
+     *
+     * @return 后缀名
+     */
+    public String getExtension();
+
+    /**
      * 获取媒体资源路径
      *
      * @return 媒体资源路径

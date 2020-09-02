@@ -24,6 +24,9 @@ import com.netease.nimlib.sdk.RequestCallback;
 import com.rain.chat.base.IM;
 import com.rain.chat.constant.Extras;
 import com.rain.chat.glide.GlideUtils;
+import com.rain.chat.mvp.MessageContract;
+import com.rain.chat.mvp.MessageModel;
+import com.rain.chat.mvp.MessagePresenter;
 import com.rain.chat.session.action.ImageAction;
 import com.rain.chat.session.action.LocationAction;
 import com.rain.chat.session.action.VideoAction;
@@ -64,7 +67,8 @@ import cc.shinichi.library.ImagePreview;
  * @CreateDate: 2020/6/29 20:56
  * @Describe:
  */
-public class MessageFragment extends Fragment implements ModuleProxy, FuncLayout.OnFuncKeyBoardListener {
+public class MessageFragment extends Fragment implements ModuleProxy,
+        FuncLayout.OnFuncKeyBoardListener, MessageContract.IView {
 
     private static final String TAG = "MessageFragment";
     // p2p对方Account或者群id
@@ -80,6 +84,8 @@ public class MessageFragment extends Fragment implements ModuleProxy, FuncLayout
     private View rootView;
     private XhsEmoticonsKeyBoard inputView;
     private MyMessage anchor;
+    private MessagePresenter messagePresenter;
+    private MsgAdapter msgAdapter;
 
 
     public static MessageFragment newInstance() {
@@ -89,6 +95,7 @@ public class MessageFragment extends Fragment implements ModuleProxy, FuncLayout
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        messagePresenter = new MessagePresenter(new MessageModel(), this);
         Bundle arguments = getArguments();
         sessionId = arguments.getString(Extras.EXTRA_ACCOUNT);
         sessionType = (SessionType) arguments.getSerializable(Extras.EXTRA_SESSION_TYPE);
@@ -96,12 +103,7 @@ public class MessageFragment extends Fragment implements ModuleProxy, FuncLayout
         container = new Container(getActivity(), sessionId, sessionType, this);
 
         //初始化功能消息菜单栏
-        List<BaseAction> actionList = getActionList();
-        ActionController.getInstance().addActions(actionList);
-        for (int i = 0; i < actionList.size(); i++) {
-            CustomerBaseAction action = (CustomerBaseAction) actionList.get(i);
-            action.setContainer(container);
-        }
+        messagePresenter.initAction(container);
     }
 
     @Nullable
@@ -110,14 +112,6 @@ public class MessageFragment extends Fragment implements ModuleProxy, FuncLayout
         rootView = inflater.inflate(R.layout.fragment_message, viewGroup, false);
         inputView = rootView.findViewById(R.id.inputView);
         initInputView();
-//        rootView.findViewById(R.id.btn_send).setOnClickListener(v -> {
-//            MyMessage textMessage = IMessageBuilder.createTextMessage(sessionId, sessionType,
-//                    "ssss");
-//            textMessage.getMessage().setDirect(MsgDirectionEnum.Out);
-//            IMessageController.sendMessage(textMessage);
-//            messageListPanel.update(textMessage);
-//
-//        });
         return rootView;
     }
 
@@ -137,27 +131,18 @@ public class MessageFragment extends Fragment implements ModuleProxy, FuncLayout
         adapterDefaultConfig();
     }
 
-    private List<BaseAction> getActionList() {
-        List<BaseAction> actions = new ArrayList<>();
-        actions.add(new ImageAction());
-        actions.add(new VideoAction());
-        actions.add(new LocationAction());
-        return actions;
-    }
-
     private void adapterDefaultConfig() {
         messageListPanel.getRecyclerView().setOnTouchListener((v, event) -> {
             inputView.reset();
             return false;
         });
-        MsgAdapter msgAdapter = messageListPanel.getMsgAdapter();
+        msgAdapter = messageListPanel.getMsgAdapter();
 
         //模拟铁粉
         List<String> fans = Arrays.asList("1", "2", "3", "4", "5", "2018cytx3", "2018cytx2");
         msgAdapter.setImageLoader(new ImageLoader() {
             @Override
             public void loadAvatarImage(FrameLayout frameLayout, boolean isReceiveMessage, String account) {
-                Log.e(TAG, account);
                 if (isReceiveMessage && fans.contains(account)) {
                     ImageView imageView = new ImageView(getActivity());
                     LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
@@ -171,8 +156,9 @@ public class MessageFragment extends Fragment implements ModuleProxy, FuncLayout
             }
 
             @Override
-            public void loadMessageImage(AppCompatImageView imageView, int width, int height, String path) {
-                GlideUtils.loadImage(getContext(), path, width, height, imageView);
+            public void loadMessageImage(AppCompatImageView imageView, int width, int height,
+                                         String path, String extension) {
+                GlideUtils.loadImage(getContext(), path, width, height, imageView, extension);
             }
         });
 
@@ -207,15 +193,6 @@ public class MessageFragment extends Fragment implements ModuleProxy, FuncLayout
 
             @Override
             public void onPictureViewHolderClick(AppCompatImageView imageView, IMessage message) {
-//                ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.
-//                        makeSceneTransitionAnimation(MainActivity.this,
-//                                imageView, "imageMessage");
-//                Intent intent = new Intent(MainActivity.this, PreviewImageActivity.class);
-//                Bundle bundle = new Bundle();
-//                bundle.putSerializable("message", message);
-//                intent.putExtras(bundle);
-//                startActivity(intent, optionsCompat.toBundle());
-//
                 List<IMessage> data = msgAdapter.getData();
 
                 List<String> messages = new ArrayList<>();
@@ -226,7 +203,7 @@ public class MessageFragment extends Fragment implements ModuleProxy, FuncLayout
                 }
 
                 ImagePreview.getInstance().setContext(getContext())
-                        .setIndex(0)
+                        .setIndex(messages.indexOf(message.getMediaPath()))
                         .setImageList(messages)
                         .setEnableClickClose(true)
                         .setEnableDragClose(true)
@@ -266,7 +243,8 @@ public class MessageFragment extends Fragment implements ModuleProxy, FuncLayout
      *
      * @param message
      */
-    private void sendMessage(MyMessage message) {
+    @Override
+    public boolean sendMessage(MyMessage message) {
         IMessageController.sendMessage(message, false, new RequestCallback<Void>() {
             @Override
             public void onSuccess(Void param) {
@@ -287,6 +265,13 @@ public class MessageFragment extends Fragment implements ModuleProxy, FuncLayout
 
         //发送消息后，更新本地消息列表
         messageListPanel.onMsgSend(message);
+        return true;
+    }
+
+
+    @Override
+    public void onMessageIncoming(MyMessage message) {
+        messageListPanel.onIncomingMessage(message);
     }
 
 
@@ -362,4 +347,5 @@ public class MessageFragment extends Fragment implements ModuleProxy, FuncLayout
     public boolean isFullScreenFuncView(KeyEvent event) {
         return inputView.dispatchKeyEventInFullScreen(event);
     }
+
 }

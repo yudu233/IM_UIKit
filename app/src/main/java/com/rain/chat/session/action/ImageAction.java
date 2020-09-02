@@ -19,6 +19,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 import io.reactivex.Flowable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -77,12 +78,14 @@ public class ImageAction extends CustomerBaseAction {
     private void sendImageMessages(ArrayList<MediaData> photos) {
         // FIXME: 2020/8/27 添加compose
         Flowable.fromIterable(photos)
-                .map(mediaData -> new File(mediaData.getCompressionPath()))
+                .map(mediaData -> new File(mediaData.isCompressed() ?
+                        mediaData.getCompressionPath() : mediaData.getOriginalPath()))
                 .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(data -> {
                             MyMessage message = IM.getIMessageBuilder().createImageMessage(
-                                    getAccount(), getSessionType(), data, data.getName());
-                            IMessageController.sendMessage(message);
+                                    ImageAction.this.getAccount(), ImageAction.this.getSessionType(), data, data.getName());
+                            getContainer().proxy.sendMessage(message);
                         }
                 );
     }

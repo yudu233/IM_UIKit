@@ -1,10 +1,10 @@
 package com.rain.chat.glide;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.widget.ImageView;
 
-import com.blankj.utilcode.util.ImageUtils;
-import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.rain.chat.R;
 
@@ -26,7 +26,7 @@ public class GlideUtils {
      * @param imageView 控件
      */
     public static void loadAvatar(Context context, String avatarUrl, int radius, ImageView imageView) {
-        GlideApp.with(context)
+        Glide.with(context)
                 .asBitmap()
                 .load(avatarUrl)
                 .error(R.drawable.nim_avatar_default)
@@ -56,7 +56,7 @@ public class GlideUtils {
      * @param imageView 控件
      */
     public static void loadRoundImage(Context context, String url, ImageView imageView) {
-        GlideApp.with(context)
+        Glide.with(context)
                 .asBitmap()
                 .load(url)
                 .centerCrop()
@@ -73,22 +73,33 @@ public class GlideUtils {
      * @param width     宽
      * @param height    高
      * @param imageView 控件
+     * @param extension 文件后缀名
      */
-    public static void loadImage(Context context, String url, int width, int height, ImageView imageView) {
-        ImageUtils.ImageType imageType = ImageUtils.getImageType(url);
-        boolean isGif = imageType.getValue().equals("gif");
+    public static void loadImage(Context context, String url, int width, int height,
+                                 ImageView imageView, String extension) {
+        boolean isGif = isGif(extension);
         if (isGif) {
-            GlideApp.with(context).asGif()
+            Glide.with(context).asGif()
                     .override(width, height)
                     .centerCrop()
                     .load(url)
                     .into(imageView);
         } else {
-            GlideApp.with(context).asBitmap()
+            Glide.with(context).asBitmap()
                     .override(width, height)
                     .centerCrop()
                     .load(url)
                     .into(imageView);
         }
+    }
+
+    /**
+     * 是否是Gif图
+     *
+     * @param extension
+     * @return
+     */
+    public static boolean isGif(String extension) {
+        return !TextUtils.isEmpty(extension) && extension.toLowerCase().equals("gif");
     }
 }

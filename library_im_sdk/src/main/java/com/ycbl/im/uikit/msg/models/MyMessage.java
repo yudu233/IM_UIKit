@@ -1,5 +1,6 @@
 package com.ycbl.im.uikit.msg.models;
 
+import com.netease.nimlib.sdk.msg.attachment.FileAttachment;
 import com.netease.nimlib.sdk.msg.attachment.ImageAttachment;
 import com.netease.nimlib.sdk.msg.attachment.VideoAttachment;
 import com.netease.nimlib.sdk.msg.constant.MsgDirectionEnum;
@@ -92,6 +93,12 @@ public class MyMessage implements IMessage, Serializable {
     }
 
     @Override
+    public String getExtension() {
+        FileAttachment attachment = (FileAttachment) message.getAttachment();
+        return attachment.getExtension();
+    }
+
+    @Override
     public String getMediaPath() {
         if (message.getAttachment() instanceof ImageAttachment) {
             ImageAttachment attachment = (ImageAttachment) message.getAttachment();
@@ -138,6 +145,7 @@ public class MyMessage implements IMessage, Serializable {
         }
         return 0;
     }
+
 
     @Override
     public long getTime() {

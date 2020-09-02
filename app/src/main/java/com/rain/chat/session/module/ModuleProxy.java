@@ -12,8 +12,8 @@ import com.ycbl.im.uikit.msg.models.MyMessage;
  * @Describe: 会话窗口提供给子模块的代理接口。
  */
 public interface ModuleProxy {
-//    // 发送消息
-//    boolean sendMessage(MyMessage msg);
+    // 发送消息
+    boolean sendMessage(MyMessage msg);
 //
 //    // 消息输入区展开时候的处理
 //    void onInputPanelExpand();
