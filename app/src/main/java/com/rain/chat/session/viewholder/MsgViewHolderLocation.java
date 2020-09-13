@@ -16,6 +16,7 @@ import com.rain.chat.glide.GlideUtils;
 import com.rain.messagelist.message.MessageType;
 import com.rain.messagelist.model.IMessage;
 import com.rain.messagelist.viewholder.MsgViewHolderBase;
+import com.ycbl.im.uikit.impl.NimUIKitImpl;
 import com.ycbl.im.uikit.msg.models.MyMsgAttachment;
 
 /**
@@ -25,6 +26,9 @@ import com.ycbl.im.uikit.msg.models.MyMsgAttachment;
  * @Descroption : 位置消息
  */
 public class MsgViewHolderLocation extends MsgViewHolderBase {
+
+    private LocationAttachment location;
+
     public MsgViewHolderLocation(MultipleItemRvAdapter adapter) {
         super(adapter);
     }
@@ -44,7 +48,7 @@ public class MsgViewHolderLocation extends MsgViewHolderBase {
         super.convert(holder, data, position);
         changeView();
         MyMsgAttachment myMsgAttachment = (MyMsgAttachment) message.getAttachment();
-        LocationAttachment location = (LocationAttachment) myMsgAttachment.getAttachment();
+        location = (LocationAttachment) myMsgAttachment.getAttachment();
 
         holder.setText(R.id.txv_locationAddress, location.getAddress());
         AppCompatImageView mapView = holder.itemView.findViewById(R.id.mapView);
@@ -63,5 +67,15 @@ public class MsgViewHolderLocation extends MsgViewHolderBase {
         layoutParams.width = ScreenUtils.getScreenWidth() / 6 * 4;
         layoutParams.height = SizeUtils.dp2px(180f);
         view.findViewById(R.id.mapRootView).setLayoutParams(layoutParams);
+    }
+
+    @Override
+    protected void onItemClick() {
+        super.onItemClick();
+        if (NimUIKitImpl.getLocationProvider() != null) {
+            NimUIKitImpl.getLocationProvider()
+                    .openMap(context, location.getLongitude(),
+                            location.getLatitude(), location.getAddress());
+        }
     }
 }

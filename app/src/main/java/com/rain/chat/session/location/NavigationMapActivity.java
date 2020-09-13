@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.amap.api.maps.MapView;
 import com.rain.chat.R;
+import com.rain.chat.base.BaseActivity;
 
 
 /**
@@ -16,7 +17,7 @@ import com.rain.chat.R;
  * @filename : NavigationMapActivity
  * @describe : 地图预览页面
  */
-public class NavigationMapActivity extends AppCompatActivity {
+public class NavigationMapActivity extends BaseActivity {
 
     private MapView mMapView;
 
@@ -25,12 +26,11 @@ public class NavigationMapActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.nim_activity_map_preview);
 
+        setToolbarTitle(getString(R.string.nim_title_location), true);
         double latitude = getIntent().getExtras().getDouble("latitude");
         double longitude = getIntent().getExtras().getDouble("longitude");
         String address = getIntent().getExtras().getString("address");
 
-
-        findViewById(R.id.ll_back).setOnClickListener(v -> finish());
         mMapView = findViewById(R.id.mapView);
         mMapView.onCreate(savedInstanceState);
         MapHelper.initMap(this, mMapView);
