@@ -24,6 +24,7 @@ import com.amap.api.services.core.LatLonPoint;
 import com.amap.api.services.core.PoiItem;
 import com.amap.api.services.poisearch.PoiResult;
 import com.amap.api.services.poisearch.PoiSearch;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.rain.chat.R;
 import com.rain.chat.base.BaseActivity;
 import com.ycbl.im.uikit.api.model.location.LocationProvider;
@@ -76,7 +77,7 @@ public class MapLocationActivity extends BaseActivity implements LocationUtils.L
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(mSearchView.getWindowToken(), 0);
                 if (isGPSEnabled()) {
-                    getPoiList(locationInfo,null, mSearchView.getText().toString().trim());
+                    getPoiList(locationInfo, null, mSearchView.getText().toString().trim());
                 }
                 return true;
             }
@@ -126,13 +127,17 @@ public class MapLocationActivity extends BaseActivity implements LocationUtils.L
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mapLocationAdapter = new MapLocationAdapter();
         mRecyclerView.setAdapter(mapLocationAdapter);
-        mapLocationAdapter.setOnItemClick((data, position) -> {
-            if (MapHelper.getMarker() != null) {
-                MapHelper.getMarker().remove();
+        mapLocationAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                if (MapHelper.getMarker() != null) {
+                    MapHelper.getMarker().remove();
+                }
+                locationInfo = (LocationInfo) adapter.getData().get(position);
+                mapLocationAdapter.setSelected(position);
+                mapLocationAdapter.notifyDataSetChanged();
+                MapHelper.moveMap(locationInfo.getLat(), locationInfo.getLng());
             }
-            locationInfo = data;
-            MapHelper.moveMap(data.getLat(), data.getLng());
-
         });
     }
 
@@ -158,11 +163,7 @@ public class MapLocationActivity extends BaseActivity implements LocationUtils.L
     private void getPoiList(LocationInfo loc, AMapLocation location, String address) {
         PoiSearch.Query query;
         //周边检索POI
-        if (location == null) {
-            query = new PoiSearch.Query("", "", "");
-        } else {
-            query = new PoiSearch.Query(address, "", loc.getCityCode());
-        }
+        query = new PoiSearch.Query(address, "", loc.getCityCode());
         //keyWord表示搜索字符串，
         //第二个参数表示POI搜索类型，二者选填其一，选用POI搜索类型时建议填写类型代码，码表可以参考下方（而非文字）
         //cityCode表示POI搜索区域，可以是城市编码也可以是城市名称，也可以传空字符串，空字符串代表全国在全国范围内进行搜索
@@ -175,30 +176,33 @@ public class MapLocationActivity extends BaseActivity implements LocationUtils.L
         }
         poiSearch.setOnPoiSearchListener(new PoiSearch.OnPoiSearchListener() {
             @Override
-            public void onPoiSearched(PoiResult poiResult, int i) {
+            public void onPoiSearched(PoiResult poiResult, int rCode) {
                 List<LocationInfo> locationInfoList = new ArrayList<>();
                 for (int j = 0; j < poiResult.getPois().size(); j++) {
+                    PoiItem poiItem = poiResult.getPois().get(j);
                     LocationInfo locationInfo = new LocationInfo();
-                    locationInfo.setName(poiResult.getPois().get(j).getCityName() + poiResult.getPois().get(j).getTitle());
-                    locationInfo.setAddress(poiResult.getPois().get(j).getSnippet());
-                    locationInfo.setLat(poiResult.getPois().get(j).getLatLonPoint().getLatitude());
-                    locationInfo.setLng(poiResult.getPois().get(j).getLatLonPoint().getLongitude());
-                    locationInfo.setCityCode(poiResult.getPois().get(j).getCityCode());
+                    locationInfo.setName(poiItem.getCityName() + poiItem.getTitle());
+                    locationInfo.setAddress(poiItem.getSnippet());
+                    locationInfo.setLat(poiItem.getLatLonPoint().getLatitude());
+                    locationInfo.setLng(poiItem.getLatLonPoint().getLongitude());
+                    locationInfo.setCityCode(poiItem.getCityCode());
                     locationInfoList.add(locationInfo);
                 }
                 //移动到搜索的第一个位置
                 if (locationInfoList.size() != 0) {
+                    mapLocationAdapter.setSelected(0);
+                    mRecyclerView.scrollToPosition(0);
                     locationInfo = locationInfoList.get(0);
-                    MapHelper.moveMap(locationInfoList.get(0).getLat(), locationInfoList.get(0).getLng());
+                    MapHelper.moveMap(locationInfo.getLat(), locationInfo.getLng());
                 }
                 if (locationInfoList.size() == 0) {
                     mNoDataView.setVisibility(View.VISIBLE);
-                    mapLocationAdapter.setNewData(locationInfoList, locationInfo);
+                    mapLocationAdapter.setNewData(locationInfoList);
                     mapLocationAdapter.notifyDataSetChanged();
                     return;
                 }
                 mNoDataView.setVisibility(View.GONE);
-                mapLocationAdapter.setNewData(locationInfoList, locationInfo);
+                mapLocationAdapter.setNewData(locationInfoList);
                 mapLocationAdapter.notifyDataSetChanged();
             }
 
@@ -208,10 +212,6 @@ public class MapLocationActivity extends BaseActivity implements LocationUtils.L
             }
         });
         poiSearch.searchPOIAsyn();
-
-    }
-
-    private void getSearchPoiList() {
 
     }
 
@@ -273,7 +273,7 @@ public class MapLocationActivity extends BaseActivity implements LocationUtils.L
         locationInfo.setLat(loc.getLatitude());
         locationInfo.setLng(loc.getLongitude());
         locationInfo.setCityCode(loc.getCityCode());
-        getPoiList(locationInfo, loc,loc.getPoiName());
+        getPoiList(locationInfo, loc, loc.getPoiName());
     }
 
     @Override
