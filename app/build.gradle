@@ -25,6 +25,22 @@ android {
         targetCompatibility = 1.8
     }
 
+    //签名
+    signingConfigs {
+        debug {
+            storeFile file('../keystore.jks')
+            storePassword "yudu233"
+            keyAlias "yudu233"
+            keyPassword "yudu233"
+        }
+        release {
+            storeFile file('../keystore.jks')
+            storePassword "yudu233"
+            keyAlias "yudu233"
+            keyPassword "yudu233"
+        }
+    }
+
 }
 
 dependencies {
@@ -52,7 +68,7 @@ dependencies {
     }
 
     implementation 'com.blankj:utilcodex:1.29.0'
-    implementation 'com.google.android.material:material:1.2.0'
+    implementation 'com.google.android.material:material:1.2.1'
     implementation project(path: ':inputpanel')
 
     //permissions
@@ -64,6 +80,11 @@ dependencies {
 
     //dialog
     implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
+
+    //高德地图
+    implementation 'com.amap.api:3dmap:latest.integration'      //3D地图
+    implementation 'com.amap.api:search:latest.integration'     //搜索
+    implementation 'com.amap.api:location:latest.integration'   //定位
 
 //    //arms
 //    implementation 'me.jessyan:arms:2.5.2'

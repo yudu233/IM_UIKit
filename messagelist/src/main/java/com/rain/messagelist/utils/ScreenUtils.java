@@ -39,4 +39,11 @@ public class ScreenUtils {
     }
 
 
+    public static int getScreenWidth() {
+        return screenWidth;
+    }
+
+    public static int getScreenHeight() {
+        return screenHeight;
+    }
 }

@@ -2,7 +2,10 @@ package com.rain.chat.glide;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.ImageView;
+
+import androidx.appcompat.widget.AppCompatImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
@@ -29,8 +32,8 @@ public class GlideUtils {
         Glide.with(context)
                 .asBitmap()
                 .load(avatarUrl)
-                .error(R.drawable.nim_avatar_default)
-                .placeholder(R.drawable.nim_avatar_default)
+                .error(R.drawable.im_avatar_default)
+                .placeholder(R.drawable.im_avatar_default)
                 .centerCrop()
                 .dontAnimate()
                 .transform(new RoundedCorners(radius))
@@ -91,6 +94,14 @@ public class GlideUtils {
                     .load(url)
                     .into(imageView);
         }
+    }
+
+    public static void loadImage(Context context, String url, AppCompatImageView imageView){
+        Log.e("Rain",url);
+        Glide.with(context).asBitmap()
+                .centerCrop()
+                .load(url)
+                .into(imageView);
     }
 
     /**

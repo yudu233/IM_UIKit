@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:toolbar="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/public_height_50dp"
+    android:background="@color/colorPrimary"
+    toolbar:contentInsetStart="0dp"
+    toolbar:popupTheme="@style/ThemeOverlay.AppCompat.Dark"
+    toolbar:theme="@style/ToolbarStyle"
+    toolbar:title="">
+
+    <LinearLayout
+        android:id="@+id/ll_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/public_10dp">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imv_back"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_margin="@dimen/public_5dp"
+            android:src="@mipmap/arrow_back" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/public_5dp"
+            android:textColor="@color/white"
+            android:visibility="gone"
+            tools:text="返回" />
+    </LinearLayout>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/txv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:ellipsize="end"
+        android:maxLength="8"
+        android:maxLines="1"
+        android:textColor="@color/white"
+        android:textSize="@dimen/public_font_16sp"
+        tools:text="标题" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginEnd="@dimen/public_height_15dp"
+        android:textColor="@color/white"
+        android:textSize="@dimen/public_font_16sp"
+        android:visibility="gone"
+        tools:text="右键" />
+</androidx.appcompat.widget.Toolbar>

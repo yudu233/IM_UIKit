@@ -10,4 +10,6 @@
     <dimen name="avatar_size_in_contact">30dip</dimen>
     <dimen name="avatar_size_robot">40dip</dimen>
 
+    <dimen name="message_item_location_height">180dp</dimen>
+
 </resources>

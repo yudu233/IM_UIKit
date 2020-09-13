@@ -1,7 +1,5 @@
 package com.rain.messagelist.message;
 
-import android.util.Log;
-
 import com.rain.messagelist.model.IMessage;
 import com.rain.messagelist.viewholder.MsgViewHolderBase;
 import com.rain.messagelist.viewholder.MsgViewHolderPicture;

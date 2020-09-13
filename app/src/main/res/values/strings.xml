@@ -3,13 +3,39 @@
     <string name="app_name">MessageList</string>
     <string name="file_provider_authorities">com.rain.photopicker.provider</string>
 
-
+    <!-- Common -->
+    <string name="text_send">发送</string>
     <string name="tools_text_chat_title">聊天对象</string>
 
+    <!-- Message Action & Title-->
     <string name="input_panel_photo">图 片</string>
     <string name="input_panel_video">视 频</string>
     <string name="input_panel_location">位 置</string>
-
     <string name="action_image_title">图片</string>
     <string name="action_video_title">视频</string>
+
+    <!-- 翻译 -->
+    <string name="nim_playing_translate_content">播放翻译内容</string>
+
+    <!-- 位置 -->
+    <string name="nim_location_map">
+        https://restapi.amap.com/v3/staticmap?location=%1$f,%2$f&amp;zoom=16&amp;size=350*300&amp;markers=mid,,A:%3$f,%4$f&amp;key=%5$s
+    </string>
+    <string name="nim_search">搜索</string>
+    <string name="nim_search_empty">无搜索结果</string>
+    <string name="nim_title_location">位置</string>
+    <string name="nim_no_location_info">该位置信息暂无</string>
+    <string name="str_current_loc">%1$s(%2$s)</string>
+    <string name="nim_location_desc">创业天下不能确定你的的位置，你可以通过开启GPS和无线网络来提高定位的精准度</string>
+
+    <!-- Dialog -->
+    <string name="dialog_title">温馨提示</string>
+    <string name="dialog_text_setting">设置</string>
+    <string name="dialog_text_cancel">取消</string>
+
+    <!-- 权限 -->
+    <string name="text_positioning">定位</string>
+    <string name="text_permission">你已禁止授予创业天下 %s 权限，可能会造成功能不可用，如需使用请到设置里授予权限</string>
+
+
 </resources>

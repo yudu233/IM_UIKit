@@ -1,13 +1,11 @@
 package com.rain.chat.utils;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
-import android.provider.Settings;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.blankj.utilcode.util.PermissionUtils;
+import com.rain.chat.R;
 import com.rain.crow.utils.Rlog;
 import com.tbruyelle.rxpermissions2.Permission;
 import com.tbruyelle.rxpermissions2.RxPermissions;
@@ -58,12 +56,12 @@ import java.util.List;
  * 9、关于录音的权限
  * <uses-permission android:name="android.permission.RECORD_AUDIO"/>
  */
-public class PermissionUtils {
+public class PermissionHelper {
 
     public static final String TAG = "Permission";
 
 
-    private PermissionUtils() {
+    private PermissionHelper() {
         throw new IllegalStateException("you can't instantiate me!");
     }
 
@@ -140,68 +138,23 @@ public class PermissionUtils {
     }
 
     /**
-     * 请求摄像头权限
-     */
-    public static void launchCamera(RequestPermission requestPermission, RxPermissions
-            rxPermissions) {
-        requestPermission(requestPermission, rxPermissions, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA);
-    }
-
-    /**
-     * 请求外部存储的权限
-     */
-    public static void externalStorage(RequestPermission requestPermission, RxPermissions
-            rxPermissions) {
-        requestPermission(requestPermission, rxPermissions, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-    }
-
-    /**
-     * 请求发送短信权限
-     */
-    public static void sendSms(RequestPermission requestPermission, RxPermissions
-            rxPermissions) {
-        requestPermission(requestPermission, rxPermissions, Manifest.permission.SEND_SMS);
-    }
-
-    /**
-     * 请求打电话权限
-     */
-    public static void callPhone(RequestPermission requestPermission, RxPermissions
-            rxPermissions) {
-        requestPermission(requestPermission, rxPermissions, Manifest.permission.CALL_PHONE);
-    }
-
-    /**
-     * 请求获取手机状态的权限
-     */
-    public static void readPhoneState(RequestPermission requestPermission, RxPermissions
-            rxPermissions) {
-        requestPermission(requestPermission, rxPermissions, Manifest.permission.READ_PHONE_STATE);
-    }
-
-
-    /**
-     * 显示提示对话框(这个提示款适用于点击按钮请求权限的问题)
+     * 显示提示对话框(这个提示框适用于点击按钮请求权限的问题)
      * 如果需要强制获取权限，需要自定义对话框
      */
-    public static void showTipsDialog(Activity context) {
+    public static void showTipsDialog(Context context, String permission) {
         new MaterialDialog.Builder(context)
-                .title("提示信息")
-                .content("前应用缺少必要权限，该功能暂时无法使用。如若需要，请单击【确定】按钮前往设置中心进行权限授权。")
-                .negativeText("取消")
-                .positiveText("设置")
+                .content(String.format(context.getString(R.string.text_permission), permission))
+                .negativeText(context.getString(R.string.dialog_text_cancel))
+                .positiveText(context.getString(R.string.dialog_text_setting))
                 .onNegative((dialog, which) -> dialog.dismiss())
-                .onPositive((dialog, which) -> startAppSettings(context)).show();
+                .onPositive((dialog, which) -> startAppSettings()).show();
     }
 
 
     /**
      * 启动当前应用设置页面
      */
-    private static void startAppSettings(Context context) {
-        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-        intent.setData(Uri.parse("package:" + context.getPackageName()));
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(intent);
+    private static void startAppSettings() {
+        PermissionUtils.launchAppDetailsSettings();
     }
 }

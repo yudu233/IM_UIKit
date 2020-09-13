@@ -48,7 +48,7 @@ public class MsgAdapter<MESSAGE extends IMessage> extends MultipleItemRvAdapter<
     }
 
     @Override
-    protected int getViewType(IMessage message) {
+    protected int getViewType(MESSAGE message) {
         return message.getMsgType().getValue();
     }
 
@@ -95,8 +95,8 @@ public class MsgAdapter<MESSAGE extends IMessage> extends MultipleItemRvAdapter<
     }
 
     @Override
-    protected void convert(@NonNull BaseViewHolder helper, IMessage item) {
-
+    protected void convert(@NonNull BaseViewHolder helper, MESSAGE item) {
+        super.convert(helper, item);
         /**
          * helper对应的是某一行View的缓存，与Item不是一一对应的关系
          * 如下设计：item与helper是一一对应的关系，因此每次convert都需要拿当前回调的baseHolder进行convert，
@@ -266,9 +266,9 @@ public class MsgAdapter<MESSAGE extends IMessage> extends MultipleItemRvAdapter<
      */
 
     private Set<String> timedItems; // 需要显示消息时间的消息ID
-    private IMessage lastShowTimeItem; // 用于消息时间显示,判断和上条消息间的时间间隔
+    private MESSAGE lastShowTimeItem; // 用于消息时间显示,判断和上条消息间的时间间隔
 
-    public boolean needShowTime(IMessage message) {
+    public boolean needShowTime(MESSAGE message) {
         return timedItems.contains(message.getUuid());
     }
 
@@ -279,9 +279,9 @@ public class MsgAdapter<MESSAGE extends IMessage> extends MultipleItemRvAdapter<
      * @param fromStart 是否是第一次加载
      * @param update    是否更新时间
      */
-    public void updateShowTimeItem(List<IMessage> items, boolean fromStart, boolean update) {
-        IMessage anchor = fromStart ? null : lastShowTimeItem;
-        for (IMessage message : items) {
+    public void updateShowTimeItem(List<MESSAGE> items, boolean fromStart, boolean update) {
+        MESSAGE anchor = fromStart ? null : lastShowTimeItem;
+        for (MESSAGE message : items) {
             if (setShowTimeFlag(message, anchor)) {
                 anchor = message;
             }
@@ -295,7 +295,7 @@ public class MsgAdapter<MESSAGE extends IMessage> extends MultipleItemRvAdapter<
     /**
      * 是否显示时间item
      */
-    private boolean setShowTimeFlag(IMessage message, IMessage anchor) {
+    private boolean setShowTimeFlag(MESSAGE message, MESSAGE anchor) {
         boolean update = false;
 
         if (hideTimeAlways()) {
@@ -327,7 +327,7 @@ public class MsgAdapter<MESSAGE extends IMessage> extends MultipleItemRvAdapter<
         return update;
     }
 
-    private void setShowTime(IMessage message, boolean show) {
+    private void setShowTime(MESSAGE message, boolean show) {
         if (show) {
             timedItems.add(message.getUuid());
         } else {
@@ -341,12 +341,12 @@ public class MsgAdapter<MESSAGE extends IMessage> extends MultipleItemRvAdapter<
      * @param messageItem
      * @param index
      */
-    private void relocateShowTimeItemAfterDelete(IMessage messageItem, int index) {
+    private void relocateShowTimeItemAfterDelete(MESSAGE messageItem, int index) {
         // 如果被删的项显示了时间，需要继承
         if (needShowTime(messageItem)) {
             setShowTime(messageItem, false);
             if (getData().size() > 0) {
-                IMessage nextItem;
+                MESSAGE nextItem;
                 if (index == getData().size()) {
                     //删除的是最后一项
                     nextItem = getItem(index - 1);
@@ -362,7 +362,7 @@ public class MsgAdapter<MESSAGE extends IMessage> extends MultipleItemRvAdapter<
                             && lastShowTimeItem.isTheSame(messageItem)) {
                         lastShowTimeItem = null;
                         for (int i = getData().size() - 1; i >= 0; i--) {
-                            IMessage item = getItem(i);
+                            MESSAGE item = getItem(i);
                             if (needShowTime(item)) {
                                 lastShowTimeItem = item;
                                 break;

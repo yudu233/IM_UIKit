@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"
-        android:background="@drawable/nim_bg_message_tip"
+        android:background="@drawable/im_bg_message_tip"
         android:gravity="center"
         android:paddingLeft="7dip"
         android:paddingRight="7dip"
@@ -37,7 +37,7 @@
             android:layout_width="@dimen/avatar_size_in_session"
             android:layout_height="@dimen/avatar_size_in_session"
             android:layout_gravity="bottom|right"
-            app:srcCompat="@drawable/nim_avatar_default" />
+            app:srcCompat="@drawable/im_avatar_default" />
     </FrameLayout>
 
     <FrameLayout
@@ -52,7 +52,7 @@
             android:layout_width="@dimen/avatar_size_in_session"
             android:layout_height="@dimen/avatar_size_in_session"
             android:layout_gravity="bottom|left"
-            app:srcCompat="@drawable/nim_avatar_default" />
+            app:srcCompat="@drawable/im_avatar_default" />
     </FrameLayout>
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -96,7 +96,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:src="@drawable/nim_ic_failed"
+                android:src="@drawable/im_icon_failed"
                 android:visibility="gone" />
 
             <include layout="@layout/im_read_recipt_layout" />

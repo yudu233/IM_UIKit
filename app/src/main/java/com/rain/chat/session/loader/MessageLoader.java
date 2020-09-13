@@ -133,7 +133,6 @@ public class MessageLoader implements BaseQuickAdapter.UpFetchListener {
     private RequestCallbackWrapper<List<IMMessage>> callback = new RequestCallbackWrapper<List<IMMessage>>() {
         @Override
         public void onResult(int code, List<IMMessage> messages, Throwable exception) {
-            Log.e(TAG, "message size: " + messages.size());
             mIsInitFetchingLocal = false;
             if (code != ResponseCode.RES_SUCCESS || exception != null) {
                 if (direction == QueryDirectionEnum.QUERY_OLD) {

@@ -14,6 +14,7 @@ import com.rain.crow.bean.MediaData;
 import com.rain.crow.controller.PhotoPickConfig;
 import com.rain.crow.impl.PhotoSelectCallback;
 import com.rain.crow.utils.MimeType;
+import com.rain.crow.utils.Rlog;
 import com.ycbl.im.uikit.msg.models.MyMessage;
 
 import java.io.File;
@@ -60,26 +61,25 @@ public class VideoAction extends CustomerBaseAction {
     }
 
     private void showPhotoAlbum() {
+        Rlog.e("showPhotoAlbum");
         PhotoPick.from(getActivity())
                 .imageLoader(new GlideImageLoader())
                 .pickMode(PhotoPickConfig.MODE_PICK_MORE)
                 .setMimeType(MimeType.ofVideo())
                 .maxPickSize(9)
-                .setCallback((PhotoSelectCallback) photos ->
-                        sendVideoMessages(photos))
-                .build();
+                .setCallback((PhotoSelectCallback) photos -> sendVideoMessages(photos)).build();
     }
 
     @SuppressLint("CheckResult")
     private void sendVideoMessages(ArrayList<MediaData> photos) {
         // FIXME: 2020/8/27 压缩
-
         //发送
         Flowable.fromIterable(photos)
-                .map(mediaData -> new File(mediaData.getCompressionPath()))
+                .map(mediaData -> new File(mediaData.getOriginalPath()))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(data -> {
+                    Rlog.e("Rain","sendVideoMessage");
                             MediaPlayer mediaPlayer = getVideoMediaPlayer(data);
                             int duration = mediaPlayer == null ? 0 : mediaPlayer.getDuration();
                             int width = mediaPlayer == null ? 0 : mediaPlayer.getVideoWidth();

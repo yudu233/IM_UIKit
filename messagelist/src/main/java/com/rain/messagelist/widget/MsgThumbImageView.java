@@ -31,7 +31,7 @@ public class MsgThumbImageView extends AppCompatImageView {
         super(context, attrs, defStyleAttr);
     }
 
-    private Drawable mask = getResources().getDrawable(R.drawable.nim_message_item_round_bg); // blend mask drawable
+    private Drawable mask = getResources().getDrawable(R.drawable.im_message_item_round_bg); // blend mask drawable
 
     private static final Paint paintMask = createMaskPaint();
 

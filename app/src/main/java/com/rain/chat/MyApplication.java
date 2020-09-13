@@ -7,9 +7,14 @@ import android.text.TextUtils;
 
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.auth.LoginInfo;
+import com.rain.chat.base.NimHelper;
 import com.rain.chat.config.Preferences;
+import com.rain.chat.session.viewholder.MsgViewHolderLocation;
+import com.rain.chat.session.viewholder.MsgViewHolderTranslateAudio;
 import com.rain.crow.PhotoPick;
 import com.rain.crow.PhotoPickOptions;
+import com.rain.messagelist.message.MessageType;
+import com.rain.messagelist.message.MsgViewHolderFactory;
 
 /**
  * @Author : Rain
@@ -30,7 +35,11 @@ public class MyApplication extends Application {
         //云信初始化
         // SDK初始化（启动后台服务，若已经存在用户登录信息， SDK 将完成自动登录）
         NIMClient.init(this, loginInfo(), null);
+        
+        MsgViewHolderFactory.register(MessageType.audio, MsgViewHolderTranslateAudio.class);
+        MsgViewHolderFactory.register(MessageType.location, MsgViewHolderLocation.class);
 
+        NimHelper.initUIKit(this);
     }
 
     // 如果已经存在用户登录信息，返回LoginInfo，否则返回null即可

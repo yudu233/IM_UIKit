@@ -58,7 +58,7 @@ public class ImageAction extends CustomerBaseAction {
                     File file = new File(mediaData.getCompressionPath());
                     MyMessage message = IM.getIMessageBuilder().createImageMessage(
                             getAccount(), getSessionType(), file, file.getName());
-                    IMessageController.sendMessage(message);
+                    getContainer().proxy.sendMessage(message);
                 }).build();
     }
 
@@ -66,7 +66,7 @@ public class ImageAction extends CustomerBaseAction {
         PhotoPick.from(getActivity())
                 .imageLoader(new GlideImageLoader())
                 .showCamera(false)
-                .setMimeType(MimeType.TYPE_IMAGE)
+                .setMimeType(MimeType.ofImage())
                 .pickMode(PhotoPickConfig.MODE_PICK_MORE)
                 .maxPickSize(9)
                 .startCompression(true)

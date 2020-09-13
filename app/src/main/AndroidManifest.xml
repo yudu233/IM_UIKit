@@ -22,6 +22,9 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
 
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+
 
     <!-- SDK 权限申明, 第三方 APP 接入时，请将 com.netease.nim.demo 替换为自己的包名 -->
     <!-- 和下面的 uses-permission 一起加入到你的 AndroidManifest 文件中。 -->
@@ -56,8 +59,15 @@
             android:name=".PreviewImageActivity"
             android:theme="@style/BigImageTranslateTheme" />
 
+        <activity android:name=".session.location.MapLocationActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden"/>
+        <activity android:name=".session.location.NavigationMapActivity"/>
 
 
+        <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value="5d9ee66f706ec55b797f29c22a389036"/>
 
         <meta-data
             android:name="com.netease.nim.appKey"

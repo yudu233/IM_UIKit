@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/transition_view"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@drawable/drawable_shape_white_5">
+
+    <androidx.core.widget.ContentLoadingProgressBar
+        android:id="@+id/translate_progress"
+        style="@style/Widget.AppCompat.ProgressBar"
+        android:layout_width="@dimen/public_width_15dp"
+        android:layout_height="@dimen/public_height_15dp"
+        app:layout_constraintBottom_toBottomOf="@id/tXvTranslate"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tXvTranslate" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tXvTranslate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toEndOf="@+id/translate_progress"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="翻译内容" />
+
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/imv_translate_anim"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/public_10dp"
+        android:background="@drawable/nim_translate_audio_animation_list"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tXvTranslate" />
+
+    <TextView
+        android:id="@+id/play_translate_audio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/nim_playing_translate_content"
+        android:textColor="#B9B9B9"
+        android:textSize="@dimen/public_font_10sp"
+        app:layout_constraintBottom_toBottomOf="@+id/imv_translate_anim"
+        app:layout_constraintStart_toEndOf="@+id/imv_translate_anim"
+        app:layout_constraintTop_toTopOf="@+id/imv_translate_anim" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -230,7 +230,6 @@ public class PhotoPickActivity extends BaseActivity implements Observer {
                     } else {
                         //不做压缩处理 直接发送原图信息
                         sendImages();
-                        PhotoPickerHelper.sendImages(PhotoPickActivity.this,PhotoPickConfig.getInstance(),adapter.getSelectPhotosInfo());
                     }
                 } else {
                     PhotoPick.toast(getString(R.string.tips_no));

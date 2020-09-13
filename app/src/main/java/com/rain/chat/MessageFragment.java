@@ -34,6 +34,7 @@ import com.rain.chat.session.list.MessageListPanelEx;
 import com.rain.chat.session.module.Container;
 import com.rain.chat.session.module.CustomerBaseAction;
 import com.rain.chat.session.module.ModuleProxy;
+import com.rain.crow.utils.Rlog;
 import com.rain.inputpanel.XhsEmoticonsKeyBoard;
 import com.rain.inputpanel.action.ActionController;
 import com.rain.inputpanel.action.BaseAction;
@@ -198,6 +199,7 @@ public class MessageFragment extends Fragment implements ModuleProxy,
                 List<String> messages = new ArrayList<>();
                 for (IMessage msg : data) {
                     if (msg.getMsgType() == MessageType.image) {
+                        Rlog.e(msg.getMediaPath() + "-------------");
                         messages.add(msg.getMediaPath());
                     }
                 }
