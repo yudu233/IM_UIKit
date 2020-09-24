@@ -15,7 +15,7 @@ import com.ycbl.im.uikit.NimUIKitImpl;
 import com.ycbl.im.uikit.api.model.SimpleCallback;
 import com.ycbl.im.uikit.common.log.LogUtil;
 import com.ycbl.im.uikit.common.log.UIKitLogTag;
-import com.ycbl.im.uikit.impl.cache.TeamDataCache;
+import com.ycbl.im.uikit.impl.cache.BaseCache;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +28,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @Version : 1.0
  * @Descroption : 群组相关缓存
  */
-public class NeteaseTeamDataCache extends TeamDataCache {
+public class NeteaseTeamDataCache implements BaseCache {
 
     private static NeteaseTeamDataCache instance;
 
@@ -63,7 +63,7 @@ public class NeteaseTeamDataCache extends TeamDataCache {
      * *
      * ******************************************** 观察者 ********************************************
      */
-
+    @Override
     public void registerObservers(boolean register) {
         NIMClient.getService(TeamServiceObserver.class).observeTeamUpdate(teamUpdateObserver, register);
         NIMClient.getService(TeamServiceObserver.class).observeTeamRemove(teamRemoveObserver, register);

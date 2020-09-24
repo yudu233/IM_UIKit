@@ -14,7 +14,7 @@ import com.netease.nimlib.sdk.uinfo.model.NimUserInfo;
 import com.ycbl.im.uikit.NimUIKitImpl;
 import com.ycbl.im.uikit.common.log.LogUtil;
 import com.ycbl.im.uikit.common.log.UIKitLogTag;
-import com.ycbl.im.uikit.impl.cache.UserInfoCache;
+import com.ycbl.im.uikit.impl.cache.BaseCache;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +30,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * 注册缓存变更通知，请使用UserInfoHelper的registerObserver方法
  */
 
-public class NeteaseUserInfoCache extends UserInfoCache<NimUserInfo> {
+public class NeteaseUserInfoCache implements BaseCache {
 
     public static NeteaseUserInfoCache getInstance() {
         return InstanceHolder.instance;
