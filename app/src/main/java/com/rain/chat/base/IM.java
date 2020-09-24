@@ -1,6 +1,8 @@
 package com.rain.chat.base;
 
 import com.rain.library_netease_sdk.message.NeteaseMessageStrategy;
+import com.ycbl.im.uikit.IMSDKOptions;
+import com.ycbl.im.uikit.IMSDKType;
 import com.ycbl.im.uikit.msg.IMessageBuilder;
 import com.ycbl.im.uikit.msg.test.MessageStrategy;
 
@@ -16,7 +18,7 @@ public class IM {
     private static IMessageBuilder iMessageBuilder;
     private static IMSDKOptions imsdkOptions;
 
-    public void init() {
+    public static void init() {
         imsdkOptions = new IMSDKOptions();
 
     }

@@ -8,6 +8,7 @@ import com.rain.chat.R;
 import com.rain.chat.base.IM;
 import com.rain.chat.session.module.CustomerBaseAction;
 import com.rain.chat.utils.PermissionHelper;
+import com.ycbl.im.uikit.NimUIKitImpl;
 import com.ycbl.im.uikit.msg.models.MyMessage;
 
 import java.util.List;

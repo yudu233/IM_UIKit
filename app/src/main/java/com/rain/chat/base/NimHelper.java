@@ -24,6 +24,7 @@ public class NimHelper {
      */
     public static void initUIKit(Context context) {
 
+        IM.init();
         //初始化
         NimUIKit.init(context, new IMSDKOptions(), new NeteaseUserInfoProvider(),
                 new NeteaseObservableManager(), new NeteaseProviderManager());

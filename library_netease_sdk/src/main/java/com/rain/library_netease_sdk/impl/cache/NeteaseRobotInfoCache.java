@@ -174,7 +174,7 @@ public class NeteaseRobotInfoCache implements BaseCache {
             // 通知机器人变更
             if (!addedOrUpdateRobotAccounts.isEmpty()) {
                 // log
-                DataCacheManager.Log(addedOrUpdateRobotAccounts, "on add robot", UIKitLogTag.ROBOT_CACHE);
+//                DataCacheManager.Log(addedOrUpdateRobotAccounts, "on add robot", UIKitLogTag.ROBOT_CACHE);
             }
 
             // 处理被删除的机器人
@@ -185,7 +185,7 @@ public class NeteaseRobotInfoCache implements BaseCache {
                 }
 
                 // log
-                DataCacheManager.Log(deletedRobotAccounts, "on delete robots", UIKitLogTag.FRIEND_CACHE);
+//                DataCacheManager.Log(deletedRobotAccounts, "on delete robots", UIKitLogTag.FRIEND_CACHE);
             }
         }
     };
