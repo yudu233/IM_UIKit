@@ -16,7 +16,6 @@ import com.rain.chat.glide.GlideUtils;
 import com.rain.messagelist.message.MessageType;
 import com.rain.messagelist.model.IMessage;
 import com.rain.messagelist.viewholder.MsgViewHolderBase;
-import com.ycbl.im.uikit.impl.NimUIKitImpl;
 import com.ycbl.im.uikit.msg.models.MyMsgAttachment;
 
 /**

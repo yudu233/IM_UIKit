@@ -3,7 +3,10 @@ package com.rain.chat.base;
 import android.content.Context;
 
 import com.rain.chat.session.location.NimLocationProvider;
-import com.ycbl.im.uikit.api.NimUIKit;
+import com.rain.library_netease_sdk.impl.provider.NeteaseUserInfoProvider;
+import com.rain.library_netease_sdk.manager.NeteaseObservableManager;
+import com.rain.library_netease_sdk.manager.NeteaseProviderManager;
+import com.ycbl.im.uikit.IMSDKOptions;
 
 /**
  * @Author : Rain
@@ -21,8 +24,14 @@ public class NimHelper {
      */
     public static void initUIKit(Context context) {
 
+        //初始化
+        NimUIKit.init(context, new IMSDKOptions(), new NeteaseUserInfoProvider(),
+                new NeteaseObservableManager(), new NeteaseProviderManager());
+
         // 设置地理位置提供者。如果需要发送地理位置消息，该参数必须提供。如果不需要，可以忽略。
         NimUIKit.setLocationProvider(new NimLocationProvider());
+
+        NimUIKit.getUserInfoObservable();
     }
 
 }

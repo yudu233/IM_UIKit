@@ -3,8 +3,6 @@ package com.ycbl.im.uikit.api.model.main;
 import android.content.Context;
 import android.os.Handler;
 
-import com.netease.nimlib.sdk.msg.model.SystemMessage;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +14,7 @@ import java.util.List;
  * @filename : SystemMessageObservable
  * @describe :
  */
-public class SystemMessageObservable {
+public class SystemMessageObservable<T> {
 
     private Handler uiHandler;
 
@@ -37,7 +35,7 @@ public class SystemMessageObservable {
         }
     }
 
-    public synchronized void setFriendSystemMessage(final SystemMessage message) {
+    public synchronized void setFriendSystemMessage(T message) {
         uiHandler.post(() -> {
             for (SystemMessageObserver observer : systemMessageObservers) {
                 observer.friendSystemMsg(message);
@@ -45,7 +43,7 @@ public class SystemMessageObservable {
         });
     }
 
-    public synchronized void setGroupVerifySystemMessage(final SystemMessage message) {
+    public synchronized void setGroupVerifySystemMessage(T message) {
         uiHandler.post(() -> {
             for (SystemMessageObserver observer : systemMessageObservers) {
                 observer.groupVerifyMsg(message);

@@ -4,7 +4,6 @@ import android.graphics.Color;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatTextView;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.chad.library.adapter.base.MultipleItemRvAdapter;
@@ -40,14 +39,9 @@ public class MsgViewHolderText extends MsgViewHolderBase {
     @Override
     public void convert(@NonNull BaseViewHolder holder, IMessage data, int position) {
         super.convert(holder, data, position);
-
-        ConstraintLayout rootView = findViewById(R.id.rootView);
         AppCompatTextView bodyTextView = findViewById(R.id.nim_message_item_text_body);
         bodyTextView.setText(message.getContent());
-        bodyTextView.setTextColor(isReceivedMessage()? Color.BLACK:Color.WHITE);
-
-
-
+        bodyTextView.setTextColor(isReceivedMessage() ? Color.BLACK : Color.WHITE);
     }
 
     @Override

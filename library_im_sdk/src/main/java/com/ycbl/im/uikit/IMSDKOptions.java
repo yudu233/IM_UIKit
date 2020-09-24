@@ -1,4 +1,4 @@
-package com.rain.chat.base;
+package com.ycbl.im.uikit;
 
 /**
  * @Author : Rain

@@ -1,4 +1,4 @@
-package com.rain.chat.base;
+package com.ycbl.im.uikit;
 
 /**
  * @Author : Rain
@@ -6,7 +6,7 @@ package com.rain.chat.base;
  * @Version : 1.0
  * @Descroption :
  */
-public enum  IMSDKType {
+public enum IMSDKType {
     NETEASE_IM,     //网易云信
     RONGCLOUD_IM,   //融云
     JPUSH_IM,       //极光

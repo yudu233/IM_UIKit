@@ -14,8 +14,10 @@ public class IM {
 
 
     private static IMessageBuilder iMessageBuilder;
+    private static IMSDKOptions imsdkOptions;
 
     public void init() {
+        imsdkOptions = new IMSDKOptions();
 
     }
 
@@ -25,8 +27,7 @@ public class IM {
      * @return
      */
     public static MessageStrategy getMessageStrategy() {
-        IMSDKOptions options = new IMSDKOptions();
-        if (options.imsdkType == IMSDKType.NETEASE_IM) {
+        if (imsdkOptions.imsdkType == IMSDKType.NETEASE_IM) {
             return new NeteaseMessageStrategy();
         } else {
             return null;
