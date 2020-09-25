@@ -2,15 +2,8 @@
 <resources>
 
     <!-- chat input start -->
-    <dimen name="aurora_elevation_send_btn">8dp</dimen>
-    <dimen name="aurora_size_send_btn_default">24dp</dimen>
-    <dimen name="aurora_radius_btn_default">8dp</dimen>
 
-
-
-    <dimen name="aurora_textsize_chronometer">20sp</dimen>
-    <dimen name="aurora_size_record_button">70dp</dimen>
-    <dimen name="aurora_size_album_button">60dp</dimen>
+    <dimen name="item_emoticon_size_big">60dp</dimen>
 
     <dimen name="aurora_horizontalspit_view_height">0.6dp</dimen>
     <dimen name="bar_tool_btn_width">56dp</dimen>

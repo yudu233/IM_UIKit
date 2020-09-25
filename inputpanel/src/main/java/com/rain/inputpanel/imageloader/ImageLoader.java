@@ -11,14 +11,14 @@ import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class ImageLoader implements ImageBase {
+public  class ImageLoader implements ImageBase {
 
     protected final Context context;
 
     private volatile static ImageLoader instance;
     private volatile static Pattern NUMBER_PATTERN = Pattern.compile("[0-9]*");
 
-    public static ImageLoader getInstance(Context context) {
+    public  static ImageLoader getInstance(Context context) {
         if (instance == null) {
             synchronized (ImageLoader.class) {
                 if (instance == null) {

@@ -1,4 +1,4 @@
-package com.rain.inputpanel.utils;
+package com.rain.chat.utils;
 
 import android.content.Context;
 import android.text.Editable;
@@ -8,7 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
+import com.blankj.utilcode.util.PathUtils;
 import com.rain.inputpanel.R;
+import com.rain.inputpanel.adapter.BigEmoticonsAndTitleAdapter;
 import com.rain.inputpanel.adapter.EmoticonsAdapter;
 import com.rain.inputpanel.adapter.PageSetAdapter;
 import com.rain.inputpanel.data.EmoticonEntity;
@@ -72,13 +74,14 @@ public class SimpleCommonUtils {
 
     public static PageSetAdapter getCommonAdapter(Context context, EmoticonClickListener emoticonClickListener) {
 
-        if(sCommonPageSetAdapter != null){
+        if (sCommonPageSetAdapter != null) {
             return sCommonPageSetAdapter;
         }
 
         PageSetAdapter pageSetAdapter = new PageSetAdapter();
 
         addEmojiPageSetEntity(pageSetAdapter, context, emoticonClickListener);
+        addMrZhangPageSetEntity(pageSetAdapter, context, emoticonClickListener);
 
         return pageSetAdapter;
     }
@@ -131,6 +134,25 @@ public class SimpleCommonUtils {
     }
 
 
+    public static void addMrZhangPageSetEntity(PageSetAdapter pageSetAdapter, Context context,
+                                               EmoticonClickListener emoticonClickListener) {
+        String filePath = PathUtils.getInternalAppFilesPath() + "/emoticon/mr_zhang";
+        EmoticonPageSetEntity<EmoticonEntity> emoticonPageSetEntity = ParseDataUtils.parseDataFromFile(
+                context, filePath, "mr_zhang.zip", "mr_zhang.xml");
+        if (emoticonPageSetEntity == null) {
+            return;
+        }
+        EmoticonPageSetEntity pageSetEntity
+                = new EmoticonPageSetEntity.Builder()
+                .setLine(emoticonPageSetEntity.getLine())
+                .setRow(emoticonPageSetEntity.getRow())
+                .setEmoticonList(emoticonPageSetEntity.getEmoticonList())
+                .setIPageViewInstantiateItem(getEmoticonPageViewInstantiateItem(BigEmoticonsAndTitleAdapter.class, emoticonClickListener))
+                .setIconUri(ImageBase.Scheme.FILE.toUri(filePath + "/" + emoticonPageSetEntity.getIconUri()))
+                .build();
+        pageSetAdapter.add(pageSetEntity);
+    }
+
 
     @SuppressWarnings("unchecked")
     public static Object newInstance(Class _Class, Object... args) throws Exception {
@@ -160,7 +182,7 @@ public class SimpleCommonUtils {
                     pageView.setNumColumns(pageEntity.getRow());
                     pageEntity.setRootView(pageView);
                     try {
-                        EmoticonsAdapter adapter = new EmoticonsAdapter(container.getContext(), pageEntity, onEmoticonClickListener);
+                        EmoticonsAdapter adapter = (EmoticonsAdapter) newInstance(_class, container.getContext(), pageEntity, onEmoticonClickListener);
                         if (emoticonDisplayListener != null) {
                             adapter.setOnDisPlayListener(emoticonDisplayListener);
                         }
