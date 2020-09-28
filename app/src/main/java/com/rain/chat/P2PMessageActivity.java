@@ -3,19 +3,16 @@ package com.rain.chat;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 
-import androidx.appcompat.widget.AppCompatTextView;
-
 import com.rain.chat.constant.Extras;
+import com.rain.chat.weight.toolbar.NormalToolBarOptions;
 import com.rain.messagelist.message.SessionType;
 
 import java.io.File;
 
 public class P2PMessageActivity extends BaseMessageActivity {
     private static final String TAG = "P2PMessageActivity";
-    private AppCompatTextView mTitle;
     private MessageFragment fragment;
 
     @Override
@@ -34,13 +31,9 @@ public class P2PMessageActivity extends BaseMessageActivity {
 
     @Override
     protected void initToolBar() {
-        findViewById(R.id.imv_back).setOnClickListener(v -> finish());
-        findViewById(R.id.imv_more).setOnClickListener(v -> {
-            Log.e(TAG, "initToolBar: " + "更多");
-        });
-        mTitle = findViewById(R.id.txv_title);
-        // TODO: 2020/6/29 标题
-        mTitle.setText(sessionId);
+        NormalToolBarOptions toolBarOptions = new NormalToolBarOptions();
+        toolBarOptions.titleString = sessionId;
+        setToolbar(toolBarOptions);
     }
 
 //    @Override

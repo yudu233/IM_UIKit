@@ -2,13 +2,19 @@ package com.rain.chat;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.KeyEvent;
+import android.view.MenuItem;
+import android.view.View;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatTextView;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.rain.chat.constant.Extras;
+import com.rain.chat.weight.toolbar.ToolBarOptions;
 
 /**
  * @Author: Rain
@@ -42,6 +48,27 @@ public abstract class BaseMessageActivity extends AppCompatActivity {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.add(R.id.message_fragment_container, fragment());
         transaction.commitAllowingStateLoss();
+    }
+
+    protected void setToolbar(ToolBarOptions options) {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        AppCompatTextView titleView = findViewById(R.id.txv_title);
+        if (options.titleId != 0) {
+            titleView.setText(options.titleId);
+        }
+        if (!TextUtils.isEmpty(options.titleString)) {
+            titleView.setText(options.titleString);
+        }
+        if (options.logoId != 0) {
+            toolbar.setLogo(options.logoId);
+        }
+        setSupportActionBar(toolbar);
+
+        if (options.isNeedNavigate) {
+            toolbar.setNavigationIcon(options.navigateId);
+            toolbar.setContentInsetStartWithNavigation(0);
+            toolbar.setNavigationOnClickListener(v -> onBackPressed());
+        }
     }
 
     @Override

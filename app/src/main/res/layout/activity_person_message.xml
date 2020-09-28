@@ -7,41 +7,5 @@
     android:orientation="vertical"
     tools:context=".P2PMessageActivity">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/action_bar_height"
-        android:background="@color/colorPrimary">
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/imv_back"
-            android:layout_width="@dimen/public_width_40dp"
-            android:layout_height="@dimen/public_height_40dp"
-            android:layout_alignParentStart="true"
-            android:layout_marginStart="@dimen/public_5dp"
-            android:padding="@dimen/public_8dp"
-            android:src="@mipmap/icon_back" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/txv_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_gravity="center_horizontal"
-            android:layout_toLeftOf="@+id/imv_more"
-            android:layout_toRightOf="@+id/imv_back"
-            android:gravity="center_horizontal"
-            android:maxEms="12"
-            android:maxLines="1"
-            android:textColor="@color/color_title"
-            android:textSize="@dimen/public_font_16sp"
-            tools:text="@string/tools_text_chat_title" />
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/imv_more"
-            android:layout_width="@dimen/public_width_40dp"
-            android:layout_height="@dimen/public_height_40dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:src="@android:drawable/ic_menu_more" />
-    </RelativeLayout>
+    <include layout="@layout/layout_toolbar" />
 </LinearLayout>
