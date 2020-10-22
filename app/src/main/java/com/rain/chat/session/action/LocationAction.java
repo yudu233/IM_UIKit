@@ -6,6 +6,7 @@ import com.blankj.utilcode.constant.PermissionConstants;
 import com.blankj.utilcode.util.PermissionUtils;
 import com.rain.chat.R;
 import com.rain.chat.base.IM;
+import com.rain.chat.base.NimHelper;
 import com.rain.chat.session.module.CustomerBaseAction;
 import com.rain.chat.utils.PermissionHelper;
 import com.ycbl.im.uikit.NimUIKitImpl;
@@ -47,7 +48,7 @@ public class LocationAction extends CustomerBaseAction {
     private void showMap() {
         if (NimUIKitImpl.getLocationProvider() != null) {
             NimUIKitImpl.getLocationProvider().requestLocation(getActivity(), (longitude, latitude, address) -> {
-                MyMessage message = IM.getIMessageBuilder().createLocationMessage(
+                MyMessage message = NimHelper.getIMessageBuilder().createLocationMessage(
                         getAccount(), getSessionType(), latitude, longitude,
                         address);
                 getContainer().proxy.sendMessage(message);

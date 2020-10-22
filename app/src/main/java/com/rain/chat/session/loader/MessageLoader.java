@@ -14,6 +14,7 @@ import com.netease.nimlib.sdk.msg.constant.MsgTypeEnum;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
 import com.netease.nimlib.sdk.msg.model.QueryDirectionEnum;
 import com.rain.chat.base.IM;
+import com.rain.chat.base.NimHelper;
 import com.rain.chat.session.module.Container;
 import com.rain.messagelist.MsgAdapter;
 import com.rain.messagelist.message.MessageType;
@@ -241,7 +242,7 @@ public class MessageLoader implements BaseQuickAdapter.UpFetchListener {
     private MyMessage anchor() {
         if (adapter.getData().size() == 0) {
 
-            return anchor == null ? IM.getIMessageBuilder().createEmptyMessage(container.account, container.sessionType, 0) : anchor;
+            return anchor == null ? NimHelper.getIMessageBuilder().createEmptyMessage(container.account, container.sessionType, 0) : anchor;
         } else {
             int index = (direction == QueryDirectionEnum.QUERY_NEW ? adapter.getData().size() - 1 : 0);
             MyMessage message = (MyMessage) adapter.getData().get(index);

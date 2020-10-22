@@ -4,7 +4,7 @@ package com.ycbl.im.uikit;
  * @Author : Rain
  * @CreateDate : 2020/8/10 10:29
  * @Version : 1.0
- * @Descroption :
+ * @Descroption : SDK来源
  */
 public enum IMSDKType {
     NETEASE_IM,     //网易云信

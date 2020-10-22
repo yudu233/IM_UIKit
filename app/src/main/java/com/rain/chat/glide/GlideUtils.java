@@ -2,12 +2,10 @@ package com.rain.chat.glide;
 
 import android.content.Context;
 import android.text.TextUtils;
-import android.util.Log;
 import android.widget.ImageView;
 
 import androidx.appcompat.widget.AppCompatImageView;
 
-import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.rain.chat.R;
 
@@ -29,7 +27,7 @@ public class GlideUtils {
      * @param imageView 控件
      */
     public static void loadAvatar(Context context, String avatarUrl, int radius, ImageView imageView) {
-        Glide.with(context)
+        GlideApp.with(context)
                 .asBitmap()
                 .load(avatarUrl)
                 .error(R.drawable.im_avatar_default)
@@ -59,7 +57,7 @@ public class GlideUtils {
      * @param imageView 控件
      */
     public static void loadRoundImage(Context context, String url, ImageView imageView) {
-        Glide.with(context)
+        GlideApp.with(context)
                 .asBitmap()
                 .load(url)
                 .centerCrop()
@@ -82,13 +80,13 @@ public class GlideUtils {
                                  ImageView imageView, String extension) {
         boolean isGif = isGif(extension);
         if (isGif) {
-            Glide.with(context).asGif()
+            GlideApp.with(context).asGif()
                     .override(width, height)
                     .centerCrop()
                     .load(url)
                     .into(imageView);
         } else {
-            Glide.with(context).asBitmap()
+            GlideApp.with(context).asBitmap()
                     .override(width, height)
                     .centerCrop()
                     .load(url)
@@ -97,8 +95,7 @@ public class GlideUtils {
     }
 
     public static void loadImage(Context context, String url, AppCompatImageView imageView){
-        Log.e("Rain",url);
-        Glide.with(context).asBitmap()
+        GlideApp.with(context).asBitmap()
                 .centerCrop()
                 .load(url)
                 .into(imageView);

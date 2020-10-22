@@ -7,6 +7,7 @@ import android.net.Uri;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.rain.chat.R;
 import com.rain.chat.base.IM;
+import com.rain.chat.base.NimHelper;
 import com.rain.chat.glide.GlideImageLoader;
 import com.rain.chat.session.module.CustomerBaseAction;
 import com.rain.crow.PhotoPick;
@@ -84,7 +85,7 @@ public class VideoAction extends CustomerBaseAction {
                             int duration = mediaPlayer == null ? 0 : mediaPlayer.getDuration();
                             int width = mediaPlayer == null ? 0 : mediaPlayer.getVideoWidth();
                             int height = mediaPlayer == null ? 0 : mediaPlayer.getVideoWidth();
-                            MyMessage message = IM.getIMessageBuilder().createVideoMessage(
+                            MyMessage message = NimHelper.getIMessageBuilder().createVideoMessage(
                                     getAccount(), getSessionType(), data, duration, width, height,
                                     data.getName());
                             getContainer().proxy.sendMessage(message);

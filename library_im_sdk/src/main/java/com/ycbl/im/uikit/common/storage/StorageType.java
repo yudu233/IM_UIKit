@@ -1,5 +1,11 @@
 package com.ycbl.im.uikit.common.storage;
 
+/**
+ * @Author : Rain
+ * @Version : 1.0
+ * @CreateDate :  2020/9/28 14:39
+ * @Description : 多类型文件存储位置
+ */
 public enum StorageType {
     TYPE_LOG(DirectoryName.LOG_DIRECTORY_NAME),
     TYPE_TEMP(DirectoryName.TEMP_DIRECTORY_NAME),
@@ -8,7 +14,8 @@ public enum StorageType {
     TYPE_IMAGE(DirectoryName.IMAGE_DIRECTORY_NAME),
     TYPE_VIDEO(DirectoryName.VIDEO_DIRECTORY_NAME),
     TYPE_THUMB_IMAGE(DirectoryName.THUMB_DIRECTORY_NAME),
-    TYPE_THUMB_VIDEO(DirectoryName.THUMB_DIRECTORY_NAME),;
+    TYPE_THUMB_VIDEO(DirectoryName.THUMB_DIRECTORY_NAME),
+    ;
     private DirectoryName storageDirectoryName;
     private long storageMinSize;
 
@@ -37,7 +44,8 @@ public enum StorageType {
         TEMP_DIRECTORY_NAME("temp/"),
         IMAGE_DIRECTORY_NAME("image/"),
         THUMB_DIRECTORY_NAME("thumb/"),
-        VIDEO_DIRECTORY_NAME("video/"),;
+        VIDEO_DIRECTORY_NAME("video/"),
+        ;
 
         private String path;
 

@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.rain.chat.R;
 import com.rain.chat.base.IM;
+import com.rain.chat.base.NimHelper;
 import com.rain.chat.glide.GlideImageLoader;
 import com.rain.chat.session.module.CustomerBaseAction;
 import com.rain.crow.PhotoPick;
@@ -56,7 +57,7 @@ public class ImageAction extends CustomerBaseAction {
                 .setCallback((PhotoSelectCallback) photos -> {
                     MediaData mediaData = photos.get(0);
                     File file = new File(mediaData.getCompressionPath());
-                    MyMessage message = IM.getIMessageBuilder().createImageMessage(
+                    MyMessage message = NimHelper.getIMessageBuilder().createImageMessage(
                             getAccount(), getSessionType(), file, file.getName());
                     getContainer().proxy.sendMessage(message);
                 }).build();
@@ -83,7 +84,7 @@ public class ImageAction extends CustomerBaseAction {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(data -> {
-                            MyMessage message = IM.getIMessageBuilder().createImageMessage(
+                            MyMessage message = NimHelper.getIMessageBuilder().createImageMessage(
                                     ImageAction.this.getAccount(), ImageAction.this.getSessionType(), data, data.getName());
                             getContainer().proxy.sendMessage(message);
                         }

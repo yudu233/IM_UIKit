@@ -3,18 +3,14 @@ package com.rain.chat;
 import android.app.Application;
 import android.content.Context;
 import android.os.Environment;
-import android.text.TextUtils;
 
 import com.netease.nimlib.sdk.NIMClient;
-import com.netease.nimlib.sdk.auth.LoginInfo;
+import com.netease.nimlib.sdk.util.NIMUtil;
 import com.rain.chat.base.NimHelper;
-import com.rain.chat.config.Preferences;
-import com.rain.chat.session.viewholder.MsgViewHolderLocation;
-import com.rain.chat.session.viewholder.MsgViewHolderTranslateAudio;
 import com.rain.crow.PhotoPick;
 import com.rain.crow.PhotoPickOptions;
-import com.rain.messagelist.message.MessageType;
-import com.rain.messagelist.message.MsgViewHolderFactory;
+import com.rain.library_netease_sdk.NeteaseCache;
+import com.rain.library_netease_sdk.config.NeteaseSDKOptionConfig;
 
 /**
  * @Author : Rain
@@ -30,30 +26,18 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        PhotoPick.init(getApplicationContext(), getPhotoPickOptions(this));
+
+
         INSTANCE = this;
-        //云信初始化
-        // SDK初始化（启动后台服务，若已经存在用户登录信息， SDK 将完成自动登录）
-        NIMClient.init(this, loginInfo(), null);
-        
-        MsgViewHolderFactory.register(MessageType.audio, MsgViewHolderTranslateAudio.class);
-        MsgViewHolderFactory.register(MessageType.location, MsgViewHolderLocation.class);
+        PhotoPick.init(getApplicationContext(), getPhotoPickOptions(this));
+        NeteaseCache.setContext(this);
+        NIMClient.init(this, NimHelper.getLoginInfo(), NeteaseSDKOptionConfig.getSDKOptions(this));
 
-        NimHelper.initUIKit(this);
-    }
-
-    // 如果已经存在用户登录信息，返回LoginInfo，否则返回null即可
-    private LoginInfo loginInfo() {
-        // 从本地读取上次登录成功时保存的用户登录信息
-        String account = Preferences.getUserAccount();
-        String token = Preferences.getUserToken();
-
-        if (!TextUtils.isEmpty(account) && !TextUtils.isEmpty(token)) {
-            return new LoginInfo(account, token);
-        } else {
-            return null;
+        if (NIMUtil.isMainProcess(this)) {
+            NimHelper.init(this);
         }
     }
+
 
     public static PhotoPickOptions getPhotoPickOptions(Context context) {
         PhotoPickOptions options = new PhotoPickOptions();

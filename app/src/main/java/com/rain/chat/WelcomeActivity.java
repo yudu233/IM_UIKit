@@ -1,12 +1,22 @@
 package com.rain.chat;
 
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.Message;
+import android.os.Messenger;
+import android.os.RemoteException;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -17,8 +27,8 @@ import com.netease.nimlib.sdk.StatusCode;
 import com.netease.nimlib.sdk.auth.AuthService;
 import com.netease.nimlib.sdk.auth.AuthServiceObserver;
 import com.netease.nimlib.sdk.auth.LoginInfo;
-import com.rain.chat.base.IM;
 import com.rain.chat.config.Preferences;
+import com.rain.crow.utils.Rlog;
 
 /**
  * @Author : Rain
@@ -30,12 +40,53 @@ public class WelcomeActivity extends AppCompatActivity {
 
 
     private static final String TAG = "WelcomeActivity";
+    private Intent serviceIntent;
+
+
+    //客户端的Messenger
+    private Messenger clientMessenger = new Messenger(new Handler() {
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            if (msg.what == 2) {
+                //服务端发来的消息
+                Bundle bundle = msg.getData();
+                String title = (String) bundle.get("title");
+                boolean isLogin = (Boolean) bundle.get("isLogin");
+
+                Rlog.e(title + "---" + isLogin);
+            }
+        }
+    });
+
+    //服务端传来的Messenger
+    private Messenger serverMessenger;
+    private boolean isConnected = false;
+    ServiceConnection connection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            Rlog.e("登录服务连接成功...");
+            isConnected= true;
+            serverMessenger = new Messenger(service);
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            Rlog.e("onServiceDisconnected");
+            isConnected = false;
+            serverMessenger = null;
+        }
+    };
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_welcome);
+//
+//        serviceIntent = new Intent(this, MessageService.class);
+//        startService(serviceIntent);
+
         NIMClient.getService(AuthServiceObserver.class).observeOnlineStatus(
                 new Observer<StatusCode>() {
                     public void onEvent(StatusCode status) {
@@ -91,6 +142,41 @@ public class WelcomeActivity extends AppCompatActivity {
         findViewById(R.id.btn_login02).setOnClickListener(v ->
                 NIMClient.getService(AuthService.class).login(info2)
                         .setCallback(callback));
+
+
+        serviceIntent = new Intent();
+        serviceIntent.setAction("ycbl.cytx.login.MessengerService");
+        serviceIntent.setPackage("ycbl.cytx.login");
+        bindService(serviceIntent, connection, Context.BIND_AUTO_CREATE);
+        findViewById(R.id.btn_login).setOnClickListener(v -> {
+            Rlog.e(isConnected + "--------isConnected------");
+            if (isConnected){
+                sendMessage();
+            }else {
+                bindService(serviceIntent, connection, Context.BIND_AUTO_CREATE);
+                if (isConnected){
+                    sendMessage();
+                }
+            }
+        });
+    }
+
+    private void sendMessage() {
+        Message message = Message.obtain();
+        Bundle bundle = new Bundle();
+        bundle.putString("message", "我要登录！ -> 客户端发出的消息");
+        message.setData(bundle);
+        message.what = 0;
+        message.replyTo = clientMessenger;
+        try {
+            serverMessenger.send(message);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        Intent intent1 = new Intent(Intent.ACTION_VIEW);
+//            intent1.setData(Uri.parse("login://com.rain.loginapp/login"));
+        intent1.setData(Uri.parse("login://ycbl.cytx.login/login"));
+        startActivity(intent1);
     }
 
 
@@ -105,5 +191,11 @@ public class WelcomeActivity extends AppCompatActivity {
 
 
         return !TextUtils.isEmpty(account) && !TextUtils.isEmpty(token);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        stopService(serviceIntent);
     }
 }

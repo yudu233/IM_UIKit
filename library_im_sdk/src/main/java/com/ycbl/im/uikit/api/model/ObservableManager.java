@@ -3,6 +3,7 @@ package com.ycbl.im.uikit.api.model;
 import android.content.Context;
 
 import com.ycbl.im.uikit.api.model.chatroom.ChatRoomMemberChangedObservable;
+import com.ycbl.im.uikit.api.model.contact.ContactChangedObservable;
 import com.ycbl.im.uikit.api.model.main.SystemMessageObservable;
 import com.ycbl.im.uikit.api.model.team.TeamChangedObservable;
 import com.ycbl.im.uikit.api.model.user.UserInfoObservable;
@@ -21,4 +22,6 @@ public abstract class ObservableManager {
     public abstract UserInfoObservable getUserInfoObservable(Context mContext);
 
     public abstract TeamChangedObservable getTeamChangedObservable(Context context);
+
+    public abstract ContactChangedObservable getContactChangedObservable(Context context);
 }

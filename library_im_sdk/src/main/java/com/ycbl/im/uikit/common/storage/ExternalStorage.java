@@ -12,7 +12,10 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * package
+ *  @Author : Rain
+ *  @Version : 1.0
+ *  @CreateDate :  2020/9/28 14:40
+ *  @Description : 存储相关
  */
 public class ExternalStorage {
     /**

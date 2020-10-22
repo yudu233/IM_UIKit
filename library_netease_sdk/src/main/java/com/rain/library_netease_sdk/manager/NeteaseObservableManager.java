@@ -8,10 +8,10 @@ import com.netease.nimlib.sdk.team.model.Team;
 import com.netease.nimlib.sdk.team.model.TeamMember;
 import com.ycbl.im.uikit.api.model.ObservableManager;
 import com.ycbl.im.uikit.api.model.chatroom.ChatRoomMemberChangedObservable;
+import com.ycbl.im.uikit.api.model.contact.ContactChangedObservable;
 import com.ycbl.im.uikit.api.model.main.SystemMessageObservable;
 import com.ycbl.im.uikit.api.model.team.TeamChangedObservable;
 import com.ycbl.im.uikit.api.model.user.UserInfoObservable;
-import com.ycbl.im.uikit.common.log.LogUtil;
 
 /**
  * @Author : Rain
@@ -56,6 +56,17 @@ public class NeteaseObservableManager extends ObservableManager {
             teamChangedObservable = new TeamChangedObservable<Team, TeamMember>(context);
         }
         return teamChangedObservable;
+    }
+
+    //好友资料变更通知观察者
+    private static ContactChangedObservable contactChangedObservable;
+
+    @Override
+    public ContactChangedObservable getContactChangedObservable(Context context) {
+        if (contactChangedObservable == null) {
+            contactChangedObservable = new ContactChangedObservable(context);
+        }
+        return contactChangedObservable;
     }
 
     // 聊天室成员变更通知

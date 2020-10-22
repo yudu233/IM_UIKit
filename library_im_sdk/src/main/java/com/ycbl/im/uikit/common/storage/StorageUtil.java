@@ -112,23 +112,6 @@ public class StorageUtil {
         return ExternalStorage.getInstance().getDirectoryByDirType(fileType);
     }
 
-    public static String getSystemImagePath() {
-//        String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "eWorld";
-//        return filePath + "/image/";
-        if (Build.VERSION.SDK_INT > 7) {
-            String picturePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getAbsolutePath();
-            return picturePath + "/eWorld/";
-        } else {
-            String picturePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getAbsolutePath();
-            return picturePath + "/eWorld/";
-        }
-    }
-
-    public static String getSaveVideoPath() {
-        String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "eWorld";
-        return filePath + "/video/";
-    }
-
     public static boolean isInvalidVideoFile(String filePath) {
         return filePath.toLowerCase().endsWith(".3gp")
                 || filePath.toLowerCase().endsWith(".mp4");

@@ -14,11 +14,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.Observer;
 import com.netease.nimlib.sdk.RequestCallbackWrapper;
+import com.netease.nimlib.sdk.ResponseCode;
 import com.netease.nimlib.sdk.msg.MsgService;
 import com.netease.nimlib.sdk.msg.MsgServiceObserve;
 import com.netease.nimlib.sdk.msg.model.RecentContact;
 import com.rain.chat.adapter.ConversationAdapter;
 import com.rain.chat.base.IM;
+import com.rain.chat.base.NimHelper;
 import com.rain.messagelist.message.SessionType;
 import com.ycbl.im.uikit.msg.IMessageBuilder;
 
@@ -55,7 +57,7 @@ public class ConversationFragment extends Fragment {
         initView();
         initData();
         initListener();
-        IM.getIMessageBuilder().createEmptyMessage("222", SessionType.P2P,0);
+        NimHelper.getIMessageBuilder().createEmptyMessage("222", SessionType.P2P,0);
     }
 
     private void initListener() {
@@ -97,6 +99,9 @@ public class ConversationFragment extends Fragment {
                 .setCallback(new RequestCallbackWrapper<List<RecentContact>>() {
                     @Override
                     public void onResult(int code, List<RecentContact> recents, Throwable e) {
+                        if (code != ResponseCode.RES_SUCCESS || recents == null) {
+                            return;
+                        }
                         data.addAll(recents);
                         adapter.setNewData(data);
                     }

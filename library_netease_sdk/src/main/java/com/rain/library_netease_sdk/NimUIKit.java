@@ -1,12 +1,12 @@
-package com.rain.chat.base;
+package com.rain.library_netease_sdk;
 
 import android.content.Context;
 
-import com.rain.library_netease_sdk.impl.provider.NeteaseUserInfoProvider;
-import com.rain.library_netease_sdk.manager.NeteaseObservableManager;
-import com.rain.library_netease_sdk.manager.NeteaseProviderManager;
-import com.ycbl.im.uikit.IMSDKOptions;
+import com.netease.nimlib.sdk.StatusBarNotificationConfig;
+import com.rain.library_netease_sdk.config.NeteaseUIKitOptions;
+import com.rain.library_netease_sdk.user.NimUserInfo;
 import com.ycbl.im.uikit.NimUIKitImpl;
+import com.ycbl.im.uikit.api.UIKitOptions;
 import com.ycbl.im.uikit.api.model.ObservableManager;
 import com.ycbl.im.uikit.api.model.ProviderManager;
 import com.ycbl.im.uikit.api.model.chatroom.ChatRoomMemberChangedObservable;
@@ -25,16 +25,51 @@ import com.ycbl.im.uikit.api.model.user.UserInfoObservable;
 public class NimUIKit {
 
 
-    public static void init(Context context) {
-        NimUIKitImpl.init(context,new IMSDKOptions(),new NeteaseUserInfoProvider(),
-                new NeteaseObservableManager(),new NeteaseProviderManager());
+    public static void init(Context context, UIKitOptions sdkOptions, IUserInfoProvider userInfoProvider,
+                            ObservableManager observableManager, ProviderManager providerManager) {
+        NimUIKitImpl.init(context, sdkOptions, userInfoProvider, observableManager, providerManager);
+
+    }
+
+    /**
+     * 获取上下文
+     *
+     * @return 必须初始化后才有值
+     */
+    public static Context getContext() {
+        return NimUIKitImpl.getContext();
     }
 
 
-    public static void init(Context context, IMSDKOptions sdkOptions, IUserInfoProvider userInfoProvider,
-                            ObservableManager observableManager, ProviderManager providerManager) {
-        NimUIKitImpl.init(context, sdkOptions, userInfoProvider, observableManager,providerManager);
+    /**
+     * 设置当前登录用户的帐号
+     *
+     * @param account 帐号
+     */
+    public static void setAccount(String account) {
+        NimUIKitImpl.setAccount(account);
+    }
 
+    /**
+     * 获取当前登录的账号
+     *
+     * @return 必须登录成功后才有值
+     */
+    public static String getAccount() {
+        return NimUIKitImpl.getAccount();
+    }
+
+    public static NeteaseUIKitOptions getUIKitOptions() {
+        return (NeteaseUIKitOptions) NimUIKitImpl.getUiKitOptions();
+    }
+
+    /**
+     * SDK提供状态栏提醒的配置
+     */
+    private static StatusBarNotificationConfig notificationConfig;
+
+    public static void setNotificationConfig(StatusBarNotificationConfig notificationConfig) {
+        NimUIKit.notificationConfig = notificationConfig;
     }
 
     /**
@@ -51,7 +86,7 @@ public class NimUIKit {
      *
      * @return 必须在初始化后获取
      */
-    public static IUserInfoProvider getUserInfoProvider() {
+    public static IUserInfoProvider<NimUserInfo> getUserInfoProvider() {
         return NimUIKitImpl.getUserInfoProvider();
     }
 

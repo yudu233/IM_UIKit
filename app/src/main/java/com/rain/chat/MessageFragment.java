@@ -22,6 +22,7 @@ import androidx.fragment.app.Fragment;
 
 import com.netease.nimlib.sdk.RequestCallback;
 import com.rain.chat.base.IM;
+import com.rain.chat.base.NimHelper;
 import com.rain.chat.constant.Extras;
 import com.rain.chat.glide.GlideUtils;
 import com.rain.chat.mvp.MessageContract;
@@ -227,7 +228,7 @@ public class MessageFragment extends Fragment implements ModuleProxy,
 
         //发送文本消息
         inputView.getBtnSend().setOnClickListener(v -> {
-            MyMessage message = IM.getIMessageBuilder().createTextMessage(
+            MyMessage message = NimHelper.getIMessageBuilder().createTextMessage(
                     sessionId, sessionType, inputView.getEtChat().getText().toString());
             sendMessage(message);
             inputView.getEtChat().setText("");
