@@ -2,16 +2,12 @@ package com.rain.chat;
 
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.transition.Explode;
-import android.transition.Slide;
-import android.view.View;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
 
-import com.rain.messagelist.model.IMessage;
-import com.ycbl.im.uikit.msg.models.MyMessage;
+import com.rain.library_netease_sdk.msg.models.MyMessage;
 
 /**
  * @Author : Rain

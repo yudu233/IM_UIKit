@@ -1,6 +1,6 @@
 package com.rain.chat.mvp;
 
-import com.ycbl.im.uikit.msg.models.MyMessage;
+import com.rain.library_netease_sdk.msg.models.MyMessage;
 
 /**
  * @Author : Rain

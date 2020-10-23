@@ -1,7 +1,6 @@
 package com.rain.chat;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,10 +18,8 @@ import com.netease.nimlib.sdk.msg.MsgService;
 import com.netease.nimlib.sdk.msg.MsgServiceObserve;
 import com.netease.nimlib.sdk.msg.model.RecentContact;
 import com.rain.chat.adapter.ConversationAdapter;
-import com.rain.chat.base.IM;
 import com.rain.chat.base.NimHelper;
 import com.rain.messagelist.message.SessionType;
-import com.ycbl.im.uikit.msg.IMessageBuilder;
 
 import java.util.ArrayList;
 import java.util.List;

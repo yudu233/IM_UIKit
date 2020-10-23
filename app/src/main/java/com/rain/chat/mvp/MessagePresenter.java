@@ -10,9 +10,9 @@ import com.rain.chat.session.module.Container;
 import com.rain.chat.session.module.CustomerBaseAction;
 import com.rain.inputpanel.action.ActionController;
 import com.rain.inputpanel.action.BaseAction;
+import com.rain.library_netease_sdk.NimClientController;
 import com.ycbl.im.uikit.impl.MessageObserver;
-import com.ycbl.im.uikit.impl.NimClientController;
-import com.ycbl.im.uikit.msg.models.MyMessage;
+import com.rain.library_netease_sdk.msg.models.MyMessage;
 
 import java.util.ArrayList;
 import java.util.List;

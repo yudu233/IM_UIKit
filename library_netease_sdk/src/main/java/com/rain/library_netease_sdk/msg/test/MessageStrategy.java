@@ -1,9 +1,9 @@
-package com.ycbl.im.uikit.msg.test;
+package com.rain.library_netease_sdk.msg.test;
 
 import com.netease.nimlib.sdk.msg.model.CustomMessageConfig;
 import com.rain.messagelist.message.SessionType;
-import com.ycbl.im.uikit.msg.models.MyMessage;
-import com.ycbl.im.uikit.msg.models.MyMsgAttachment;
+import com.rain.library_netease_sdk.msg.models.MyMessage;
+import com.rain.library_netease_sdk.msg.models.MyMsgAttachment;
 
 import java.io.File;
 

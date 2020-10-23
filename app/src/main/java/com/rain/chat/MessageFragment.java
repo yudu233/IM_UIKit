@@ -21,7 +21,6 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.fragment.app.Fragment;
 
 import com.netease.nimlib.sdk.RequestCallback;
-import com.rain.chat.base.IM;
 import com.rain.chat.base.NimHelper;
 import com.rain.chat.constant.Extras;
 import com.rain.chat.glide.GlideUtils;
@@ -47,8 +46,8 @@ import com.rain.messagelist.message.MessageType;
 import com.rain.messagelist.message.SessionType;
 import com.rain.messagelist.model.IMessage;
 import com.rain.messagelist.model.ImageLoader;
-import com.ycbl.im.uikit.msg.controller.IMessageController;
-import com.ycbl.im.uikit.msg.models.MyMessage;
+import com.rain.library_netease_sdk.msg.controller.IMessageController;
+import com.rain.library_netease_sdk.msg.models.MyMessage;
 
 import java.util.ArrayList;
 import java.util.Arrays;

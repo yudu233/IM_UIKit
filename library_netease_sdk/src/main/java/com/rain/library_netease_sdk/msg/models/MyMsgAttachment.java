@@ -1,4 +1,4 @@
-package com.ycbl.im.uikit.msg.models;
+package com.rain.library_netease_sdk.msg.models;
 
 import com.netease.nimlib.sdk.msg.attachment.MsgAttachment;
 import com.rain.messagelist.model.IMsgAttachment;

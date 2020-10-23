@@ -1,4 +1,4 @@
-package com.ycbl.im.uikit.api.model.main;
+package com.rain.library_netease_sdk.impl.observer;
 
 import android.os.Handler;
 
@@ -12,8 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 登录
- * Created by huangjun on 2015/10/9.
+ * @Author : Rain
+ * @Version : 1.0
+ * @CreateDate :  2020/10/23 14:16
+ * @Description : 登录
  */
 public class LoginSyncDataStatusObserver {
 
@@ -72,9 +74,9 @@ public class LoginSyncDataStatusObserver {
     public boolean observeSyncDataCompletedEvent(Observer<Void> observer) {
         if (syncStatus == LoginSyncStatus.NO_BEGIN || syncStatus == LoginSyncStatus.SYNC_COMPLETED) {
             /*
-            * NO_BEGIN 如果登录后未开始同步数据，那么可能是自动登录的情况:
-            * PUSH进程已经登录同步数据完成了，此时UI进程启动后并不知道，这里直接视为同步完成
-            */
+             * NO_BEGIN 如果登录后未开始同步数据，那么可能是自动登录的情况:
+             * PUSH进程已经登录同步数据完成了，此时UI进程启动后并不知道，这里直接视为同步完成
+             */
             return true;
         }
 

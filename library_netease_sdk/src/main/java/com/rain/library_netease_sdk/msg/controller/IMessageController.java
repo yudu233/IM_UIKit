@@ -1,11 +1,11 @@
-package com.ycbl.im.uikit.msg.controller;
+package com.rain.library_netease_sdk.msg.controller;
 
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.RequestCallback;
 import com.netease.nimlib.sdk.msg.MsgService;
 import com.netease.nimlib.sdk.msg.MsgServiceObserve;
-import com.ycbl.im.uikit.msg.IMessageBuilder;
-import com.ycbl.im.uikit.msg.models.MyMessage;
+import com.rain.library_netease_sdk.msg.IMessageBuilder;
+import com.rain.library_netease_sdk.msg.models.MyMessage;
 
 /**
  * @author duyu

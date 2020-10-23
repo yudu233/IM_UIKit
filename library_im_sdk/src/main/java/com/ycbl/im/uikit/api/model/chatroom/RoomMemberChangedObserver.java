@@ -11,7 +11,7 @@ public interface RoomMemberChangedObserver<T> {
 
     /**
      * 聊天室新增成员
-     *
+     *8
      * @param member 成员
      */
     void onRoomMemberIn(T member);

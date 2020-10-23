@@ -12,7 +12,6 @@ import com.ycbl.im.uikit.api.model.chatroom.ChatRoomProvider;
 import com.ycbl.im.uikit.api.model.contact.ContactChangedObservable;
 import com.ycbl.im.uikit.api.model.contact.ContactProvider;
 import com.ycbl.im.uikit.api.model.location.LocationProvider;
-import com.ycbl.im.uikit.api.model.main.LoginSyncDataStatusObserver;
 import com.ycbl.im.uikit.api.model.main.OnlineStateChangeObservable;
 import com.ycbl.im.uikit.api.model.main.OnlineStateContentProvider;
 import com.ycbl.im.uikit.api.model.main.SystemMessageObservable;
@@ -121,7 +120,7 @@ public class NimUIKitImpl {
             initUserInfoProvider(userInfoProvider);
             // init data cache
             // 监听登录同步数据完成通知
-            LoginSyncDataStatusObserver.getInstance().registerLoginSyncDataStatus(true);
+//            LoginSyncDataStatusObserver.getInstance().registerLoginSyncDataStatus(true);
         }
     }
 

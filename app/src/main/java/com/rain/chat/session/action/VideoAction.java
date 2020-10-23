@@ -6,7 +6,6 @@ import android.net.Uri;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.rain.chat.R;
-import com.rain.chat.base.IM;
 import com.rain.chat.base.NimHelper;
 import com.rain.chat.glide.GlideImageLoader;
 import com.rain.chat.session.module.CustomerBaseAction;
@@ -16,7 +15,7 @@ import com.rain.crow.controller.PhotoPickConfig;
 import com.rain.crow.impl.PhotoSelectCallback;
 import com.rain.crow.utils.MimeType;
 import com.rain.crow.utils.Rlog;
-import com.ycbl.im.uikit.msg.models.MyMessage;
+import com.rain.library_netease_sdk.msg.models.MyMessage;
 
 import java.io.File;
 import java.util.ArrayList;

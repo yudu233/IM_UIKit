@@ -3,8 +3,8 @@ package com.rain.chat.base;
 import com.rain.library_netease_sdk.config.NeteaseUIKitOptions;
 import com.rain.library_netease_sdk.message.NeteaseMessageStrategy;
 import com.ycbl.im.uikit.IMSDKType;
-import com.ycbl.im.uikit.msg.IMessageBuilder;
-import com.ycbl.im.uikit.msg.test.MessageStrategy;
+import com.rain.library_netease_sdk.msg.IMessageBuilder;
+import com.rain.library_netease_sdk.msg.test.MessageStrategy;
 
 /**
  * @Author : Rain

@@ -13,7 +13,7 @@ import com.rain.chat.session.loader.MessageLoader;
 import com.rain.chat.session.module.Container;
 import com.rain.inputpanel.utils.EmoticonsKeyboardUtils;
 import com.rain.messagelist.MsgAdapter;
-import com.ycbl.im.uikit.msg.models.MyMessage;
+import com.rain.library_netease_sdk.msg.models.MyMessage;
 
 import java.util.ArrayList;
 import java.util.Arrays;

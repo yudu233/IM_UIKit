@@ -13,13 +13,12 @@ import com.netease.nimlib.sdk.msg.MsgService;
 import com.netease.nimlib.sdk.msg.constant.MsgTypeEnum;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
 import com.netease.nimlib.sdk.msg.model.QueryDirectionEnum;
-import com.rain.chat.base.IM;
 import com.rain.chat.base.NimHelper;
 import com.rain.chat.session.module.Container;
 import com.rain.messagelist.MsgAdapter;
 import com.rain.messagelist.message.MessageType;
-import com.ycbl.im.uikit.msg.models.DefaultUser;
-import com.ycbl.im.uikit.msg.models.MyMessage;
+import com.rain.library_netease_sdk.msg.models.DefaultUser;
+import com.rain.library_netease_sdk.msg.models.MyMessage;
 
 import java.util.ArrayList;
 import java.util.Collections;

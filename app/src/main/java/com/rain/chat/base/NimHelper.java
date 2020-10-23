@@ -3,14 +3,12 @@ package com.rain.chat.base;
 import android.content.Context;
 import android.text.TextUtils;
 
-import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.auth.LoginInfo;
 import com.rain.chat.session.location.NimLocationProvider;
 import com.rain.chat.session.viewholder.MsgViewHolderLocation;
 import com.rain.chat.session.viewholder.MsgViewHolderTranslateAudio;
 import com.rain.library_netease_sdk.NeteaseCache;
 import com.rain.library_netease_sdk.NimUIKit;
-import com.rain.library_netease_sdk.config.NeteaseSDKOptionConfig;
 import com.rain.library_netease_sdk.config.NeteaseUIKitOptions;
 import com.rain.library_netease_sdk.config.preference.Preferences;
 import com.rain.library_netease_sdk.impl.cache.DataCacheManager;
@@ -23,8 +21,8 @@ import com.rain.messagelist.message.MsgViewHolderFactory;
 import com.ycbl.im.uikit.IMSDKType;
 import com.ycbl.im.uikit.NimUIKitImpl;
 import com.ycbl.im.uikit.common.storage.ExternalStorage;
-import com.ycbl.im.uikit.msg.IMessageBuilder;
-import com.ycbl.im.uikit.msg.test.MessageStrategy;
+import com.rain.library_netease_sdk.msg.IMessageBuilder;
+import com.rain.library_netease_sdk.msg.test.MessageStrategy;
 
 /**
  * @Author : Rain

@@ -5,12 +5,11 @@ import androidx.annotation.NonNull;
 import com.blankj.utilcode.constant.PermissionConstants;
 import com.blankj.utilcode.util.PermissionUtils;
 import com.rain.chat.R;
-import com.rain.chat.base.IM;
 import com.rain.chat.base.NimHelper;
 import com.rain.chat.session.module.CustomerBaseAction;
 import com.rain.chat.utils.PermissionHelper;
 import com.ycbl.im.uikit.NimUIKitImpl;
-import com.ycbl.im.uikit.msg.models.MyMessage;
+import com.rain.library_netease_sdk.msg.models.MyMessage;
 
 import java.util.List;
 

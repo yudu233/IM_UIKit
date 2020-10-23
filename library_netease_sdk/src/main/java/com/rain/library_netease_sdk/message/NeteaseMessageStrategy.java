@@ -6,10 +6,10 @@ import com.netease.nimlib.sdk.msg.model.CustomMessageConfig;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
 import com.rain.messagelist.message.MessageType;
 import com.rain.messagelist.message.SessionType;
-import com.ycbl.im.uikit.msg.models.DefaultUser;
-import com.ycbl.im.uikit.msg.models.MyMessage;
-import com.ycbl.im.uikit.msg.models.MyMsgAttachment;
-import com.ycbl.im.uikit.msg.test.MessageStrategy;
+import com.rain.library_netease_sdk.msg.models.DefaultUser;
+import com.rain.library_netease_sdk.msg.models.MyMessage;
+import com.rain.library_netease_sdk.msg.models.MyMsgAttachment;
+import com.rain.library_netease_sdk.msg.test.MessageStrategy;
 
 import java.io.File;
 

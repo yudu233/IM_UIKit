@@ -1,4 +1,4 @@
-package com.ycbl.im.uikit.impl;
+package com.rain.library_netease_sdk;
 
 import android.annotation.SuppressLint;
 
@@ -7,15 +7,14 @@ import com.netease.nimlib.sdk.Observer;
 import com.netease.nimlib.sdk.msg.MsgServiceObserve;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
 import com.rain.messagelist.message.MessageType;
-import com.ycbl.im.uikit.msg.models.DefaultUser;
-import com.ycbl.im.uikit.msg.models.MyMessage;
+import com.ycbl.im.uikit.impl.MessageObserver;
+import com.rain.library_netease_sdk.msg.models.DefaultUser;
+import com.rain.library_netease_sdk.msg.models.MyMessage;
 
 import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
-import io.reactivex.Single;
-import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 
 /**

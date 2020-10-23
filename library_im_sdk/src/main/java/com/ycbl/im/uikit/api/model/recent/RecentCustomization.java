@@ -1,6 +1,5 @@
 package com.ycbl.im.uikit.api.model.recent;
 
-import com.netease.nimlib.sdk.msg.model.RecentContact;
 
 import java.io.Serializable;
 
@@ -11,7 +10,7 @@ import java.io.Serializable;
  * @Descroption : 会话项默认文案定制 
  */
 public class RecentCustomization<T> implements Serializable {
-    public String getDefaultDigest(RecentContact recent) {
+    public String getDefaultDigest(T recent) {
         return "";
     }
 }

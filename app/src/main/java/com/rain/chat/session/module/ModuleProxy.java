@@ -1,7 +1,6 @@
 package com.rain.chat.session.module;
 
-import com.netease.nimlib.sdk.msg.model.IMMessage;
-import com.ycbl.im.uikit.msg.models.MyMessage;
+import com.rain.library_netease_sdk.msg.models.MyMessage;
 
 /**
  * @Author: Rain
