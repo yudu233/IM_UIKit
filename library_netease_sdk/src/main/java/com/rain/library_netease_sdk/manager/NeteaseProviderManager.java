@@ -1,8 +1,10 @@
 package com.rain.library_netease_sdk.manager;
 
+import com.rain.library_netease_sdk.impl.provider.NeteaseContactProvider;
 import com.rain.library_netease_sdk.impl.provider.NeteaseTeamProvider;
 import com.rain.library_netease_sdk.impl.provider.NeteaseUserInfoProvider;
 import com.ycbl.im.uikit.api.model.ProviderManager;
+import com.ycbl.im.uikit.api.model.contact.ContactProvider;
 import com.ycbl.im.uikit.api.model.team.TeamProvider;
 import com.ycbl.im.uikit.api.model.user.IUserInfoProvider;
 
@@ -25,5 +27,10 @@ public class NeteaseProviderManager extends ProviderManager {
     @Override
     public TeamProvider getTeamProvider() {
         return new NeteaseTeamProvider();
+    }
+
+    @Override
+    public ContactProvider getContactProvider() {
+        return new NeteaseContactProvider();
     }
 }

@@ -2,7 +2,9 @@ package com.rain.library_netease_sdk.business.team;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.widget.Toast;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.msg.MsgService;
 import com.netease.nimlib.sdk.msg.model.LocalAntiSpamResult;
@@ -17,9 +19,10 @@ import com.netease.nimlib.sdk.team.model.Team;
 import com.netease.nimlib.sdk.team.model.TeamMember;
 import com.rain.library_netease_sdk.NimUIKit;
 import com.rain.library_netease_sdk.R;
+import com.rain.library_netease_sdk.business.user.UserInfoHelper;
+import com.ycbl.im.uikit.api.model.SimpleCallback;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -32,6 +35,13 @@ import java.util.Map;
  * @Descroption : 群组相关助手类
  */
 public class TeamHelper {
+
+    /**
+     * 申请加入群组时的验证类型
+     *
+     * @param name
+     * @return
+     */
     public static VerifyTypeEnum getVerifyTypeEnum(String name) {
         VerifyTypeEnum type = null;
 
@@ -46,6 +56,11 @@ public class TeamHelper {
         return type;
     }
 
+    /**
+     * 申请加入群组菜单项名称
+     *
+     * @return
+     */
     public static List<String> createAuthenMenuStrings() {
         int[] res = new int[]{R.string.team_allow_anyone_join, R.string.team_need_authentication,
                 R.string.team_not_allow_anyone_join};
@@ -56,6 +71,12 @@ public class TeamHelper {
         return btnNames;
     }
 
+    /**
+     * 获取验证显示文案
+     *
+     * @param type 验证类型
+     * @return
+     */
     public static int getVerifyString(VerifyTypeEnum type) {
         if (type == VerifyTypeEnum.Free) {
             return R.string.team_allow_anyone_join;
@@ -66,7 +87,11 @@ public class TeamHelper {
         }
     }
 
-    // 群消息提醒类型菜单项名称
+    /**
+     * 群消息提醒类型菜单项名称
+     *
+     * @return
+     */
     public static List<String> createNotifyMenuStrings() {
         int[] res = new int[]{
                 R.string.team_notify_all,
@@ -80,12 +105,16 @@ public class TeamHelper {
         return btnNames;
     }
 
-    // 群消息提醒类型菜单项名称--修改后的
-    public static List<String> csutomCreateNotifyMenuStrings() {
+    /**
+     * 群消息提醒类型菜单项名称--修改后的
+     *
+     * @return
+     */
+    public static List<String> customCreateNotifyMenuStrings() {
         int[] res = new int[]{
                 R.string.team_notify_all,
                 R.string.team_notify_mute,
-                R.string.cancel
+                R.string.text_cancel
         };
         List<String> btnNames = new ArrayList<>();
         for (int r : res) {
@@ -94,7 +123,12 @@ public class TeamHelper {
         return btnNames;
     }
 
-    // 获取提醒类型
+    /**
+     * 获取提醒类型
+     *
+     * @param name
+     * @return
+     */
     public static TeamMessageNotifyTypeEnum getNotifyType(String name) {
         TeamMessageNotifyTypeEnum type = null;
         if (name.equals(NimUIKit.getContext().getString(R.string.team_notify_all))) {
@@ -107,7 +141,11 @@ public class TeamHelper {
         return type;
     }
 
-    // 邀请他人菜单项名称
+    /**
+     * 邀请他人菜单项名称
+     *
+     * @return
+     */
     public static List<String> createInviteMenuStrings() {
         int[] res = new int[]{R.string.team_admin_invite, R.string.team_everyone_invite};
         List<String> btnNames = new ArrayList<>();
@@ -117,7 +155,12 @@ public class TeamHelper {
         return btnNames;
     }
 
-    // 获取邀请他人类型
+    /**
+     * 获取邀请他人类型
+     *
+     * @param name
+     * @return
+     */
     public static TeamInviteModeEnum getInviteModeEnum(String name) {
         TeamInviteModeEnum type = null;
 
@@ -130,7 +173,12 @@ public class TeamHelper {
         return type;
     }
 
-    // 获取邀请他人文本描述
+    /**
+     * 获取邀请他人文本描述
+     *
+     * @param type
+     * @return
+     */
     public static int getInviteModeString(TeamInviteModeEnum type) {
         if (type == TeamInviteModeEnum.Manager) {
             return R.string.team_admin_invite;
@@ -139,7 +187,11 @@ public class TeamHelper {
         }
     }
 
-    // 群资料修改权限菜单名称
+    /**
+     * 群资料修改权限菜单名称
+     *
+     * @return
+     */
     public static List<String> createTeamInfoUpdateMenuStrings() {
         int[] res = new int[]{R.string.team_admin_update, R.string.team_everyone_update};
         List<String> btnNames = new ArrayList<>();
@@ -149,7 +201,12 @@ public class TeamHelper {
         return btnNames;
     }
 
-    // 获取群资料修改类型
+    /**
+     * 获取群资料修改类型
+     *
+     * @param name
+     * @return
+     */
     public static TeamUpdateModeEnum getUpdateModeEnum(String name) {
         TeamUpdateModeEnum type = null;
 
@@ -162,7 +219,12 @@ public class TeamHelper {
         return type;
     }
 
-    // 获取群资料修改类型文本描述
+    /**
+     * 获取群资料修改类型文本描述
+     *
+     * @param type
+     * @return
+     */
     public static int getInfoUpdateModeString(TeamUpdateModeEnum type) {
         if (type == TeamUpdateModeEnum.Manager) {
             return R.string.team_admin_update;
@@ -171,7 +233,11 @@ public class TeamHelper {
         }
     }
 
-    // 被邀请人身份验证名称
+    /**
+     * 被邀请人身份验证名称
+     *
+     * @return
+     */
     public static List<String> createTeamInviteeAuthenMenuStrings() {
         int[] res = new int[]{R.string.team_invitee_need_authen, R.string.team_invitee_not_need_authen};
         List<String> btnNames = new ArrayList<>();
@@ -181,7 +247,12 @@ public class TeamHelper {
         return btnNames;
     }
 
-    // 获取被邀请人身份类型
+    /**
+     * 获取被邀请人身份类型
+     *
+     * @param name
+     * @return
+     */
     public static TeamBeInviteModeEnum getBeInvitedModeEnum(String name) {
         TeamBeInviteModeEnum type = null;
 
@@ -194,7 +265,12 @@ public class TeamHelper {
         return type;
     }
 
-    // 获取被邀请人类型文本描述
+    /**
+     * 获取被邀请人类型文本描述
+     *
+     * @param type
+     * @return
+     */
     public static int getBeInvitedModeString(TeamBeInviteModeEnum type) {
         if (type == TeamBeInviteModeEnum.NeedAuth) {
             return R.string.team_invitee_need_authen;
@@ -229,7 +305,7 @@ public class TeamHelper {
                 }
             }
             tipContent.append("所在群组数量达到上限，邀请失败");
-            ToastUtils.toastShort(tipContent.toString());
+            Toast.makeText(context, tipContent.toString(), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -312,12 +388,7 @@ public class TeamHelper {
     }
 
     public static String getDisplayNameWithoutMe(Context context, String tid, String account) {
-        String alias = "";
-        List<DBFriendsEntity> dbFriendsEntities = FriendDaoOpe.queryID(context, account);
-        if (dbFriendsEntities != null && dbFriendsEntities.size() != 0) {
-            alias = dbFriendsEntities.get(0).getFriend_remark();
-        }
-
+        String alias = NimUIKit.getContactProvider().getAlias(account);
         if (!TextUtils.isEmpty(alias)) {
             return alias;
         }
@@ -327,7 +398,7 @@ public class TeamHelper {
             return memberNick;
         }
 
-        return UserInfoHelper.getUserDisplayName(account);
+        return UserInfoHelper.getUserName(account);
     }
 
     public static String getTeamNick(String tid, String account) {
@@ -351,7 +422,7 @@ public class TeamHelper {
                 callback.onResult(true, result.getContent(), 1001);
                 break;
             case 2: // 拦截，不允许发送
-                ToastUtils.toastShort( "包含敏感字，请重新提交！");
+                ToastUtils.showShort("包含敏感字，请重新提交！");
                 break;
             case 0:
             default:

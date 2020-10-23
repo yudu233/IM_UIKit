@@ -1,8 +1,5 @@
 package com.ycbl.im.uikit.api.model.team;
 
-import com.netease.nimlib.sdk.team.constant.TeamTypeEnum;
-import com.netease.nimlib.sdk.team.model.Team;
-import com.netease.nimlib.sdk.team.model.TeamMember;
 import com.ycbl.im.uikit.api.model.SimpleCallback;
 
 import java.util.List;

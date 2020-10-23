@@ -131,7 +131,7 @@ public class NIMRedPacketClient {
     }
 
     private static boolean checkValid() {
-        return NimUIKit.getUserInfoProvider().getUserInfo(NimHelper.getAccount()) != null;
+        return NimUIKit.getUserInfoProvider().getUserInfo(NimUIKit.getAccount()) != null;
     }
 
 }

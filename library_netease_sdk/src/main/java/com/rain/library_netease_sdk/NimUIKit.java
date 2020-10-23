@@ -3,6 +3,8 @@ package com.rain.library_netease_sdk;
 import android.content.Context;
 
 import com.netease.nimlib.sdk.StatusBarNotificationConfig;
+import com.netease.nimlib.sdk.team.model.Team;
+import com.netease.nimlib.sdk.team.model.TeamMember;
 import com.rain.library_netease_sdk.config.NeteaseUIKitOptions;
 import com.rain.library_netease_sdk.user.NimUserInfo;
 import com.ycbl.im.uikit.NimUIKitImpl;
@@ -10,9 +12,11 @@ import com.ycbl.im.uikit.api.UIKitOptions;
 import com.ycbl.im.uikit.api.model.ObservableManager;
 import com.ycbl.im.uikit.api.model.ProviderManager;
 import com.ycbl.im.uikit.api.model.chatroom.ChatRoomMemberChangedObservable;
+import com.ycbl.im.uikit.api.model.contact.ContactProvider;
 import com.ycbl.im.uikit.api.model.location.LocationProvider;
 import com.ycbl.im.uikit.api.model.main.SystemMessageObservable;
 import com.ycbl.im.uikit.api.model.team.TeamChangedObservable;
+import com.ycbl.im.uikit.api.model.team.TeamProvider;
 import com.ycbl.im.uikit.api.model.user.IUserInfoProvider;
 import com.ycbl.im.uikit.api.model.user.UserInfoObservable;
 
@@ -91,6 +95,15 @@ public class NimUIKit {
     }
 
     /**
+     * 获取通讯录资料提供者
+     *
+     * @return 必须在初始化后获取
+     */
+    public static ContactProvider getContactProvider() {
+        return NimUIKitImpl.getContactProvider();
+    }
+
+    /**
      * 获取 “用户资料” 变更监听管理者
      * UIKit 与 app 之间 userInfo 数据更新通知接口
      *
@@ -125,6 +138,10 @@ public class NimUIKit {
      */
     public static TeamChangedObservable getTeamChangedObservable() {
         return NimUIKitImpl.getTeamChangedObservable();
+    }
+
+    public static TeamProvider<Team, TeamMember> getTeamProvider() {
+        return NimUIKitImpl.getTeamProvider();
     }
 
 }

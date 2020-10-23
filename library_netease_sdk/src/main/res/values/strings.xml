@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- common -->
+    <string name="text_cancel">取消</string>
 
     <!-- 云信SDK所需文案 -->
     <string name="im_nim_status_bar_multi_messages_incoming">%1$d位联系人有新消息</string>
@@ -14,5 +16,87 @@
     <string name="im_nim_status_bar_custom_message">%1$s: 自定义消息</string>
     <string name="im_nim_status_bar_unsupported_message">%1$s: 无法显示该内容</string>
     <string name="im_nim_status_bar_hidden_msg_content">你收到一条新消息</string>
+
+
+    <!-- team -->
+    <string name="team_need_authentication">需要身份验证</string>
+    <string name="team_allow_anyone_join">允许任何人加入</string>
+    <string name="team_not_allow_anyone_join">不允许任何人加入</string>
+    <string name="team_admin_invite">管理员邀请</string>
+    <string name="team_everyone_invite">所有人邀请</string>
+    <string name="team_admin_update">管理员修改</string>
+    <string name="team_everyone_update">所有人修改</string>
+    <string name="team_invitee_need_authen">需要验证</string>
+    <string name="team_invitee_not_need_authen">不需要验证</string>
+    <string name="team_notify_mute">不提醒任何消息</string>
+    <string name="team_notify_all">提醒所有消息</string>
+    <string name="team_notify_manager">只提醒管理员消息</string>
+    <string name="team_nickname">修改群名片</string>
+    <string name="team_nickname_none">未填写</string>
+    <string name="team_identity">身份</string>
+    <string name="remove_member">移出本群</string>
+    <string name="team_admin">管理员</string>
+    <string name="team_creator">群主</string>
+    <string name="team_member">群成员</string>
+    <string name="update_success">修改成功</string>
+    <string name="update_failed">保存失败</string>
+    <string name="no_permission">没有权限</string>
+    <string name="set_team_admin">设为管理员</string>
+    <string name="cancel_team_admin">取消管理员</string>
+    <string name="team_member_remove_confirm">确定要将其移出群组么?</string>
+    <string name="team_annourcement">群公告</string>
+    <string name="invite_member">选择联系人</string>
+    <string name="recommend_card">推荐名片</string>
+    <string name="team_name">群名称</string>
+    <string name="team_introduce">群介绍</string>
+    <string name="team_extension">扩展示例</string>
+    <string name="click_set">点击设置</string>
+    <string name="reach_team_member_capacity">成员数量不能超过%1$d</string>
+    <string name="team_authentication">身份验证</string>
+    <string name="team_invite">邀请他人权限</string>
+    <string name="team_info_update">群资料修改权限</string>
+    <string name="team_invitee_authentication">被邀请人身份验证</string>
+    <string name="over_team_member_capacity">邀请失败，成员人数上限为%1$d人</string>
+    <string name="over_team_capacity">创建失败，创建群数量达到限制</string>
+    <string name="create_team_failed">创建失败</string>
+    <string name="create_team_success">创建成功</string>
+    <string name="team_announce_title2">标题(不超过20个字)</string>
+    <string name="team_announce_content2">公告内容(不超过400个字)</string>
+    <string name="team_announce_notice">请输入群公告标题</string>
+    <string name="my_team_card">我的群名片</string>
+    <string name="team_introduce_hint">点击填写群介绍</string>
+    <string name="team_extension_hint">点击修改扩展内容</string>
+    <string name="team_announce_hint">点击填写群公告</string>
+    <string name="team_notification_config">消息提醒</string>
+    <string name="nim_team_transfer_without_member">没有可转移的群成员</string>
+    <string name="nim_team_invite_members_success">群成员邀请已发出</string>
+    <string name="team_invite_members_overflow">群成员已满，邀请失败</string>
+    <string name="team_invite_members_no">该群不存在，邀请失败</string>
+    <string name="nim_team_invite_members_failed">群成员邀请失败</string>
+    <string name="nim_team_transfer_success">群转移成功</string>
+    <string name="nim_team_transfer_failed">群转移失败</string>
+    <string name="nim_quit_team_success">您已退群</string>
+    <string name="nim_quit_team_failed">退群失败</string>
+    <string name="nim_quit_normal_team_success">您已经退出讨论组</string>
+    <string name="nim_quit_normal_team_failed">退出讨论组失败</string>
+    <string name="nim_dismiss_team_success">群已解散</string>
+    <string name="nim_dismiss_team_failed">解散群失败</string>
+    <string name="dismiss_team">解散本群</string>
+    <string name="transfer_team">转让群</string>
+    <string name="quit_team">退出群</string>
+    <string name="nim_quit_normal_team">退出讨论组</string>
+    <string name="team_name_toast">群名称不能为空</string>
+    <string name="not_allow_empty">不能为空</string>
+    <string name="nim_normal_team_name">讨论组名称</string>
+    <string name="nim_remove_member_success">移除成员成功</string>
+    <string name="nim_remove_member_failed">移除成员失败</string>
+    <string name="nim_invite_member_success">邀请成员成功</string>
+    <string name="nim_invite_member_failed">邀请成员失败</string>
+    <string name="nim_team_settings_set_name">取个名字吧</string>
+    <string name="team_not_exist">该群不存在</string>
+    <string name="nim_normal_team_not_exist">该讨论组不存在</string>
+    <string name="mute_msg">设置禁言</string>
+    <string name="nim_team_update_cancel">取消更新</string>
+    <string name="nim_team_update_failed">群头像设置失败</string>
 
 </resources>

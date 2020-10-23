@@ -10,6 +10,7 @@ import com.ycbl.im.uikit.api.model.ProviderManager;
 import com.ycbl.im.uikit.api.model.chatroom.ChatRoomMemberChangedObservable;
 import com.ycbl.im.uikit.api.model.chatroom.ChatRoomProvider;
 import com.ycbl.im.uikit.api.model.contact.ContactChangedObservable;
+import com.ycbl.im.uikit.api.model.contact.ContactProvider;
 import com.ycbl.im.uikit.api.model.location.LocationProvider;
 import com.ycbl.im.uikit.api.model.main.LoginSyncDataStatusObserver;
 import com.ycbl.im.uikit.api.model.main.OnlineStateChangeObservable;
@@ -54,7 +55,7 @@ public class NimUIKitImpl {
     private static IUserInfoProvider userInfoProvider;
 
     // 通讯录信息提供者
-
+    private static ContactProvider contactProvider;
 
     // 在线状态展示内容
     private static OnlineStateContentProvider onlineStateContentProvider;
@@ -66,6 +67,8 @@ public class NimUIKitImpl {
     private static UserInfoObservable userInfoObservable;
 
     //好友关系变更监听
+
+    //
 
     //系统消息监听
     private static SystemMessageObservable systemMessageObservable;
@@ -170,6 +173,15 @@ public class NimUIKitImpl {
             }
         }
         return teamProvider;
+    }
+
+    public static ContactProvider getContactProvider() {
+        if (contactProvider == null) {
+            if (uiKitOptions.imsdkType == IMSDKType.NETEASE_IM) {
+                contactProvider = providerManager.getContactProvider();
+            }
+        }
+        return contactProvider;
     }
 
     /**

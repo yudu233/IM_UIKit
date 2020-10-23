@@ -5,6 +5,8 @@ import android.text.TextUtils;
 import com.google.gson.JsonObject;
 import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
 import com.rain.library_netease_sdk.NimUIKit;
+import com.rain.library_netease_sdk.business.team.TeamHelper;
+import com.rain.library_netease_sdk.business.user.UserInfoHelper;
 
 /**
  * @author : duyu
